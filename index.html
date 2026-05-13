@@ -2,92 +2,170 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZPO-Guesser</title>
+    <!-- Wir laden die Chart-Bibliothek für den Fortschritt -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f4f4f9; }
-        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-block; min-width: 300px; }
-        input { padding: 10px; margin: 10px; border: 2px solid #ddd; border-radius: 5px; font-size: 16px; width: 80%; }
-        .correct { border-color: #4CAF50; background-color: #e8f5e9; }
-        #timer { font-size: 2em; color: #333; margin: 20px 0; }
-        #score-list { margin-top: 30px; text-align: left; display: inline-block; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; background-color: #f0f2f5; color: #333; }
+        .container { max-width: 800px; margin: auto; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h1 { color: #2c3e50; font-size: 2.5em; margin-bottom: 0.2em; }
+        p.subtitle { color: #7f8c8d; margin-bottom: 20px; }
+        input { padding: 12px; margin: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; width: 85%; transition: border-color 0.3s, box-shadow 0.3s; }
+        input:focus { border-color: #3498db; outline: none; box-shadow: 0 0 8px rgba(52, 152, 219, 0.2); }
+        .correct { border-color: #2ecc71 !important; background-color: #e8f5e9; }
+        #timer { font-size: 3.5em; font-weight: bold; color: #34495e; margin: 15px 0; font-variant-numeric: tabular-nums; }
+        .chart-container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        #frage { color: #e67e22; font-size: 1.8em; min-height: 1.6em; font-weight: 600; }
+        button { padding: 8px 15px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 0.8em; transition: background 0.3s; }
+        button:hover { background: #7f8c8d; }
     </style>
 </head>
 <body>
+
+<div class="container">
     <div class="card">
-        <h1>ZPO Guesser</h1>
-        <p>Unterkategorie:</p>
-        <h2 id="frage">Lade Daten...</h2>
+        <h1>ZPO-Guesser</h1>
+        <p class="subtitle">Meistere die Schweizer Zivilprozessordnung</p>
         
-        <input type="text" id="inputUeberthema" placeholder="Überthema eingeben...">
-        <input type="text" id="inputArtikel" placeholder="Artikel eingeben..." disabled>
+        <p>Unterkategorie:</p>
+        <h2 id="frage">Initialisierung...</h2>
+        
+        <input type="text" id="inputUeberthema" placeholder="Überthema eingeben..." autocomplete="off">
+        <input type="text" id="inputArtikel" placeholder="Artikel eingeben..." disabled autocomplete="off">
         
         <div id="timer">0.00s</div>
-        <div id="msg"></div>
-
-        <div id="score-list">
-            <h3>Letzte Scores:</h3>
-            <ul id="scores"></ul>
-        </div>
+        <button onclick="clearHistory()">Statistik löschen</button>
     </div>
 
-    <script>
-        // Beispiel-Daten (Hier kannst du deine ganze Liste einfügen)
-        const daten = [
-            { u: "Gegenstand und Geltungsbereich", t: "Allgemeine Bestimmungen", a: "1" },
-            { u: "Zuständigkeit der Gerichte und Ausstand", t: "Allgemeine Bestimmungen", a: "4" },
-            { u: "Verfahrensgrundsätze und Prozessvoraussetzungen", t: "Allgemeine Bestimmungen", a: "52" }
-            { u: "Rechtshängigkeit und Folgen des Klagerückzugs", t: "Allgemeine Bestimmungen", a: "62" }
-            { u: "Die Parteien und die Beteiligung Dritter", t: "Allgemeine Bestimmungen", a: "66" }
-        ];
+    <div class="chart-container">
+        <h3>Dein Fortschritt (Sekunden pro Runde)</h3>
+        <canvas id="progressChart"></canvas>
+    </div>
+</div>
 
-        let aktuelleFrage, startTime, timerInterval;
+<script>
+    // DEINE DATEN - Hier kannst du jederzeit neue Zeilen hinzufügen
+    const daten = [
+        { u: "Gegenstand und Geltungsbereich", t: "Allgemeine Bestimmungen", a: "1" },
+        { u: "Zuständigkeit der Gerichte und Ausstand", t: "Allgemeine Bestimmungen", a: "4" },
+        { u: "Verfahrensgrundsätze", t: "Allgemeine Bestimmungen", a: "52" },
+        { u: "Rechtshängigkeit", t: "Allgemeine Bestimmungen", a: "62" },
+        { u: "Schlichtungsversuch", t: "Besondere Bestimmungen", a: "197" },
+        { u: "Mediation", t: "Besondere Bestimmungen", a: "213" },
+        { u: "Ordentliches Verfahren", t: "Besondere Bestimmungen", a: "219" },
+        { u: "Vereinfachtes Verfahren", t: "Besondere Bestimmungen", a: "243" },
+        { u: "Summarisches Verfahren", t: "Besondere Bestimmungen", a: "248" },
+        { u: "Besondere eherechtliche Verfahren", t: "Besondere Bestimmungen", a: "271" }
+    ];
 
-        function neueFrage() {
-            aktuelleFrage = daten[Math.floor(Math.random() * daten.length)];
-            document.getElementById('frage').innerText = aktuelleFrage.u;
-            document.getElementById('inputUeberthema').value = "";
-            document.getElementById('inputUeberthema').disabled = false;
-            document.getElementById('inputUeberthema').className = "";
-            document.getElementById('inputArtikel').value = "";
-            document.getElementById('inputArtikel').disabled = true;
-            document.getElementById('timer').innerText = "0.00s";
-            clearInterval(timerInterval);
+    let aktuelleFrage, startTime, timerInterval, chart;
+    let history = [];
+
+    window.onload = function() {
+        try {
+            // Wir nutzen nun 'zpo_guesser_history' als neuen Speicher-Key
+            history = JSON.parse(localStorage.getItem('zpo_guesser_history')) || [];
+        } catch(e) { history = []; }
+        
+        initChart();
+        neueFrage();
+    };
+
+    function initChart() {
+        const canvas = document.getElementById('progressChart');
+        if (typeof Chart === 'undefined') {
+            canvas.parentNode.innerHTML = "<p style='color:red'>Diagramm konnte nicht geladen werden.</p>";
+            return;
         }
-
-        document.getElementById('inputUeberthema').addEventListener('input', function(e) {
-            if (e.target.value.trim().toLowerCase() === aktuelleFrage.t.toLowerCase()) {
-                e.target.disabled = true;
-                e.target.className = "correct";
-                document.getElementById('inputArtikel').disabled = false;
-                document.getElementById('inputArtikel').focus();
-                startTimer();
+        
+        const ctx = canvas.getContext('2d');
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: history.map((_, index) => index + 1),
+                datasets: [{
+                    label: 'Zeit in Sekunden',
+                    data: history.map(item => item.time),
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    pointRadius: 4,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: { 
+                scales: { 
+                    y: { beginAtZero: true, title: { display: true, text: 'Sekunden' } },
+                    x: { title: { display: true, text: 'Anzahl Versuche' } }
+                } 
             }
         });
+    }
 
-        document.getElementById('inputArtikel').addEventListener('input', function(e) {
-            if (e.target.value.trim() === aktuelleFrage.a) {
-                stopTimer();
-                e.target.className = "correct";
-                setTimeout(neueFrage, 1500);
-            }
-        });
+    function neueFrage() {
+        aktuelleFrage = daten[Math.floor(Math.random() * daten.length)];
+        document.getElementById('frage').innerText = aktuelleFrage.u;
+        
+        const uInp = document.getElementById('inputUeberthema');
+        const aInp = document.getElementById('inputArtikel');
+        
+        uInp.value = ""; uInp.disabled = false; uInp.className = "";
+        aInp.value = ""; aInp.disabled = true; aInp.className = "";
+        document.getElementById('timer').innerText = "0.00s";
+        uInp.focus();
+    }
 
-        function startTimer() {
+    document.getElementById('inputUeberthema').addEventListener('input', function(e) {
+        if (e.target.value.trim().toLowerCase() === aktuelleFrage.t.toLowerCase()) {
+            e.target.disabled = true;
+            e.target.className = "correct";
+            document.getElementById('inputArtikel').disabled = false;
+            document.getElementById('inputArtikel').focus();
             startTime = performance.now();
             timerInterval = setInterval(() => {
-                const diff = (performance.now() - startTime) / 1000;
-                document.getElementById('timer').innerText = diff.toFixed(2) + "s";
+                document.getElementById('timer').innerText = ((performance.now() - startTime) / 1000).toFixed(2) + "s";
             }, 50);
         }
+    });
 
-        function stopTimer() {
+    document.getElementById('inputArtikel').addEventListener('input', function(e) {
+        if (e.target.value.trim() === aktuelleFrage.a) {
             clearInterval(timerInterval);
-            const finalTime = ((performance.now() - startTime) / 1000).toFixed(2);
-            const li = document.createElement('li');
-            li.innerText = `${aktuelleFrage.u}: ${finalTime}s`;
-            document.getElementById('scores').prepend(li);
+            const finalTime = parseFloat(((performance.now() - startTime) / 1000).toFixed(2));
+            e.target.className = "correct";
+            saveResult(finalTime);
+            setTimeout(neueFrage, 800);
         }
+    });
 
+    function saveResult(time) {
+        history.push({ time: time });
+        if (history.length > 50) history.shift(); // Zeigt die letzten 50 Versuche
+        localStorage.setItem('zpo_guesser_history', JSON.stringify(history));
+        
+        if (chart) {
+            chart.data.labels = history.map((_, index) => index + 1);
+            chart.data.datasets[0].data = history.map(item => item.time);
+            chart.update();
+        }
+    }
+
+    function clearHistory() {
+        if(confirm("Statistik wirklich löschen?")) {
+            history = [];
+            localStorage.removeItem('zpo_guesser_history');
+            if(chart) {
+                chart.data.labels = [];
+                chart.data.datasets[0].data = [];
+                chart.update();
+            }
+        }
+    }
+</script>
+</body>
+</html>
         neueFrage();
     </script>
 </body>
