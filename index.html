@@ -6,19 +6,27 @@
     <title>ZPO-Guesser</title>
     <!-- Wir laden die Chart-Bibliothek für den Fortschritt -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
+<style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; background-color: #f0f2f5; color: #333; }
         .container { max-width: 800px; margin: auto; }
         .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h1 { color: #2c3e50; font-size: 2.5em; margin-bottom: 0.2em; }
-        p.subtitle { color: #7f8c8d; margin-bottom: 20px; }
-        input { padding: 12px; margin: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; width: 85%; transition: border-color 0.3s, box-shadow 0.3s; }
-        input:focus { border-color: #3498db; outline: none; box-shadow: 0 0 8px rgba(52, 152, 219, 0.2); }
+        p.subtitle { color: #7f8c8d; margin-bottom: 10px; }
+        
+        /* Anleitung Styling - Ausklappbar */
+        .anleitung { background: #f9f9f9; border-radius: 10px; margin: 15px 0; font-size: 0.95em; line-height: 1.6; border-left: 5px solid #3498db; text-align: left; overflow: hidden; }
+        .anleitung summary { padding: 15px; cursor: pointer; color: #3498db; font-weight: bold; outline: none; list-style: none; }
+        .anleitung summary::-webkit-details-marker { display: none; } /* Versteckt den Standard-Pfeil in Chrome/Safari */
+        .anleitung-content { padding: 0 20px 20px 20px; }
+        .anleitung p { margin: 5px 0; padding: 0; }
+        
+        input { padding: 12px; margin: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; width: 85%; transition: border-color 0.3s; }
+        input:focus { border-color: #3498db; outline: none; }
         .correct { border-color: #2ecc71 !important; background-color: #e8f5e9; }
         #timer { font-size: 3.5em; font-weight: bold; color: #34495e; margin: 15px 0; font-variant-numeric: tabular-nums; }
         .chart-container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        #frage { color: #e67e22; font-size: 1.8em; min-height: 1.6em; font-weight: 600; }
-        button { padding: 8px 15px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 0.8em; transition: background 0.3s; }
+        #frage { color: #e67e22; font-size: 1.8em; min-height: 1.6em; font-weight: 600; margin-top: 10px; }
+        button { padding: 8px 15px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 0.8em; }
         button:hover { background: #7f8c8d; }
     </style>
 </head>
@@ -29,14 +37,16 @@
         <h1>ZPO-Guesser</h1>
         <p class="subtitle">Meistere die Schweizer Zivilprozessordnung</p>
 
-        <div class="anleitung">
-            <h3>So funktioniert's:</h3>
-            <p>Dir wird eine <strong>Unterkategorie</strong> angezeigt.</p>
-            <p>Gib das passende <strong>Überthema</strong> ein.</p>
-            <p>Sobald das Überthema korrekt ist, startet der <strong>Timer automatisch</strong>.</p>
-            <p>Gib nun den korrekten <strong>ersten Artikel</strong> dieser Kategorie ein.</p>
-            <p>Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert.</p>
-        </div>
+        <details class="anleitung">
+            <summary>So funktioniert's (Klicken zum Ausklappen)</summary>
+            <div class="anleitung-content">
+                <p>Dir wird eine <strong>Unterkategorie</strong> angezeigt.</p>
+                <p>Gib das passende <strong>Überthema</strong> ein.</p>
+                <p>Sobald das Überthema korrekt ist, startet der <strong>Timer automatisch</strong>.</p>
+                <p>Gib nun den korrekten <strong>ersten Artikel</strong> dieser Kategorie ein.</p>
+                <p>Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert.</p>
+            </div>
+        </details>
         
         <h3>Unterkategorie:</h3>
         <h2 id="frage">Initialisierung...</h2>
