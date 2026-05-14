@@ -26,6 +26,9 @@
         #frage { color: #e67e22; font-size: 1.8em; min-height: 1.6em; font-weight: 600; margin-top: 10px; }
         button { padding: 8px 15px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 0.8em; }
         button:hover { background: #7f8c8d; }
+        #btnAufgeben { background: #e74c3c; font-size: 0.95em; padding: 10px 22px; display: none; }
+        #btnAufgeben:hover { background: #c0392b; }
+        #antwortHinweis { color: #e74c3c; font-size: 0.95em; min-height: 1.4em; margin-top: 4px; font-weight: 500; }
 
         /* NEU: Statistik-Leiste unter dem Diagramm */
         .stats-bar {
@@ -85,6 +88,10 @@
         <input type="text" id="inputArtikel" placeholder="Artikel eingeben..." disabled autocomplete="off">
         
         <div id="timer">0.00s</div>
+        <div>
+            <button id="btnAufgeben" onclick="aufgeben()">❌ Aufgeben</button>
+        </div>
+        <div id="antwortHinweis"></div>
         <button onclick="clearHistory()">Statistik löschen</button>
     </div>
 
@@ -204,6 +211,15 @@
         statsBar.style.display = 'flex';
     }
 
+    function aufgeben() {
+        clearInterval(timerInterval);
+        document.getElementById('btnAufgeben').style.display = 'none';
+        document.getElementById('inputArtikel').disabled = true;
+        document.getElementById('antwortHinweis').innerText =
+            `Richtige Antwort: Art. ${aktuelleFrage.a} ZPO`;
+        setTimeout(neueFrage, 4000);
+    }
+
     function neueFrage() {
         aktuelleFrage = daten[Math.floor(Math.random() * daten.length)];
         document.getElementById('frage').innerText = aktuelleFrage.u;
@@ -214,6 +230,8 @@
         uInp.value = ""; uInp.disabled = false; uInp.className = "";
         aInp.value = ""; aInp.disabled = true; aInp.className = "";
         document.getElementById('timer').innerText = "0.00s";
+        document.getElementById('btnAufgeben').style.display = 'none';
+        document.getElementById('antwortHinweis').innerText = '';
         uInp.focus();
     }
 
@@ -223,6 +241,7 @@
             e.target.className = "correct";
             document.getElementById('inputArtikel').disabled = false;
             document.getElementById('inputArtikel').focus();
+            document.getElementById('btnAufgeben').style.display = 'inline-block';
             startTime = performance.now();
             timerInterval = setInterval(() => {
                 document.getElementById('timer').innerText = ((performance.now() - startTime) / 1000).toFixed(2) + "s";
