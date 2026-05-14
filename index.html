@@ -137,7 +137,8 @@
 
         ZPO: {
             name: "ZPO",
-            vollname: "Zivilprozessordnung",
+            vollname: "Schweizer Zivilprozessordnung",
+            artikel: "die Schweizer",
             teilFrage: "In welchem Teil der ZPO befindet sich der angezeigte Titel?",
             anleitungZeilen: [
                 "Dir wird ein <strong>Titel</strong> der ZPO angezeigt – das ist ein Themenbereich innerhalb eines Teils (z.B. «Beweis» oder «Klagen»).",
@@ -179,6 +180,7 @@
         StGB: {
             name: "StGB",
             vollname: "Strafgesetzbuch",
+            artikel: "das Schweizer",
             teilFrage: "In welchem Teil des StGB befindet sich der angezeigte Titel?",
             anleitungZeilen: [
                 "Dir wird ein <strong>Titel</strong> des StGB angezeigt – das ist ein Themenbereich innerhalb eines Teils (z.B. «Verjährung» oder «Bestechung»).",
@@ -223,6 +225,7 @@
         OR: {
             name: "OR",
             vollname: "Obligationenrecht",
+            artikel: "das Schweizer",
             teilFrage: "",
             anleitungZeilen: ["", ""],
             daten: []
@@ -275,7 +278,7 @@
 
         document.title = e.name + '-Guesser';
         document.getElementById('spielTitel').textContent = e.name + '-Guesser';
-        document.getElementById('spielUntertitel').textContent = 'Meistere das Schweizer ' + e.vollname;
+        document.getElementById('spielUntertitel').textContent = 'Meistere ' + (e.artikel || 'das Schweizer') + ' ' + e.vollname;
         document.getElementById('chartTitel').textContent = 'Dein Fortschritt – ' + e.name + ' (Sekunden pro Runde)';
 
         try {
