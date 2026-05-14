@@ -234,6 +234,7 @@
         } catch(err) { history = []; }
 
         document.getElementById('inputUeberthema').disabled = false;
+        document.getElementById('inputUeberthema').placeholder = `In welchem Teil der ${key} befindet sich der angezeigte Titel?`;
         updateChart();
         updateStats();
         neueFrage();
