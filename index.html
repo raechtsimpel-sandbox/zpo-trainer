@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZPO-Guesser</title>
-    <!-- Wir laden die Chart-Bibliothek für den Fortschritt -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; background-color: #f0f2f5; color: #333; }
@@ -13,10 +12,9 @@
         h1 { color: #2c3e50; font-size: 2.5em; margin-bottom: 0.2em; }
         p.subtitle { color: #7f8c8d; margin-bottom: 10px; }
         
-        /* Anleitung Styling - Ausklappbar */
         .anleitung { background: #f9f9f9; border-radius: 10px; margin: 15px 0; font-size: 0.95em; line-height: 1.6; border-left: 5px solid #3498db; text-align: left; overflow: hidden; }
         .anleitung summary { padding: 15px; cursor: pointer; color: #3498db; font-weight: bold; outline: none; list-style: none; }
-        .anleitung summary::-webkit-details-marker { display: none; } /* Versteckt den Standard-Pfeil in Chrome/Safari */
+        .anleitung summary::-webkit-details-marker { display: none; }
         .anleitung-content { padding: 0 20px 20px 20px; }
         .anleitung p { margin: 5px 0; padding: 0; }
         
@@ -28,6 +26,38 @@
         #frage { color: #e67e22; font-size: 1.8em; min-height: 1.6em; font-weight: 600; margin-top: 10px; }
         button { padding: 8px 15px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 0.8em; }
         button:hover { background: #7f8c8d; }
+
+        /* NEU: Statistik-Leiste unter dem Diagramm */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #eee;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-label {
+            font-size: 0.78em;
+            color: #95a5a6;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #2c3e50;
+            font-variant-numeric: tabular-nums;
+        }
+        .stat-value.highlight {
+            color: #3498db;
+        }
     </style>
 </head>
 <body>
@@ -61,11 +91,26 @@
     <div class="chart-container">
         <h3>Dein Fortschritt (Sekunden pro Runde)</h3>
         <canvas id="progressChart"></canvas>
+
+        <!-- NEU: Statistik-Leiste -->
+        <div class="stats-bar" id="statsBar" style="display:none;">
+            <div class="stat-item">
+                <span class="stat-label">Versuche</span>
+                <span class="stat-value" id="statCount">–</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Ø Sekunden</span>
+                <span class="stat-value highlight" id="statAvg">–</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Bestzeit</span>
+                <span class="stat-value" id="statBest">–</span>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    // DEINE DATEN - Hier kannst du jederzeit neue Zeilen hinzufügen
     const daten = [
         { u: "Gegenstand und Geltungsbereich", t: "Allgemeine Bestimmungen", a: "1" },
         { u: "Zuständigkeit der Gerichte und Ausstand", t: "Allgemeine Bestimmungen", a: "4" },
@@ -94,7 +139,6 @@
         { u: "Ablehnung, Abberufung und Ersetzung der Mitglieder des Schiedsgerichts", t: "Schiedsgerichtsbarkeit", a: "367" },
         { u: "Das Schiedsverfahren", t: "Schiedsgerichtsbarkeit", a: "372" },
         { u: "Schiedsspruch", t: "Schiedsgerichtsbarkeit", a: "381" },
-        { u: "Schiedsspruch", t: "Schiedsgerichtsbarkeit", a: "381" },
         { u: "Rechtsmittel", t: "Schiedsgerichtsbarkeit", a: "389" }
     ];
 
@@ -103,11 +147,11 @@
 
     window.onload = function() {
         try {
-            // Wir nutzen nun 'zpo_guesser_history' als neuen Speicher-Key
             history = JSON.parse(localStorage.getItem('zpo_guesser_history')) || [];
         } catch(e) { history = []; }
         
         initChart();
+        updateStats(); // Statistik beim Start befüllen
         neueFrage();
     };
 
@@ -140,6 +184,24 @@
                 } 
             }
         });
+    }
+
+    // NEU: Statistik-Anzeige aktualisieren
+    function updateStats() {
+        const statsBar = document.getElementById('statsBar');
+        if (history.length === 0) {
+            statsBar.style.display = 'none';
+            return;
+        }
+
+        const times = history.map(item => item.time);
+        const avg = (times.reduce((sum, t) => sum + t, 0) / times.length).toFixed(2);
+        const best = Math.min(...times).toFixed(2);
+
+        document.getElementById('statCount').textContent = times.length;
+        document.getElementById('statAvg').textContent = avg + 's';
+        document.getElementById('statBest').textContent = best + 's';
+        statsBar.style.display = 'flex';
     }
 
     function neueFrage() {
@@ -180,7 +242,7 @@
 
     function saveResult(time) {
         history.push({ time: time });
-        if (history.length > 50) history.shift(); // Zeigt die letzten 50 Versuche
+        if (history.length > 50) history.shift();
         localStorage.setItem('zpo_guesser_history', JSON.stringify(history));
         
         if (chart) {
@@ -188,6 +250,8 @@
             chart.data.datasets[0].data = history.map(item => item.time);
             chart.update();
         }
+
+        updateStats(); // NEU: Nach jeder Runde aktualisieren
     }
 
     function clearHistory() {
@@ -199,11 +263,9 @@
                 chart.data.datasets[0].data = [];
                 chart.update();
             }
+            updateStats(); // NEU: Statistik auch zurücksetzen
         }
     }
 </script>
-</body>
-</html>
-    </script>
 </body>
 </html>
