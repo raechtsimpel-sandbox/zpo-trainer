@@ -225,6 +225,7 @@
         document.querySelectorAll('.erlass-tab').forEach(b => b.classList.remove('aktiv'));
         document.getElementById('tab_' + key).classList.add('aktiv');
 
+        document.title = e.name + '-Guesser';
         document.getElementById('spielTitel').textContent = e.name + '-Guesser';
         document.getElementById('spielUntertitel').textContent = 'Meistere das Schweizer ' + e.vollname;
         document.getElementById('chartTitel').textContent = 'Dein Fortschritt – ' + e.name + ' (Sekunden pro Runde)';
