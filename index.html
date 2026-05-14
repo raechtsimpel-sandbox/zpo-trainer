@@ -79,8 +79,8 @@
         <details class="anleitung">
             <summary>So funktioniert's (Klicken zum Ausklappen)</summary>
             <div class="anleitung-content">
-                <p>Dir wird ein <strong>Titel des Erlasses</strong> angezeigt.</p>
-                <p>Gib den passenden <strong>Teil</strong> ein, in dem sich der Titel befindet.</p>
+                <p id="anleitungZeile1"></p>
+                <p id="anleitungZeile2"></p>
                 <p>Sobald der Teil korrekt eingegeben ist, startet der <strong>Timer automatisch</strong>.</p>
                 <p>Gib nun den korrekten <strong>ersten Artikel</strong> dieses Titels ein – es genügt die Zahl (z.B. <strong>1</strong> statt Art. 1).</p>
                 <p>Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert.</p>
@@ -138,6 +138,11 @@
         ZPO: {
             name: "ZPO",
             vollname: "Zivilprozessordnung",
+            teilFrage: "In welchem Teil der ZPO befindet sich der angezeigte Titel?",
+            anleitungZeilen: [
+                "Dir wird ein <strong>Titel</strong> der ZPO angezeigt – das ist ein Themenbereich innerhalb eines Teils (z.B. «Beweis» oder «Klagen»).",
+                "Gib den passenden <strong>Teil</strong> ein, in dem sich der Titel befindet: <em>Allgemeine Bestimmungen</em>, <em>Besondere Bestimmungen</em> oder <em>Schiedsgerichtsbarkeit</em>."
+            ],
             daten: [
                 { u: "Gegenstand und Geltungsbereich", t: "Allgemeine Bestimmungen", a: "1" },
                 { u: "Zuständigkeit der Gerichte und Ausstand", t: "Allgemeine Bestimmungen", a: "4" },
@@ -174,10 +179,53 @@
         StGB: {
             name: "StGB",
             vollname: "Strafgesetzbuch",
+            teilFrage: "In welchem Teil des StGB befindet sich der angezeigte Titel?",
+            anleitungZeilen: [
+                "Dir wird ein <strong>Titel</strong> des StGB angezeigt – das ist ein Themenbereich innerhalb eines Teils (z.B. «Verjährung» oder «Bestechung»).",
+                "Gib den passenden <strong>Teil</strong> ein: <em>StGB AT</em> (Allgemeiner Teil) oder <em>StGB BT</em> (Besonderer Teil)."
+            ],
             daten: [
-                // Einträge hier einfügen, z.B.:
-                // { u: "Verbrechen und Vergehen gegen Leib und Leben", t: "Besondere Bestimmungen", a: "111" },
+                { u: "Geltungsbereich", t: "StGB AT", a: "1" },
+                { u: "Strafbarkeit", t: "StGB AT", a: "10" },
+                { u: "Strafen und Massnahmen", t: "StGB AT", a: "34" },
+                { u: "Vollzug von Freiheitsstrafen und freiheitsentziehenden Massnahmen", t: "StGB AT", a: "74" },
+                { u: "Bewährungshilfe, Weisungen und freiwillige soziale Betreuung", t: "StGB AT", a: "93" },
+                { u: "Verjährung", t: "StGB AT", a: "97" },
+                { u: "Verantwortlichkeit des Unternehmens", t: "StGB AT", a: "102" },
+                { u: "Übertretung", t: "StGB AT", a: "103" },
+                { u: "Begriffe", t: "StGB AT", a: "110" },
+                { u: "Strafbare Handlungen gegen Leib und Leben", t: "StGB BT", a: "111" },
+                { u: "Strafbare Handlungen gegen das Vermögen", t: "StGB BT", a: "137" },
+                { u: "Strafbare Handlungen gegen die Ehre und den Geheim- oder Privatbereich", t: "StGB BT", a: "173" },
+                { u: "Verbrechen und Vergehen gegen die Freiheit", t: "StGB BT", a: "180" },
+                { u: "Strafbare Handlungen gegen die sexuelle Integrität", t: "StGB BT", a: "187" },
+                { u: "Verbrechen und Vergehen gegen die Familie", t: "StGB BT", a: "213" },
+                { u: "Gemeingefährliche Verbrechen und Vergehen", t: "StGB BT", a: "221" },
+                { u: "Verbrechen und Vergehen gegen die öffentliche Gesundheit", t: "StGB BT", a: "230bis" },
+                { u: "Verbrechen und Vergehen gegen den öffentlichen Verkehr", t: "StGB BT", a: "237" },
+                { u: "Fälschung von Geld, amtlichen Wertzeichen, amtlichen Zeichen, Mass und Gewicht", t: "StGB BT", a: "240" },
+                { u: "Urkundenfälschung", t: "StGB BT", a: "251" },
+                { u: "Verbrechen und Vergehen gegen den öffentlichen Frieden", t: "StGB BT", a: "258" },
+                { u: "Völkermord und Verbrechen gegen die Menschlichkeit", t: "StGB BT", a: "264" },
+                { u: "Kriegsverbrechen", t: "StGB BT", a: "264b" },
+                { u: "Gemeinsame Bestimmungen für den zwölften Titelbis und den zwölften Titelter", t: "StGB BT", a: "264k" },
+                { u: "Verbrechen und Vergehen gegen den Staat und die Landesverteidigung", t: "StGB BT", a: "265" },
+                { u: "Vergehen gegen den Volkswillen", t: "StGB BT", a: "279" },
+                { u: "Strafbare Handlungen gegen die öffentliche Gewalt", t: "StGB BT", a: "285" },
+                { u: "Störung der Beziehung zum Ausland", t: "StGB BT", a: "296" },
+                { u: "Verbrechen und Vergehen gegen die Rechtspflege", t: "StGB BT", a: "303" },
+                { u: "Strafbare Handlungen gegen die Amts- und Berufspflicht", t: "StGB BT", a: "312" },
+                { u: "Bestechung", t: "StGB BT", a: "322ter" },
+                { u: "Übertretungen bundesrechtlicher Bestimmungen", t: "StGB BT", a: "323" }
             ]
+        },
+
+        OR: {
+            name: "OR",
+            vollname: "Obligationenrecht",
+            teilFrage: "",
+            anleitungZeilen: ["", ""],
+            daten: []
         }
 
     };
@@ -234,8 +282,12 @@
             history = JSON.parse(localStorage.getItem('guesser_history_' + key)) || [];
         } catch(err) { history = []; }
 
+        if (e.anleitungZeilen) {
+            document.getElementById('anleitungZeile1').innerHTML = e.anleitungZeilen[0];
+            document.getElementById('anleitungZeile2').innerHTML = e.anleitungZeilen[1];
+        }
         document.getElementById('inputUeberthema').disabled = false;
-        document.getElementById('inputUeberthema').placeholder = `In welchem Teil der ${key} befindet sich der angezeigte Titel?`;
+        document.getElementById('inputUeberthema').placeholder = e.teilFrage || `In welchem Teil des ${key} befindet sich der angezeigte Titel?`;
         updateChart();
         updateStats();
         neueFrage();
