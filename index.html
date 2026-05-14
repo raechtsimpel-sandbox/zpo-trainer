@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZPO-Guesser</title>
+    <title>Erlass-Guesser</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; background-color: #f0f2f5; color: #333; }
@@ -11,13 +11,23 @@
         .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h1 { color: #2c3e50; font-size: 2.5em; margin-bottom: 0.2em; }
         p.subtitle { color: #7f8c8d; margin-bottom: 10px; }
-        
+
+        /* Erlass-Tabs */
+        .erlass-tabs { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .erlass-tab {
+            padding: 8px 22px; border-radius: 20px; border: 2px solid #ddd;
+            background: white; color: #7f8c8d; font-size: 0.95em; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .erlass-tab:hover { border-color: #3498db; color: #3498db; }
+        .erlass-tab.aktiv { background: #3498db; border-color: #3498db; color: white; }
+
         .anleitung { background: #f9f9f9; border-radius: 10px; margin: 15px 0; font-size: 0.95em; line-height: 1.6; border-left: 5px solid #3498db; text-align: left; overflow: hidden; }
         .anleitung summary { padding: 15px; cursor: pointer; color: #3498db; font-weight: bold; outline: none; list-style: none; }
         .anleitung summary::-webkit-details-marker { display: none; }
         .anleitung-content { padding: 0 20px 20px 20px; }
         .anleitung p { margin: 5px 0; padding: 0; }
-        
+
         input { padding: 12px; margin: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; width: 85%; transition: border-color 0.3s; }
         input:focus { border-color: #3498db; outline: none; }
         .correct { border-color: #2ecc71 !important; background-color: #e8f5e9; }
@@ -30,75 +40,20 @@
         #btnAufgeben:hover { background: #c0392b; }
         #antwortHinweis { color: #e74c3c; font-size: 0.95em; min-height: 1.4em; margin-top: 4px; font-weight: 500; }
 
-        .baustellen-banner {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-        }
-        .baustellen-banner::before {
-            content: '';
-            display: block;
-            height: 5px;
-            background: repeating-linear-gradient(90deg, #f9c200 0, #f9c200 14px, #1a1a1a 14px, #1a1a1a 28px);
-        }
-        .baustellen-inner {
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            text-align: left;
-        }
+        .baustellen-banner { background: white; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.07); }
+        .baustellen-banner::before { content: ''; display: block; height: 5px; background: repeating-linear-gradient(90deg, #f9c200 0, #f9c200 14px, #1a1a1a 14px, #1a1a1a 28px); }
+        .baustellen-inner { padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; text-align: left; }
         .baustellen-text { flex: 1; min-width: 200px; }
         .baustellen-text strong { font-size: 1.05em; color: #2c3e50; display: block; margin-bottom: 3px; }
         .baustellen-text p { font-size: 0.85em; color: #7f8c8d; margin: 0; }
-        .baustellen-banner a {
-            background: #f3f3f3;
-            color: #2c3e50;
-            font-weight: bold;
-            font-size: 0.85em;
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            white-space: nowrap;
-            border: 1px solid #ddd;
-            transition: opacity 0.2s;
-        }
+        .baustellen-banner a { background: #f3f3f3; color: #2c3e50; font-weight: bold; font-size: 0.85em; padding: 8px 16px; border-radius: 20px; text-decoration: none; white-space: nowrap; border: 1px solid #ddd; transition: opacity 0.2s; }
         .baustellen-banner a:hover { opacity: 0.75; }
-        .stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid #eee;
-            flex-wrap: wrap;
-        }
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .stat-label {
-            font-size: 0.78em;
-            color: #95a5a6;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 4px;
-        }
-        .stat-value {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #2c3e50;
-            font-variant-numeric: tabular-nums;
-        }
-        .stat-value.highlight {
-            color: #3498db;
-        }
+
+        .stats-bar { display: flex; justify-content: center; gap: 30px; margin-top: 20px; padding-top: 16px; border-top: 1px solid #eee; flex-wrap: wrap; }
+        .stat-item { display: flex; flex-direction: column; align-items: center; }
+        .stat-label { font-size: 0.78em; color: #95a5a6; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .stat-value { font-size: 1.5em; font-weight: 700; color: #2c3e50; font-variant-numeric: tabular-nums; }
+        .stat-value.highlight { color: #3498db; }
     </style>
 </head>
 <body>
@@ -111,31 +66,33 @@
                 <strong>🚧 Hier entsteht bald: Rächt Aktuell</strong>
                 <p>Aktuelle Bundesgerichtsentscheide – rechtlich eingeordnet. In der Zwischenzeit: viel Spass mit dem Spiel! 👷</p>
             </div>
-            <a href="https://open.spotify.com/show/1jfXaZCIE4R0Vsi3ySimxk?si=825647f1c70e4cc0" target="_blank">🎙️ Schon auf Spotify</a>
+            <a href="https://open.spotify.com/search/R%C3%A4cht%20Aktuell" target="_blank">🎙️ Schon auf Spotify</a>
         </div>
     </div>
 
     <div class="card">
-        <h1>ZPO-Guesser</h1>
-        <p class="subtitle">Meistere die Schweizer Zivilprozessordnung</p>
+        <h1 id="spielTitel">Erlass-Guesser</h1>
+        <p class="subtitle" id="spielUntertitel">Wähle einen Erlass und starte das Spiel</p>
+
+        <div class="erlass-tabs" id="erlassTabs"></div>
 
         <details class="anleitung">
             <summary>So funktioniert's (Klicken zum Ausklappen)</summary>
             <div class="anleitung-content">
-                <p>Dir wird ein <strong>Titel der ZPO</strong> angezeigt.</p>
-                <p>Gib den passenden <strong>Teil der ZPO ("Allgemeine Bestimmungen", "Besondere Bestimmungen" oder "Schiedsgerichtsbarkeit")</strong> ein.</p>
-                <p>Sobald der ZPO-Teil korrekt eingegeben ist, startet der <strong>Timer automatisch</strong>.</p>
+                <p>Dir wird ein <strong>Titel des Erlasses</strong> angezeigt.</p>
+                <p>Gib den passenden <strong>Teil</strong> ein, in dem sich der Titel befindet.</p>
+                <p>Sobald der Teil korrekt eingegeben ist, startet der <strong>Timer automatisch</strong>.</p>
                 <p>Gib nun den korrekten <strong>ersten Artikel</strong> dieses Titels ein.</p>
                 <p>Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert.</p>
             </div>
         </details>
-        
+
         <h3>Titel:</h3>
-        <h2 id="frage">Initialisierung...</h2>
-        
-        <input type="text" id="inputUeberthema" placeholder="In welchem Teil der ZPO befindet sich der angezeigte Titel?" autocomplete="off">
-        <input type="text" id="inputArtikel" placeholder="Ersten Artikel des Titels in der ZPO eingeben..." disabled autocomplete="off">
-        
+        <h2 id="frage">Erlass auswählen...</h2>
+
+        <input type="text" id="inputUeberthema" placeholder="In welchem Teil befindet sich der angezeigte Titel?" autocomplete="off" disabled>
+        <input type="text" id="inputArtikel" placeholder="Ersten Artikel des Titels eingeben..." disabled autocomplete="off">
+
         <div id="timer">0.00s</div>
         <div>
             <button id="btnAufgeben" onclick="aufgeben()">❌ Aufgeben</button>
@@ -145,10 +102,9 @@
     </div>
 
     <div class="chart-container">
-        <h3>Dein Fortschritt (Sekunden pro Runde)</h3>
+        <h3 id="chartTitel">Dein Fortschritt (Sekunden pro Runde)</h3>
         <canvas id="progressChart"></canvas>
 
-        <!-- NEU: Statistik-Leiste -->
         <div class="stats-bar" id="statsBar" style="display:none;">
             <div class="stat-item">
                 <span class="stat-label">Versuche</span>
@@ -167,65 +123,125 @@
 </div>
 
 <script>
-    const daten = [
-        { u: "Gegenstand und Geltungsbereich", t: "Allgemeine Bestimmungen", a: "1" },
-        { u: "Zuständigkeit der Gerichte und Ausstand", t: "Allgemeine Bestimmungen", a: "4" },
-        { u: "Verfahrensgrundsätze und Prozessvoraussetzungen", t: "Allgemeine Bestimmungen", a: "52" },
-        { u: "Rechtshängigkeit und Folgen des Klagerückzugs", t: "Allgemeine Bestimmungen", a: "62" },
-        { u: "Die Parteien und die Beteiligung Dritter", t: "Allgemeine Bestimmungen", a: "66" },
-        { u: "Klagen", t: "Allgemeine Bestimmungen", a: "84" },
-        { u: "Streitwert", t: "Allgemeine Bestimmungen", a: "91" },
-        { u: "Prozesskosten und unentgeltliche Rechtspflege", t: "Allgemeine Bestimmungen", a: "95" },
-        { u: "Prozessleitung, prozessuales Handeln und Fristen", t: "Allgemeine Bestimmungen", a: "124" },
-        { u: "Beweis", t: "Allgemeine Bestimmungen", a: "150" },
-        { u: "Rechtshilfe zwischen schweizerischen Gerichten", t: "Allgemeine Bestimmungen", a: "194" },
-        { u: "Schlichtungsversuch", t: "Besondere Bestimmungen", a: "197" },
-        { u: "Mediation", t: "Besondere Bestimmungen", a: "213" },
-        { u: "Ordentliches Verfahren", t: "Besondere Bestimmungen", a: "219" },
-        { u: "Vereinfachtes Verfahren", t: "Besondere Bestimmungen", a: "243" },
-        { u: "Summarisches Verfahren", t: "Besondere Bestimmungen", a: "248" },
-        { u: "Besondere eherechtliche Verfahren", t: "Besondere Bestimmungen", a: "271" },
-        { u: "Kinderbelange in familienrechtlichen Angelegenheiten", t: "Besondere Bestimmungen", a: "295" },
-        { u: "Verfahren bei eingetragener Partnerschaft", t: "Besondere Bestimmungen", a: "305" },
-        { u: "Rechtsmittel", t: "Besondere Bestimmungen", a: "308" },
-        { u: "Vollstreckung", t: "Besondere Bestimmungen", a: "335" },
-        { u: "Allgemeine Bestimmungen", t: "Schiedsgerichtsbarkeit", a: "353" },
-        { u: "Schiedsvereinbarung und Schiedsklausel", t: "Schiedsgerichtsbarkeit", a: "357" },
-        { u: "Bestellung des Schiedsgerichts", t: "Schiedsgerichtsbarkeit", a: "360" },
-        { u: "Ablehnung, Abberufung und Ersetzung der Mitglieder des Schiedsgerichts", t: "Schiedsgerichtsbarkeit", a: "367" },
-        { u: "Das Schiedsverfahren", t: "Schiedsgerichtsbarkeit", a: "372" },
-        { u: "Schiedsspruch", t: "Schiedsgerichtsbarkeit", a: "381" },
-        { u: "Rechtsmittel", t: "Schiedsgerichtsbarkeit", a: "389" }
-    ];
+    // ═══════════════════════════════════════════════════════════════════
+    // DATEN – Hier neue Erlasse hinzufügen
+    // Struktur pro Eintrag: { u: "Titel", t: "Teil", a: "Erster Artikel" }
+    // ═══════════════════════════════════════════════════════════════════
+    const erlasse = {
 
+        ZPO: {
+            name: "ZPO",
+            vollname: "Zivilprozessordnung",
+            daten: [
+                { u: "Gegenstand und Geltungsbereich", t: "Allgemeine Bestimmungen", a: "1" },
+                { u: "Zuständigkeit der Gerichte und Ausstand", t: "Allgemeine Bestimmungen", a: "4" },
+                { u: "Verfahrensgrundsätze und Prozessvoraussetzungen", t: "Allgemeine Bestimmungen", a: "52" },
+                { u: "Rechtshängigkeit und Folgen des Klagerückzugs", t: "Allgemeine Bestimmungen", a: "62" },
+                { u: "Die Parteien und die Beteiligung Dritter", t: "Allgemeine Bestimmungen", a: "66" },
+                { u: "Klagen", t: "Allgemeine Bestimmungen", a: "84" },
+                { u: "Streitwert", t: "Allgemeine Bestimmungen", a: "91" },
+                { u: "Prozesskosten und unentgeltliche Rechtspflege", t: "Allgemeine Bestimmungen", a: "95" },
+                { u: "Prozessleitung, prozessuales Handeln und Fristen", t: "Allgemeine Bestimmungen", a: "124" },
+                { u: "Beweis", t: "Allgemeine Bestimmungen", a: "150" },
+                { u: "Rechtshilfe zwischen schweizerischen Gerichten", t: "Allgemeine Bestimmungen", a: "194" },
+                { u: "Schlichtungsversuch", t: "Besondere Bestimmungen", a: "197" },
+                { u: "Mediation", t: "Besondere Bestimmungen", a: "213" },
+                { u: "Ordentliches Verfahren", t: "Besondere Bestimmungen", a: "219" },
+                { u: "Vereinfachtes Verfahren", t: "Besondere Bestimmungen", a: "243" },
+                { u: "Summarisches Verfahren", t: "Besondere Bestimmungen", a: "248" },
+                { u: "Besondere eherechtliche Verfahren", t: "Besondere Bestimmungen", a: "271" },
+                { u: "Kinderbelange in familienrechtlichen Angelegenheiten", t: "Besondere Bestimmungen", a: "295" },
+                { u: "Verfahren bei eingetragener Partnerschaft", t: "Besondere Bestimmungen", a: "305" },
+                { u: "Rechtsmittel", t: "Besondere Bestimmungen", a: "308" },
+                { u: "Vollstreckung", t: "Besondere Bestimmungen", a: "335" },
+                { u: "Allgemeine Bestimmungen", t: "Schiedsgerichtsbarkeit", a: "353" },
+                { u: "Schiedsvereinbarung und Schiedsklausel", t: "Schiedsgerichtsbarkeit", a: "357" },
+                { u: "Bestellung des Schiedsgerichts", t: "Schiedsgerichtsbarkeit", a: "360" },
+                { u: "Ablehnung, Abberufung und Ersetzung der Mitglieder des Schiedsgerichts", t: "Schiedsgerichtsbarkeit", a: "367" },
+                { u: "Das Schiedsverfahren", t: "Schiedsgerichtsbarkeit", a: "372" },
+                { u: "Schiedsspruch", t: "Schiedsgerichtsbarkeit", a: "381" },
+                { u: "Rechtsmittel", t: "Schiedsgerichtsbarkeit", a: "389" }
+            ]
+        },
+
+        // ── Neuen Erlass nach folgendem Muster ergänzen ──────────────────
+        StGB: {
+            name: "StGB",
+            vollname: "Strafgesetzbuch",
+            daten: [
+                // Einträge hier einfügen, z.B.:
+                // { u: "Verbrechen und Vergehen gegen Leib und Leben", t: "Besondere Bestimmungen", a: "111" },
+            ]
+        }
+
+    };
+
+    // ═══════════════════════════════════════════════════════════════════
+    // SPIELLOGIK
+    // ═══════════════════════════════════════════════════════════════════
+    let aktiverErlass = null;
     let aktuelleFrage, startTime, timerInterval, chart;
     let history = [];
 
     window.onload = function() {
-        try {
-            history = JSON.parse(localStorage.getItem('zpo_guesser_history')) || [];
-        } catch(e) { history = []; }
-        
+        renderTabs();
         initChart();
-        updateStats(); // Statistik beim Start befüllen
-        neueFrage();
+        const ersterErlass = Object.keys(erlasse).find(k => erlasse[k].daten.length > 0);
+        if (ersterErlass) wechsleErlass(ersterErlass);
     };
 
+    function renderTabs() {
+        const container = document.getElementById('erlassTabs');
+        container.innerHTML = '';
+        Object.keys(erlasse).forEach(key => {
+            const btn = document.createElement('button');
+            btn.className = 'erlass-tab';
+            btn.id = 'tab_' + key;
+            const hatDaten = erlasse[key].daten.length > 0;
+            btn.textContent = erlasse[key].name + (hatDaten ? '' : ' (bald)');
+            if (!hatDaten) {
+                btn.disabled = true;
+                btn.style.opacity = '0.45';
+                btn.style.cursor = 'default';
+            } else {
+                btn.onclick = () => wechsleErlass(key);
+            }
+            container.appendChild(btn);
+        });
+    }
+
+    function wechsleErlass(key) {
+        if (aktiverErlass === key) return;
+        clearInterval(timerInterval);
+        aktiverErlass = key;
+        const e = erlasse[key];
+
+        document.querySelectorAll('.erlass-tab').forEach(b => b.classList.remove('aktiv'));
+        document.getElementById('tab_' + key).classList.add('aktiv');
+
+        document.getElementById('spielTitel').textContent = e.name + '-Guesser';
+        document.getElementById('spielUntertitel').textContent = 'Meistere das Schweizer ' + e.vollname;
+        document.getElementById('chartTitel').textContent = 'Dein Fortschritt – ' + e.name + ' (Sekunden pro Runde)';
+
+        try {
+            history = JSON.parse(localStorage.getItem('guesser_history_' + key)) || [];
+        } catch(err) { history = []; }
+
+        document.getElementById('inputUeberthema').disabled = false;
+        updateChart();
+        updateStats();
+        neueFrage();
+    }
+
     function initChart() {
-        const canvas = document.getElementById('progressChart');
-        if (typeof Chart === 'undefined') {
-            canvas.parentNode.innerHTML = "<p style='color:red'>Diagramm konnte nicht geladen werden.</p>";
-            return;
-        }
-        
-        const ctx = canvas.getContext('2d');
+        const ctx = document.getElementById('progressChart').getContext('2d');
         chart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: history.map((_, index) => index + 1),
+                labels: [],
                 datasets: [{
                     label: 'Zeit in Sekunden',
-                    data: history.map(item => item.time),
+                    data: [],
                     borderColor: '#3498db',
                     backgroundColor: 'rgba(52, 152, 219, 0.1)',
                     pointRadius: 4,
@@ -233,31 +249,46 @@
                     tension: 0.3
                 }]
             },
-            options: { 
-                scales: { 
+            options: {
+                scales: {
                     y: { beginAtZero: true, title: { display: true, text: 'Sekunden' } },
                     x: { title: { display: true, text: 'Anzahl Versuche' } }
-                } 
+                }
             }
         });
     }
 
-    // NEU: Statistik-Anzeige aktualisieren
+    function updateChart() {
+        if (!chart) return;
+        chart.data.labels = history.map((_, i) => i + 1);
+        chart.data.datasets[0].data = history.map(item => item.time);
+        chart.update();
+    }
+
     function updateStats() {
         const statsBar = document.getElementById('statsBar');
-        if (history.length === 0) {
-            statsBar.style.display = 'none';
-            return;
-        }
-
+        if (history.length === 0) { statsBar.style.display = 'none'; return; }
         const times = history.map(item => item.time);
-        const avg = (times.reduce((sum, t) => sum + t, 0) / times.length).toFixed(2);
-        const best = Math.min(...times).toFixed(2);
-
         document.getElementById('statCount').textContent = times.length;
-        document.getElementById('statAvg').textContent = avg + 's';
-        document.getElementById('statBest').textContent = best + 's';
+        document.getElementById('statAvg').textContent = (times.reduce((s, t) => s + t, 0) / times.length).toFixed(2) + 's';
+        document.getElementById('statBest').textContent = Math.min(...times).toFixed(2) + 's';
         statsBar.style.display = 'flex';
+    }
+
+    function neueFrage() {
+        if (!aktiverErlass) return;
+        const daten = erlasse[aktiverErlass].daten;
+        aktuelleFrage = daten[Math.floor(Math.random() * daten.length)];
+        document.getElementById('frage').innerText = aktuelleFrage.u;
+
+        const uInp = document.getElementById('inputUeberthema');
+        const aInp = document.getElementById('inputArtikel');
+        uInp.value = ""; uInp.disabled = false; uInp.className = "";
+        aInp.value = ""; aInp.disabled = true; aInp.className = "";
+        document.getElementById('timer').innerText = "0.00s";
+        document.getElementById('btnAufgeben').style.display = 'none';
+        document.getElementById('antwortHinweis').innerText = '';
+        uInp.focus();
     }
 
     function aufgeben() {
@@ -265,23 +296,8 @@
         document.getElementById('btnAufgeben').style.display = 'none';
         document.getElementById('inputArtikel').disabled = true;
         document.getElementById('antwortHinweis').innerText =
-            `Richtige Antwort: Art. ${aktuelleFrage.a} ZPO`;
+            `Richtige Antwort: Art. ${aktuelleFrage.a} ${aktiverErlass}`;
         setTimeout(neueFrage, 4000);
-    }
-
-    function neueFrage() {
-        aktuelleFrage = daten[Math.floor(Math.random() * daten.length)];
-        document.getElementById('frage').innerText = aktuelleFrage.u;
-        
-        const uInp = document.getElementById('inputUeberthema');
-        const aInp = document.getElementById('inputArtikel');
-        
-        uInp.value = ""; uInp.disabled = false; uInp.className = "";
-        aInp.value = ""; aInp.disabled = true; aInp.className = "";
-        document.getElementById('timer').innerText = "0.00s";
-        document.getElementById('btnAufgeben').style.display = 'none';
-        document.getElementById('antwortHinweis').innerText = '';
-        uInp.focus();
     }
 
     document.getElementById('inputUeberthema').addEventListener('input', function(e) {
@@ -309,29 +325,19 @@
     });
 
     function saveResult(time) {
-        history.push({ time: time });
+        history.push({ time });
         if (history.length > 50) history.shift();
-        localStorage.setItem('zpo_guesser_history', JSON.stringify(history));
-        
-        if (chart) {
-            chart.data.labels = history.map((_, index) => index + 1);
-            chart.data.datasets[0].data = history.map(item => item.time);
-            chart.update();
-        }
-
-        updateStats(); // NEU: Nach jeder Runde aktualisieren
+        localStorage.setItem('guesser_history_' + aktiverErlass, JSON.stringify(history));
+        updateChart();
+        updateStats();
     }
 
     function clearHistory() {
-        if(confirm("Statistik wirklich löschen?")) {
+        if (confirm("Statistik für " + aktiverErlass + " wirklich löschen?")) {
             history = [];
-            localStorage.removeItem('zpo_guesser_history');
-            if(chart) {
-                chart.data.labels = [];
-                chart.data.datasets[0].data = [];
-                chart.update();
-            }
-            updateStats(); // NEU: Statistik auch zurücksetzen
+            localStorage.removeItem('guesser_history_' + aktiverErlass);
+            updateChart();
+            updateStats();
         }
     }
 </script>
