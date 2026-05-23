@@ -12,7 +12,6 @@
         h1 { color: #2c3e50; font-size: 2.5em; margin-bottom: 0.2em; }
         p.subtitle { color: #7f8c8d; margin-bottom: 10px; }
 
-        /* Erlass-Tabs */
         .erlass-tabs { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
         .erlass-tab {
             padding: 8px 22px; border-radius: 20px; border: 2px solid #ddd;
@@ -129,10 +128,6 @@
 </div>
 
 <script>
-    // ═══════════════════════════════════════════════════════════════════
-    // DATEN – Hier neue Erlasse hinzufügen
-    // Struktur pro Eintrag: { u: "Titel", t: "Teil", a: "Erster Artikel" }
-    // ═══════════════════════════════════════════════════════════════════
     const erlasse = {
 
         ZPO: {
@@ -176,7 +171,6 @@
             ]
         },
 
-        // ── Neuen Erlass nach folgendem Muster ergänzen ──────────────────
         StGB: {
             name: "StGB",
             vollname: "Strafgesetzbuch",
@@ -232,30 +226,31 @@
                 "Gib den passenden <strong>Titel</strong> ein: <em>Entstehung der Obligationen</em>, <em>Wirkung der Obligationen</em>, <em>Erlöschen der Obligationen</em>, <em>Besondere Verhältnisse bei Obligationen</em> oder <em>Abtretung von Forderungen und Schuldübernahme</em>."
             ],
             alternativen: {
-                "Entstehung der Obligationen":                    ["Die Entstehung der Obligationen", "Erster Titel", "1. Titel"],
-                "Wirkung der Obligationen":                       ["Die Wirkung der Obligationen", "Zweiter Titel", "2. Titel"],
-                "Erlöschen der Obligationen":                     ["Das Erlöschen der Obligationen", "Dritter Titel", "3. Titel"],
-                "Besondere Verhältnisse bei Obligationen":        ["Vierter Titel", "4. Titel"],
-                "Abtretung von Forderungen und Schuldübernahme":  ["Die Abtretung von Forderungen und die Schuldübernahme", "Fünfter Titel", "5. Titel"]
+                "Entstehung der Obligationen":                   ["Die Entstehung der Obligationen", "Erster Titel", "1. Titel"],
+                "Wirkung der Obligationen":                      ["Die Wirkung der Obligationen", "Zweiter Titel", "2. Titel"],
+                "Erlöschen der Obligationen":                    ["Das Erlöschen der Obligationen", "Dritter Titel", "3. Titel"],
+                "Besondere Verhältnisse bei Obligationen":       ["Vierter Titel", "4. Titel"],
+                "Abtretung von Forderungen und Schuldübernahme": ["Die Abtretung von Forderungen und die Schuldübernahme", "Fünfter Titel", "5. Titel"]
             },
-            daten: [                       t: "Entstehung der Obligationen",                    a: "1"   },
-                { u: "Die Entstehung durch unerlaubte Handlungen",          t: "Entstehung der Obligationen",                    a: "41"  },
-                { u: "Die Entstehung aus ungerechtfertigter Bereicherung",  t: "Entstehung der Obligationen",                    a: "62"  },
-                { u: "Die Erfüllung der Obligationen",                      t: "Wirkung der Obligationen",                       a: "68"  },
-                { u: "Die Folgen der Nichterfüllung",                       t: "Wirkung der Obligationen",                       a: "97"  },
-                { u: "Beziehungen zu dritten Personen",                     t: "Wirkung der Obligationen",                       a: "110" },
-                { u: "Erlöschen der Nebenrechte",                            t: "Erlöschen der Obligationen",                     a: "114" },
-                { u: "Aufhebung durch Übereinkunft",                        t: "Erlöschen der Obligationen",                     a: "115" },
-                { u: "Neuerung",                                            t: "Erlöschen der Obligationen",                     a: "116" },
-                { u: "Vereinigung",                                         t: "Erlöschen der Obligationen",                     a: "118" },
-                { u: "Unmöglichwerden einer Leistung",                      t: "Erlöschen der Obligationen",                     a: "119" },
-                { u: "Verrechnung",                                         t: "Erlöschen der Obligationen",                     a: "120" },
-                { u: "Verjährung",                                          t: "Erlöschen der Obligationen",                     a: "127" },
-                { u: "Die Solidarität",                                     t: "Besondere Verhältnisse bei Obligationen",        a: "143" },
-                { u: "Die Bedingungen",                                     t: "Besondere Verhältnisse bei Obligationen",        a: "151" },
-                { u: "Haft- und Reugeld. Lohnabzüge. Konventionalstrafe",  t: "Besondere Verhältnisse bei Obligationen",        a: "158" },
-                { u: "Die Abtretung von Forderungen",                       t: "Abtretung von Forderungen und Schuldübernahme", a: "164" },
-                { u: "Die Schuldübernahme",                                 t: "Abtretung von Forderungen und Schuldübernahme", a: "175" }
+            daten: [
+                { u: "Die Entstehung durch Vertrag",                      t: "Entstehung der Obligationen",                    a: "1"   },
+                { u: "Die Entstehung durch unerlaubte Handlungen",        t: "Entstehung der Obligationen",                    a: "41"  },
+                { u: "Die Entstehung aus ungerechtfertigter Bereicherung",t: "Entstehung der Obligationen",                    a: "62"  },
+                { u: "Die Erfüllung der Obligationen",                    t: "Wirkung der Obligationen",                       a: "68"  },
+                { u: "Die Folgen der Nichterfüllung",                     t: "Wirkung der Obligationen",                       a: "97"  },
+                { u: "Beziehungen zu dritten Personen",                   t: "Wirkung der Obligationen",                       a: "110" },
+                { u: "Erlöschen der Nebenrechte",                         t: "Erlöschen der Obligationen",                     a: "114" },
+                { u: "Aufhebung durch Übereinkunft",                      t: "Erlöschen der Obligationen",                     a: "115" },
+                { u: "Neuerung",                                          t: "Erlöschen der Obligationen",                     a: "116" },
+                { u: "Vereinigung",                                       t: "Erlöschen der Obligationen",                     a: "118" },
+                { u: "Unmöglichwerden einer Leistung",                    t: "Erlöschen der Obligationen",                     a: "119" },
+                { u: "Verrechnung",                                       t: "Erlöschen der Obligationen",                     a: "120" },
+                { u: "Verjährung",                                        t: "Erlöschen der Obligationen",                     a: "127" },
+                { u: "Die Solidarität",                                   t: "Besondere Verhältnisse bei Obligationen",        a: "143" },
+                { u: "Die Bedingungen",                                   t: "Besondere Verhältnisse bei Obligationen",        a: "151" },
+                { u: "Haft- und Reugeld. Lohnabzüge. Konventionalstrafe",t: "Besondere Verhältnisse bei Obligationen",        a: "158" },
+                { u: "Die Abtretung von Forderungen",                     t: "Abtretung von Forderungen und Schuldübernahme", a: "164" },
+                { u: "Die Schuldübernahme",                               t: "Abtretung von Forderungen und Schuldübernahme", a: "175" }
             ]
         },
 
@@ -270,9 +265,6 @@
 
     };
 
-    // ═══════════════════════════════════════════════════════════════════
-    // SPIELLOGIK
-    // ═══════════════════════════════════════════════════════════════════
     let aktiverErlass = null;
     let aktuelleFrage, startTime, timerInterval, chart;
     let history = [];
