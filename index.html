@@ -25,6 +25,8 @@
         .anleitung summary { padding: 15px; cursor: pointer; color: #3498db; font-weight: bold; outline: none; list-style: none; }
         .anleitung summary::-webkit-details-marker { display: none; }
         .anleitung-content { padding: 0 20px 20px 20px; }
+        .anleitung-content ol { margin: 0; padding-left: 20px; }
+        .anleitung-content li { margin: 6px 0; }
         .anleitung p { margin: 5px 0; padding: 0; }
 
         input { padding: 12px; margin: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; width: 85%; transition: border-color 0.3s; }
@@ -78,11 +80,13 @@
         <details class="anleitung">
             <summary>So funktioniert's (Klicken zum Ausklappen)</summary>
             <div class="anleitung-content">
-                <p id="anleitungZeile1"></p>
-                <p id="anleitungZeile2"></p>
-                <p>Sobald der Teil korrekt eingegeben ist, startet der <strong>Timer automatisch</strong>.</p>
-                <p>Gib nun den korrekten <strong>ersten Artikel</strong> dieses Titels ein – es genügt die Zahl (z.B. <strong>1</strong> statt Art. 1).</p>
-                <p>Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert.</p>
+                <ol>
+                    <li id="anleitungZeile1"></li>
+                    <li id="anleitungZeile2"></li>
+                    <li id="anleitungZeile3"></li>
+                    <li>Gib nun den korrekten <strong>ersten Artikel</strong> dieses Titels ein – es genügt die Zahl (z.B. <strong>1</strong> statt Art. 1).</li>
+                    <li>Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert.</li>
+                </ol>
             </div>
         </details>
 
@@ -137,7 +141,8 @@
             teilFrage: "In welchem Teil der ZPO befindet sich der angezeigte Titel?",
             anleitungZeilen: [
                 "Dir wird ein <strong>Titel</strong> der ZPO angezeigt – das ist ein Themenbereich innerhalb eines Teils (z.B. «Beweis» oder «Klagen»).",
-                "Gib den passenden <strong>Teil</strong> ein, in dem sich der Titel befindet: <em>Allgemeine Bestimmungen</em>, <em>Besondere Bestimmungen</em> oder <em>Schiedsgerichtsbarkeit</em>."
+                "Gib den passenden <strong>Teil</strong> ein, in dem sich der Titel befindet: <em>Allgemeine Bestimmungen</em>, <em>Besondere Bestimmungen</em> oder <em>Schiedsgerichtsbarkeit</em>.",
+                "Sobald der <strong>Teil</strong> korrekt eingegeben ist, startet der Timer automatisch."
             ],
             daten: [
                 { u: "Gegenstand und Geltungsbereich", t: "Allgemeine Bestimmungen", a: "1" },
@@ -178,7 +183,8 @@
             teilFrage: "In welchem Teil des StGB befindet sich der angezeigte Titel?",
             anleitungZeilen: [
                 "Dir wird ein <strong>Titel</strong> des StGB angezeigt – das ist ein Themenbereich innerhalb eines Teils (z.B. «Verjährung» oder «Bestechung»).",
-                "Gib den passenden <strong>Teil</strong> ein: <em>StGB AT</em> (Allgemeiner Teil) oder <em>StGB BT</em> (Besonderer Teil)."
+                "Gib den passenden <strong>Teil</strong> ein: <em>StGB AT</em> (Allgemeiner Teil) oder <em>StGB BT</em> (Besonderer Teil).",
+                "Sobald der <strong>Teil</strong> korrekt eingegeben ist, startet der Timer automatisch."
             ],
             daten: [
                 { u: "Geltungsbereich", t: "StGB AT", a: "1" },
@@ -223,7 +229,8 @@
             teilFrage: "In welchem Titel des OR AT befindet sich der angezeigte Abschnitt?",
             anleitungZeilen: [
                 "Dir wird ein <strong>Abschnitt oder Themenbereich</strong> des OR AT angezeigt – z.B. «Verjährung» oder «Die Solidarität».",
-                "Gib den passenden <strong>Titel</strong> ein: <em>Entstehung der Obligationen</em>, <em>Wirkung der Obligationen</em>, <em>Erlöschen der Obligationen</em>, <em>Besondere Verhältnisse bei Obligationen</em> oder <em>Abtretung von Forderungen und Schuldübernahme</em>."
+                "Gib den passenden <strong>Titel</strong> ein: <em>Entstehung der Obligationen</em>, <em>Wirkung der Obligationen</em>, <em>Erlöschen der Obligationen</em>, <em>Besondere Verhältnisse bei Obligationen</em> oder <em>Abtretung von Forderungen und Schuldübernahme</em>.",
+                "Sobald der <strong>Titel</strong> korrekt eingegeben ist, startet der Timer automatisch."
             ],
             alternativen: {
                 "Entstehung der Obligationen":                   ["Die Entstehung der Obligationen", "Erster Titel", "1. Titel"],
@@ -317,6 +324,7 @@
         if (e.anleitungZeilen) {
             document.getElementById('anleitungZeile1').innerHTML = e.anleitungZeilen[0];
             document.getElementById('anleitungZeile2').innerHTML = e.anleitungZeilen[1];
+            document.getElementById('anleitungZeile3').innerHTML = e.anleitungZeilen[2] || '';
         }
         document.getElementById('inputUeberthema').disabled = false;
         document.getElementById('inputUeberthema').placeholder = e.teilFrage || `In welchem Teil des ${key} befindet sich der angezeigte Titel?`;
