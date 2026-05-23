@@ -74,21 +74,9 @@
     <div class="card">
         <h1 id="spielTitel">Erlass-Guesser</h1>
         <p class="subtitle" id="spielUntertitel">Wähle einen Erlass und starte das Spiel</p>
+        <a href="#" onclick="document.getElementById('anleitung').open=true; document.getElementById('anleitung').scrollIntoView({behavior:'smooth'}); return false;" style="font-size: 0.85em; color: #95a5a6; text-decoration: none; border-bottom: 1px dotted #b0b8c1;">Wie funktioniert's?</a>
 
         <div class="erlass-tabs" id="erlassTabs"></div>
-
-        <details class="anleitung">
-            <summary>So funktioniert's (Klicken zum Ausklappen)</summary>
-            <div class="anleitung-content">
-                <ol>
-                    <li id="anleitungZeile1"></li>
-                    <li id="anleitungZeile2"></li>
-                    <li id="anleitungZeile3"></li>
-                    <li>Gib nun den korrekten <strong>ersten Artikel</strong> dieses Titels ein – es genügt die Zahl (z.B. <strong>1</strong> statt Art. 1).</li>
-                    <li>Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert.</li>
-                </ol>
-            </div>
-        </details>
 
         <h3>Titel:</h3>
         <h2 id="frage">Erlass auswählen...</h2>
@@ -123,6 +111,20 @@
             </div>
         </div>
     </div>
+
+    <details class="anleitung" id="anleitung">
+        <summary>So funktioniert's (Klicken zum Ausklappen)</summary>
+        <div class="anleitung-content">
+            <ol>
+                <li id="anleitungZeile1"></li>
+                <li id="anleitungZeile2"></li>
+                <li id="anleitungZeile3"></li>
+                <li>Gib nun den korrekten <strong>ersten Artikel</strong> dieses Titels ein – es genügt die Zahl (z.B. <strong>1</strong> statt Art. 1).</li>
+                <li>Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert.</li>
+            </ol>
+        </div>
+    </details>
+
 </div>
 
     <p style="margin-top: 30px; font-size: 0.82em; color: #b0b8c1;">
