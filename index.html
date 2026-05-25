@@ -5,21 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Erlass-Guesser</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
+    <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; background-color: #f0f2f5; color: #333; }
         .container { max-width: 800px; margin: auto; }
-        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; overflow: hidden; }
+        .card.has-tabs { border-radius: 0 0 15px 15px; }
+        .card-content { }
         h1 { color: #2c3e50; font-size: 2.5em; margin-bottom: 0.2em; }
         p.subtitle { color: #7f8c8d; margin-bottom: 10px; }
 
-        .erlass-tabs { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-        .erlass-tab {
-            padding: 8px 22px; border-radius: 20px; border: 2px solid #ddd;
-            background: white; color: #7f8c8d; font-size: 0.95em; font-weight: 600;
-            cursor: pointer; transition: all 0.2s;
-        }
+        .erlass-tabs { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; margin-top: 8px; }
+        .erlass-tab { padding: 8px 22px; border-radius: 20px; border: 2px solid #ddd; background: white; color: #7f8c8d; font-size: 0.95em; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .erlass-tab:hover { border-color: #3498db; color: #3498db; }
         .erlass-tab.aktiv { background: #3498db; border-color: #3498db; color: white; }
+
+        .modus-tabs { display: flex; }
+        .modus-tab { flex: 1; padding: 10px; font-size: 0.95em; font-weight: 600; color: #7f8c8d; background: #e0e4e8; border: none; border-radius: 10px 10px 0 0; cursor: pointer; transition: background 0.15s, color 0.15s; margin-right: 3px; }
+        .modus-tab:last-child { margin-right: 0; }
+        .modus-tab:hover { background: #d0d4d8; color: #2c3e50; }
+        .modus-tab.aktiv { background: white; color: #2c3e50; }
 
         .anleitung { background: #f9f9f9; border-radius: 10px; margin: 15px 0; font-size: 0.95em; line-height: 1.6; border-left: 5px solid #3498db; text-align: left; overflow: hidden; }
         .anleitung summary { padding: 15px; cursor: pointer; color: #3498db; font-weight: bold; outline: none; list-style: none; }
@@ -27,12 +31,12 @@
         .anleitung-content { padding: 0 20px 20px 20px; }
         .anleitung-content ol { margin: 0; padding-left: 20px; }
         .anleitung-content li { margin: 6px 0; }
-        .anleitung p { margin: 5px 0; padding: 0; }
 
         input { padding: 12px; margin: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; width: 85%; transition: border-color 0.3s; }
         input:focus { border-color: #3498db; outline: none; }
         .correct { border-color: #2ecc71 !important; background-color: #e8f5e9; }
-        #timer { font-size: 2em; font-weight: bold; color: #34495e; margin: 15px 0; font-variant-numeric: tabular-nums; }
+        #timer { font-size: 2em; font-weight: bold; color: #34495e; margin: 15px 0 4px; font-variant-numeric: tabular-nums; }
+        #penaltyAnzeige { color: #e74c3c; font-weight: bold; font-size: 1.1em; transition: opacity 0.5s; opacity: 0; }
         .chart-container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         #frage { color: #e67e22; font-size: 1.8em; min-height: 1.6em; font-weight: 600; margin-top: 10px; }
         button { padding: 8px 15px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 0.8em; }
@@ -40,6 +44,18 @@
         #btnAufgeben { background: #e74c3c; font-size: 0.95em; padding: 10px 22px; display: none; }
         #btnAufgeben:hover { background: #c0392b; }
         #antwortHinweis { color: #e74c3c; font-size: 0.95em; min-height: 1.4em; margin-top: 4px; font-weight: 500; }
+
+        /* Navigationsbaum */
+        #navigationsbaum { text-align: left; margin: 10px 0; }
+        .nav-label { font-size: 0.85em; color: #7f8c8d; margin-bottom: 8px; }
+        .nav-titel-btn { width: 100%; text-align: left; padding: 10px 16px; background: #f4f6f8; border: 2px solid #ddd; border-radius: 8px; font-size: 0.97em; font-weight: 600; color: #2c3e50; cursor: pointer; margin-bottom: 6px; transition: all 0.15s; }
+        .nav-titel-btn:hover { border-color: #3498db; color: #3498db; background: #eaf4fd; }
+        .nav-titel-btn.korrekt { border-color: #27ae60 !important; background: #eafaf1 !important; color: #1e8449 !important; }
+        .nav-titel-btn.falsch { border-color: #e74c3c !important; background: #fdedec !important; color: #c0392b !important; }
+        .nav-abschnitt-btn { width: 100%; text-align: left; padding: 8px 14px; background: white; border: 1.5px solid #ddd; border-radius: 6px; font-size: 0.93em; color: #555; cursor: pointer; margin-bottom: 5px; transition: all 0.15s; }
+        .nav-abschnitt-btn:hover { border-color: #3498db; color: #2980b9; background: #f0f7fd; }
+        .nav-abschnitt-btn.korrekt { border-color: #27ae60 !important; background: #eafaf1 !important; color: #1e8449 !important; font-weight: 600; }
+        .nav-abschnitt-btn.falsch { border-color: #e74c3c !important; background: #fdedec !important; color: #c0392b !important; }
 
         .baustellen-banner { background: white; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.07); }
         .baustellen-banner::before { content: ''; display: block; height: 5px; background: repeating-linear-gradient(90deg, #f9c200 0, #f9c200 14px, #1a1a1a 14px, #1a1a1a 28px); }
@@ -71,31 +87,44 @@
         </div>
     </div>
 
-    <div class="card">
+    <div id="modusToggle" style="display:none;">
+        <div class="modus-tabs">
+            <button class="modus-tab aktiv" id="switchClassic" onclick="setModus('tippen')">🏛️ Classic</button>
+            <button class="modus-tab" id="switchExplorer" onclick="setModus('navigieren')">🧭 Explorer</button>
+        </div>
+    </div>
+    <div class="card" id="mainCard">
         <h1 id="spielTitel">Erlass-Guesser</h1>
         <p class="subtitle" id="spielUntertitel">Wähle einen Erlass und starte das Spiel</p>
-        <a href="#" onclick="document.getElementById('anleitung').open=true; document.getElementById('anleitung').scrollIntoView({behavior:'smooth'}); return false;" style="font-size: 0.85em; color: #95a5a6; text-decoration: none; border-bottom: 1px dotted #b0b8c1;">Wie funktioniert's?</a>
+        <a href="#" onclick="document.getElementById('anleitung').open=true; document.getElementById('anleitung').scrollIntoView({behavior:'smooth'}); return false;" style="font-size:0.85em;color:#95a5a6;text-decoration:none;border-bottom:1px dotted #b0b8c1;">Wie funktioniert's?</a>
+
+        <div class="card-content">
 
         <div class="erlass-tabs" id="erlassTabs"></div>
 
-        <h3>Titel:</h3>
+        <h3 id="fragenLabel">Titel:</h3>
         <h2 id="frage">Erlass auswählen...</h2>
 
-        <input type="text" id="inputUeberthema" placeholder="In welchem Teil befindet sich der angezeigte Titel?" autocomplete="off" disabled>
-        <input type="text" id="inputArtikel" placeholder="Ersten Artikel des Titels eingeben..." disabled autocomplete="off">
+        <div id="tippModus">
+            <input type="text" id="inputUeberthema" placeholder="In welchem Teil befindet sich der angezeigte Titel?" autocomplete="off" disabled>
+            <input type="text" id="inputArtikel" placeholder="Ersten Artikel des Titels eingeben..." disabled autocomplete="off">
+        </div>
+
+        <div id="navigationsbaum" style="display:none;"></div>
 
         <div id="timer">0.00s</div>
+        <div id="penaltyAnzeige"></div>
         <div>
             <button id="btnAufgeben" onclick="aufgeben()">❌ Aufgeben</button>
         </div>
         <div id="antwortHinweis"></div>
         <button onclick="clearHistory()">Statistik löschen</button>
-    </div>
+        </div><!-- card-content -->
+    </div><!-- card -->
 
     <div class="chart-container">
         <h3 id="chartTitel">Dein Fortschritt (Sekunden pro Runde)</h3>
         <canvas id="progressChart"></canvas>
-
         <div class="stats-bar" id="statsBar" style="display:none;">
             <div class="stat-item">
                 <span class="stat-label">Versuche</span>
@@ -119,336 +148,672 @@
                 <li id="anleitungZeile1"></li>
                 <li id="anleitungZeile2"></li>
                 <li id="anleitungZeile3"></li>
-                <li>Gib nun den korrekten <strong>ersten Artikel</strong> dieses Titels ein – es genügt die Zahl (z.B. <strong>1</strong> statt Art. 1).</li>
-                <li>Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert.</li>
+                <li id="anleitungZeile4"></li>
+                <li id="anleitungZeile5"></li>
             </ol>
         </div>
     </details>
 
 </div>
 
-    <p style="margin-top: 30px; font-size: 0.82em; color: #b0b8c1;">
-        Fragen oder Feedback? <a href="mailto:kontakt@rächtsimpel.ch" style="color: #95a5a6; text-decoration: none; border-bottom: 1px dotted #b0b8c1;">kontakt@rächtsimpel.ch</a>
-    </p>
+<p style="margin-top:30px;font-size:0.82em;color:#b0b8c1;">
+    Fragen oder Feedback? <a href="mailto:kontakt@rächtsimpel.ch" style="color:#95a5a6;text-decoration:none;border-bottom:1px dotted #b0b8c1;">kontakt@rächtsimpel.ch</a>
+</p>
 
 </div>
 
 <script>
-    const erlasse = {
 
-        ZPO: {
-            name: "ZPO",
-            vollname: "Zivilprozessordnung",
-            artikel: "die Schweizer",
-            teilFrage: "In welchem Teil der ZPO befindet sich der angezeigte Titel?",
-            anleitungZeilen: [
-                "Dir wird ein <strong>Titel</strong> der ZPO angezeigt – das ist ein Themenbereich innerhalb eines Teils (z.B. «Beweis» oder «Klagen»).",
-                "Gib den passenden <strong>Teil</strong> ein, in dem sich der Titel befindet: <em>Allgemeine Bestimmungen</em>, <em>Besondere Bestimmungen</em> oder <em>Schiedsgerichtsbarkeit</em>.",
-                "Sobald der <strong>Teil</strong> korrekt eingegeben ist, startet der Timer automatisch."
-            ],
-            daten: [
-                { u: "Gegenstand und Geltungsbereich", t: "Allgemeine Bestimmungen", a: "1" },
-                { u: "Zuständigkeit der Gerichte und Ausstand", t: "Allgemeine Bestimmungen", a: "4" },
-                { u: "Verfahrensgrundsätze und Prozessvoraussetzungen", t: "Allgemeine Bestimmungen", a: "52" },
-                { u: "Rechtshängigkeit und Folgen des Klagerückzugs", t: "Allgemeine Bestimmungen", a: "62" },
-                { u: "Die Parteien und die Beteiligung Dritter", t: "Allgemeine Bestimmungen", a: "66" },
-                { u: "Klagen", t: "Allgemeine Bestimmungen", a: "84" },
-                { u: "Streitwert", t: "Allgemeine Bestimmungen", a: "91" },
-                { u: "Prozesskosten und unentgeltliche Rechtspflege", t: "Allgemeine Bestimmungen", a: "95" },
-                { u: "Prozessleitung, prozessuales Handeln und Fristen", t: "Allgemeine Bestimmungen", a: "124" },
-                { u: "Beweis", t: "Allgemeine Bestimmungen", a: "150" },
-                { u: "Rechtshilfe zwischen schweizerischen Gerichten", t: "Allgemeine Bestimmungen", a: "194" },
-                { u: "Schlichtungsversuch", t: "Besondere Bestimmungen", a: "197" },
-                { u: "Mediation", t: "Besondere Bestimmungen", a: "213" },
-                { u: "Ordentliches Verfahren", t: "Besondere Bestimmungen", a: "219" },
-                { u: "Vereinfachtes Verfahren", t: "Besondere Bestimmungen", a: "243" },
-                { u: "Summarisches Verfahren", t: "Besondere Bestimmungen", a: "248" },
-                { u: "Besondere eherechtliche Verfahren", t: "Besondere Bestimmungen", a: "271" },
-                { u: "Kinderbelange in familienrechtlichen Angelegenheiten", t: "Besondere Bestimmungen", a: "295" },
-                { u: "Verfahren bei eingetragener Partnerschaft", t: "Besondere Bestimmungen", a: "305" },
-                { u: "Rechtsmittel", t: "Besondere Bestimmungen", a: "308" },
-                { u: "Vollstreckung", t: "Besondere Bestimmungen", a: "335" },
-                { u: "Allgemeine Bestimmungen", t: "Schiedsgerichtsbarkeit", a: "353" },
-                { u: "Schiedsvereinbarung und Schiedsklausel", t: "Schiedsgerichtsbarkeit", a: "357" },
-                { u: "Bestellung des Schiedsgerichts", t: "Schiedsgerichtsbarkeit", a: "360" },
-                { u: "Ablehnung, Abberufung und Ersetzung der Mitglieder des Schiedsgerichts", t: "Schiedsgerichtsbarkeit", a: "367" },
-                { u: "Das Schiedsverfahren", t: "Schiedsgerichtsbarkeit", a: "372" },
-                { u: "Schiedsspruch", t: "Schiedsgerichtsbarkeit", a: "381" },
-                { u: "Rechtsmittel", t: "Schiedsgerichtsbarkeit", a: "389" }
-            ]
-        },
+// ═══════════════════════════════════════════════════════════════════
+// DATEN
+// ═══════════════════════════════════════════════════════════════════
 
-        StGB: {
-            name: "StGB",
-            vollname: "Strafgesetzbuch",
-            artikel: "das Schweizer",
-            teilFrage: "In welchem Teil des StGB befindet sich der angezeigte Titel?",
-            anleitungZeilen: [
-                "Dir wird ein <strong>Titel</strong> des StGB angezeigt – das ist ein Themenbereich innerhalb eines Teils (z.B. «Verjährung» oder «Bestechung»).",
-                "Gib den passenden <strong>Teil</strong> ein: <em>StGB AT</em> (Allgemeiner Teil) oder <em>StGB BT</em> (Besonderer Teil).",
-                "Sobald der <strong>Teil</strong> korrekt eingegeben ist, startet der Timer automatisch."
-            ],
-            daten: [
-                { u: "Geltungsbereich", t: "StGB AT", a: "1" },
-                { u: "Strafbarkeit", t: "StGB AT", a: "10" },
-                { u: "Strafen und Massnahmen", t: "StGB AT", a: "34" },
-                { u: "Vollzug von Freiheitsstrafen und freiheitsentziehenden Massnahmen", t: "StGB AT", a: "74" },
-                { u: "Bewährungshilfe, Weisungen und freiwillige soziale Betreuung", t: "StGB AT", a: "93" },
-                { u: "Verjährung", t: "StGB AT", a: "97" },
-                { u: "Verantwortlichkeit des Unternehmens", t: "StGB AT", a: "102" },
-                { u: "Übertretung", t: "StGB AT", a: "103" },
-                { u: "Begriffe", t: "StGB AT", a: "110" },
-                { u: "Strafbare Handlungen gegen Leib und Leben", t: "StGB BT", a: "111" },
-                { u: "Strafbare Handlungen gegen das Vermögen", t: "StGB BT", a: "137" },
-                { u: "Strafbare Handlungen gegen die Ehre und den Geheim- oder Privatbereich", t: "StGB BT", a: "173" },
-                { u: "Verbrechen und Vergehen gegen die Freiheit", t: "StGB BT", a: "180" },
-                { u: "Strafbare Handlungen gegen die sexuelle Integrität", t: "StGB BT", a: "187" },
-                { u: "Verbrechen und Vergehen gegen die Familie", t: "StGB BT", a: "213" },
-                { u: "Gemeingefährliche Verbrechen und Vergehen", t: "StGB BT", a: "221" },
-                { u: "Verbrechen und Vergehen gegen die öffentliche Gesundheit", t: "StGB BT", a: "230bis" },
-                { u: "Verbrechen und Vergehen gegen den öffentlichen Verkehr", t: "StGB BT", a: "237" },
-                { u: "Fälschung von Geld, amtlichen Wertzeichen, amtlichen Zeichen, Mass und Gewicht", t: "StGB BT", a: "240" },
-                { u: "Urkundenfälschung", t: "StGB BT", a: "251" },
-                { u: "Verbrechen und Vergehen gegen den öffentlichen Frieden", t: "StGB BT", a: "258" },
-                { u: "Völkermord und Verbrechen gegen die Menschlichkeit", t: "StGB BT", a: "264" },
-                { u: "Kriegsverbrechen", t: "StGB BT", a: "264b" },
-                { u: "Gemeinsame Bestimmungen für den zwölften Titelbis und den zwölften Titelter", t: "StGB BT", a: "264k" },
-                { u: "Verbrechen und Vergehen gegen den Staat und die Landesverteidigung", t: "StGB BT", a: "265" },
-                { u: "Vergehen gegen den Volkswillen", t: "StGB BT", a: "279" },
-                { u: "Strafbare Handlungen gegen die öffentliche Gewalt", t: "StGB BT", a: "285" },
-                { u: "Störung der Beziehung zum Ausland", t: "StGB BT", a: "296" },
-                { u: "Verbrechen und Vergehen gegen die Rechtspflege", t: "StGB BT", a: "303" },
-                { u: "Strafbare Handlungen gegen die Amts- und Berufspflicht", t: "StGB BT", a: "312" },
-                { u: "Bestechung", t: "StGB BT", a: "322ter" },
-                { u: "Übertretungen bundesrechtlicher Bestimmungen", t: "StGB BT", a: "323" }
-            ]
-        },
+const erlasse = {
 
-        OR_AT: {
-            name: "OR AT",
-            vollname: "Obligationenrecht — Allgemeiner Teil",
-            artikel: "das Schweizer",
-            teilFrage: "In welchem Titel des OR AT befindet sich der angezeigte Abschnitt?",
-            anleitungZeilen: [
-                "Dir wird ein <strong>Abschnitt oder Themenbereich</strong> des OR AT angezeigt – z.B. «Verjährung» oder «Die Solidarität».",
-                "Gib den passenden <strong>Titel</strong> ein: <em>Entstehung der Obligationen</em>, <em>Wirkung der Obligationen</em>, <em>Erlöschen der Obligationen</em>, <em>Besondere Verhältnisse bei Obligationen</em> oder <em>Abtretung von Forderungen und Schuldübernahme</em>.",
-                "Sobald der <strong>Titel</strong> korrekt eingegeben ist, startet der Timer automatisch."
-            ],
-            alternativen: {
-                "Entstehung der Obligationen":                   ["Die Entstehung der Obligationen", "Erster Titel", "1. Titel"],
-                "Wirkung der Obligationen":                      ["Die Wirkung der Obligationen", "Zweiter Titel", "2. Titel"],
-                "Erlöschen der Obligationen":                    ["Das Erlöschen der Obligationen", "Dritter Titel", "3. Titel"],
-                "Besondere Verhältnisse bei Obligationen":       ["Vierter Titel", "4. Titel"],
-                "Abtretung von Forderungen und Schuldübernahme": ["Die Abtretung von Forderungen und die Schuldübernahme", "Fünfter Titel", "5. Titel"]
+    ZPO: {
+        name: "ZPO",
+        vollname: "Zivilprozessordnung",
+        artikel: "die Schweizer",
+        teilFrage: "In welchem Teil der ZPO befindet sich der angezeigte Titel?",
+        anleitungZeilen: [
+            "Dir wird ein <strong>Titel</strong> der ZPO angezeigt – das ist ein Themenbereich innerhalb eines Teils (z.B. «Beweis» oder «Klagen»).",
+            "Gib den passenden <strong>Teil</strong> ein, in dem sich der Titel befindet: <em>Allgemeine Bestimmungen</em>, <em>Besondere Bestimmungen</em> oder <em>Schiedsgerichtsbarkeit</em>.",
+            "Sobald der <strong>Teil</strong> korrekt eingegeben ist, startet der Timer automatisch.",
+            "Gib nun den korrekten <strong>ersten Artikel</strong> dieses Titels ein – es genügt die Zahl (z.B. <strong>1</strong> statt Art. 1).",
+            "Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert."
+        ],
+        anleitungZeilenExplorer: [
+            "Dir wird eine <strong>Artikelnummer</strong> angezeigt – z.B. «Art. 197».",
+            "Klicke den richtigen <strong>Teil</strong> an. Jeder falsche Klick kostet +3 Sekunden.",
+            "Beim richtigen Teil startet der Timer automatisch.",
+            "Klicke nun den richtigen <strong>Titel</strong> an. Auch hier kostet ein falscher Klick +3 Sekunden.",
+            "Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert."
+        ],
+        struktur: [
+            {
+                titel: "Allgemeine Bestimmungen",
+                abschnitte: [
+                    { name: "Gegenstand und Geltungsbereich",                          a: "1"   },
+                    { name: "Zuständigkeit der Gerichte und Ausstand",                 a: "4"   },
+                    { name: "Verfahrensgrundsätze und Prozessvoraussetzungen",          a: "52"  },
+                    { name: "Rechtshängigkeit und Folgen des Klagerückzugs",           a: "62"  },
+                    { name: "Die Parteien und die Beteiligung Dritter",                a: "66"  },
+                    { name: "Klagen",                                                   a: "84"  },
+                    { name: "Streitwert",                                               a: "91"  },
+                    { name: "Prozesskosten und unentgeltliche Rechtspflege",           a: "95"  },
+                    { name: "Prozessleitung, prozessuales Handeln und Fristen",        a: "124" },
+                    { name: "Beweis",                                                   a: "150" },
+                    { name: "Rechtshilfe zwischen schweizerischen Gerichten",          a: "194" }
+                ]
             },
-            daten: [
-                { u: "Die Entstehung durch Vertrag",                      t: "Entstehung der Obligationen",                    a: "1"   },
-                { u: "Die Entstehung durch unerlaubte Handlungen",        t: "Entstehung der Obligationen",                    a: "41"  },
-                { u: "Die Entstehung aus ungerechtfertigter Bereicherung",t: "Entstehung der Obligationen",                    a: "62"  },
-                { u: "Die Erfüllung der Obligationen",                    t: "Wirkung der Obligationen",                       a: "68"  },
-                { u: "Die Folgen der Nichterfüllung",                     t: "Wirkung der Obligationen",                       a: "97"  },
-                { u: "Beziehungen zu dritten Personen",                   t: "Wirkung der Obligationen",                       a: "110" },
-                { u: "Erlöschen der Nebenrechte",                         t: "Erlöschen der Obligationen",                     a: "114" },
-                { u: "Aufhebung durch Übereinkunft",                      t: "Erlöschen der Obligationen",                     a: "115" },
-                { u: "Neuerung",                                          t: "Erlöschen der Obligationen",                     a: "116" },
-                { u: "Vereinigung",                                       t: "Erlöschen der Obligationen",                     a: "118" },
-                { u: "Unmöglichwerden einer Leistung",                    t: "Erlöschen der Obligationen",                     a: "119" },
-                { u: "Verrechnung",                                       t: "Erlöschen der Obligationen",                     a: "120" },
-                { u: "Verjährung",                                        t: "Erlöschen der Obligationen",                     a: "127" },
-                { u: "Die Solidarität",                                   t: "Besondere Verhältnisse bei Obligationen",        a: "143" },
-                { u: "Die Bedingungen",                                   t: "Besondere Verhältnisse bei Obligationen",        a: "151" },
-                { u: "Haft- und Reugeld. Lohnabzüge. Konventionalstrafe",t: "Besondere Verhältnisse bei Obligationen",        a: "158" },
-                { u: "Die Abtretung von Forderungen",                     t: "Abtretung von Forderungen und Schuldübernahme", a: "164" },
-                { u: "Die Schuldübernahme",                               t: "Abtretung von Forderungen und Schuldübernahme", a: "175" }
-            ]
-        },
-
-        OR: {
-            name: "OR BT",
-            vollname: "Obligationenrecht — Besonderer Teil",
-            artikel: "das Schweizer",
-            teilFrage: "",
-            anleitungZeilen: ["", ""],
-            daten: []
-        }
-
-    };
-
-    let aktiverErlass = null;
-    let aktuelleFrage, startTime, timerInterval, chart;
-    let history = [];
-
-    window.onload = function() {
-        renderTabs();
-        initChart();
-        const ersterErlass = Object.keys(erlasse).find(k => erlasse[k].daten.length > 0);
-        if (ersterErlass) wechsleErlass(ersterErlass);
-    };
-
-    function renderTabs() {
-        const container = document.getElementById('erlassTabs');
-        container.innerHTML = '';
-        Object.keys(erlasse).forEach(key => {
-            const btn = document.createElement('button');
-            btn.className = 'erlass-tab';
-            btn.id = 'tab_' + key;
-            const hatDaten = erlasse[key].daten.length > 0;
-            btn.textContent = erlasse[key].name + (hatDaten ? '' : ' (bald)');
-            if (!hatDaten) {
-                btn.disabled = true;
-                btn.style.opacity = '0.45';
-                btn.style.cursor = 'default';
-            } else {
-                btn.onclick = () => wechsleErlass(key);
-            }
-            container.appendChild(btn);
-        });
-    }
-
-    function wechsleErlass(key) {
-        if (aktiverErlass === key) return;
-        clearInterval(timerInterval);
-        aktiverErlass = key;
-        const e = erlasse[key];
-
-        document.querySelectorAll('.erlass-tab').forEach(b => b.classList.remove('aktiv'));
-        document.getElementById('tab_' + key).classList.add('aktiv');
-
-        document.title = e.name + '-Guesser';
-        document.getElementById('spielTitel').textContent = e.name + '-Guesser';
-        document.getElementById('spielUntertitel').textContent = 'Meistere ' + (e.artikel || 'das Schweizer') + ' ' + e.vollname;
-        document.getElementById('chartTitel').textContent = 'Dein Fortschritt – ' + e.name + ' (Sekunden pro Runde)';
-
-        try {
-            history = JSON.parse(localStorage.getItem('guesser_history_' + key)) || [];
-        } catch(err) { history = []; }
-
-        if (e.anleitungZeilen) {
-            document.getElementById('anleitungZeile1').innerHTML = e.anleitungZeilen[0];
-            document.getElementById('anleitungZeile2').innerHTML = e.anleitungZeilen[1];
-            document.getElementById('anleitungZeile3').innerHTML = e.anleitungZeilen[2] || '';
-        }
-        document.getElementById('inputUeberthema').disabled = false;
-        document.getElementById('inputUeberthema').placeholder = e.teilFrage || `In welchem Teil des ${key} befindet sich der angezeigte Titel?`;
-        updateChart();
-        updateStats();
-        neueFrage();
-    }
-
-    function initChart() {
-        const ctx = document.getElementById('progressChart').getContext('2d');
-        chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Zeit in Sekunden',
-                    data: [],
-                    borderColor: '#3498db',
-                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                    pointRadius: 4,
-                    fill: true,
-                    tension: 0.3
-                }]
+            {
+                titel: "Besondere Bestimmungen",
+                abschnitte: [
+                    { name: "Schlichtungsversuch",                                      a: "197" },
+                    { name: "Mediation",                                                a: "213" },
+                    { name: "Ordentliches Verfahren",                                   a: "219" },
+                    { name: "Vereinfachtes Verfahren",                                  a: "243" },
+                    { name: "Summarisches Verfahren",                                   a: "248" },
+                    { name: "Besondere eherechtliche Verfahren",                        a: "271" },
+                    { name: "Kinderbelange in familienrechtlichen Angelegenheiten",    a: "295" },
+                    { name: "Verfahren bei eingetragener Partnerschaft",               a: "305" },
+                    { name: "Rechtsmittel",                                             a: "308" },
+                    { name: "Vollstreckung",                                            a: "335" }
+                ]
             },
-            options: {
-                scales: {
-                    y: { beginAtZero: true, title: { display: true, text: 'Sekunden' } },
-                    x: { title: { display: true, text: 'Anzahl Versuche' } }
-                }
+            {
+                titel: "Schiedsgerichtsbarkeit",
+                abschnitte: [
+                    { name: "Allgemeine Bestimmungen",                                                         a: "353" },
+                    { name: "Schiedsvereinbarung und Schiedsklausel",                                         a: "357" },
+                    { name: "Bestellung des Schiedsgerichts",                                                  a: "360" },
+                    { name: "Ablehnung, Abberufung und Ersetzung der Mitglieder des Schiedsgerichts",        a: "367" },
+                    { name: "Das Schiedsverfahren",                                                            a: "372" },
+                    { name: "Schiedsspruch",                                                                   a: "381" },
+                    { name: "Rechtsmittel",                                                                    a: "389" }
+                ]
             }
-        });
+        ],
+        daten: [
+            { u: "Gegenstand und Geltungsbereich", t: "Allgemeine Bestimmungen", a: "1" },
+            { u: "Zuständigkeit der Gerichte und Ausstand", t: "Allgemeine Bestimmungen", a: "4" },
+            { u: "Verfahrensgrundsätze und Prozessvoraussetzungen", t: "Allgemeine Bestimmungen", a: "52" },
+            { u: "Rechtshängigkeit und Folgen des Klagerückzugs", t: "Allgemeine Bestimmungen", a: "62" },
+            { u: "Die Parteien und die Beteiligung Dritter", t: "Allgemeine Bestimmungen", a: "66" },
+            { u: "Klagen", t: "Allgemeine Bestimmungen", a: "84" },
+            { u: "Streitwert", t: "Allgemeine Bestimmungen", a: "91" },
+            { u: "Prozesskosten und unentgeltliche Rechtspflege", t: "Allgemeine Bestimmungen", a: "95" },
+            { u: "Prozessleitung, prozessuales Handeln und Fristen", t: "Allgemeine Bestimmungen", a: "124" },
+            { u: "Beweis", t: "Allgemeine Bestimmungen", a: "150" },
+            { u: "Rechtshilfe zwischen schweizerischen Gerichten", t: "Allgemeine Bestimmungen", a: "194" },
+            { u: "Schlichtungsversuch", t: "Besondere Bestimmungen", a: "197" },
+            { u: "Mediation", t: "Besondere Bestimmungen", a: "213" },
+            { u: "Ordentliches Verfahren", t: "Besondere Bestimmungen", a: "219" },
+            { u: "Vereinfachtes Verfahren", t: "Besondere Bestimmungen", a: "243" },
+            { u: "Summarisches Verfahren", t: "Besondere Bestimmungen", a: "248" },
+            { u: "Besondere eherechtliche Verfahren", t: "Besondere Bestimmungen", a: "271" },
+            { u: "Kinderbelange in familienrechtlichen Angelegenheiten", t: "Besondere Bestimmungen", a: "295" },
+            { u: "Verfahren bei eingetragener Partnerschaft", t: "Besondere Bestimmungen", a: "305" },
+            { u: "Rechtsmittel", t: "Besondere Bestimmungen", a: "308" },
+            { u: "Vollstreckung", t: "Besondere Bestimmungen", a: "335" },
+            { u: "Allgemeine Bestimmungen", t: "Schiedsgerichtsbarkeit", a: "353" },
+            { u: "Schiedsvereinbarung und Schiedsklausel", t: "Schiedsgerichtsbarkeit", a: "357" },
+            { u: "Bestellung des Schiedsgerichts", t: "Schiedsgerichtsbarkeit", a: "360" },
+            { u: "Ablehnung, Abberufung und Ersetzung der Mitglieder des Schiedsgerichts", t: "Schiedsgerichtsbarkeit", a: "367" },
+            { u: "Das Schiedsverfahren", t: "Schiedsgerichtsbarkeit", a: "372" },
+            { u: "Schiedsspruch", t: "Schiedsgerichtsbarkeit", a: "381" },
+            { u: "Rechtsmittel", t: "Schiedsgerichtsbarkeit", a: "389" }
+        ]
+    },
+
+    StGB: {
+        name: "StGB",
+        vollname: "Strafgesetzbuch",
+        artikel: "das Schweizer",
+        teilFrage: "In welchem Teil des StGB befindet sich der angezeigte Titel?",
+        anleitungZeilen: [
+            "Dir wird ein <strong>Titel</strong> des StGB angezeigt – das ist ein Themenbereich innerhalb eines Teils (z.B. «Verjährung» oder «Bestechung»).",
+            "Gib den passenden <strong>Teil</strong> ein: <em>StGB AT</em> (Allgemeiner Teil) oder <em>StGB BT</em> (Besonderer Teil).",
+            "Sobald der <strong>Teil</strong> korrekt eingegeben ist, startet der Timer automatisch.",
+            "Gib nun den korrekten <strong>ersten Artikel</strong> dieses Titels ein – es genügt die Zahl (z.B. <strong>1</strong> statt Art. 1).",
+            "Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert."
+        ],
+        anleitungZeilenExplorer: [
+            "Dir wird eine <strong>Artikelnummer</strong> angezeigt – z.B. «Art. 97».",
+            "Klicke den richtigen <strong>Teil</strong> an. Jeder falsche Klick kostet +3 Sekunden.",
+            "Beim richtigen Teil startet der Timer automatisch.",
+            "Klicke nun den richtigen <strong>Titel</strong> an. Auch hier kostet ein falscher Klick +3 Sekunden.",
+            "Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert."
+        ],
+        struktur: [
+            {
+                titel: "StGB AT",
+                abschnitte: [
+                    { name: "Geltungsbereich",                                                                         a: "1"      },
+                    { name: "Strafbarkeit",                                                                             a: "10"     },
+                    { name: "Strafen und Massnahmen",                                                                   a: "34"     },
+                    { name: "Vollzug von Freiheitsstrafen und freiheitsentziehenden Massnahmen",                        a: "74"     },
+                    { name: "Bewährungshilfe, Weisungen und freiwillige soziale Betreuung",                             a: "93"     },
+                    { name: "Verjährung",                                                                               a: "97"     },
+                    { name: "Verantwortlichkeit des Unternehmens",                                                      a: "102"    },
+                    { name: "Übertretung",                                                                              a: "103"    },
+                    { name: "Begriffe",                                                                                 a: "110"    }
+                ]
+            },
+            {
+                titel: "StGB BT",
+                abschnitte: [
+                    { name: "Strafbare Handlungen gegen Leib und Leben",                                               a: "111"    },
+                    { name: "Strafbare Handlungen gegen das Vermögen",                                                  a: "137"    },
+                    { name: "Strafbare Handlungen gegen die Ehre und den Geheim- oder Privatbereich",                  a: "173"    },
+                    { name: "Verbrechen und Vergehen gegen die Freiheit",                                               a: "180"    },
+                    { name: "Strafbare Handlungen gegen die sexuelle Integrität",                                       a: "187"    },
+                    { name: "Verbrechen und Vergehen gegen die Familie",                                                a: "213"    },
+                    { name: "Gemeingefährliche Verbrechen und Vergehen",                                                a: "221"    },
+                    { name: "Verbrechen und Vergehen gegen die öffentliche Gesundheit",                                 a: "230bis" },
+                    { name: "Verbrechen und Vergehen gegen den öffentlichen Verkehr",                                   a: "237"    },
+                    { name: "Fälschung von Geld, amtlichen Wertzeichen, amtlichen Zeichen, Mass und Gewicht",          a: "240"    },
+                    { name: "Urkundenfälschung",                                                                        a: "251"    },
+                    { name: "Verbrechen und Vergehen gegen den öffentlichen Frieden",                                   a: "258"    },
+                    { name: "Völkermord und Verbrechen gegen die Menschlichkeit",                                       a: "264"    },
+                    { name: "Kriegsverbrechen",                                                                         a: "264b"   },
+                    { name: "Gemeinsame Bestimmungen für den zwölften Titelbis und den zwölften Titelter",             a: "264k"   },
+                    { name: "Verbrechen und Vergehen gegen den Staat und die Landesverteidigung",                      a: "265"    },
+                    { name: "Vergehen gegen den Volkswillen",                                                           a: "279"    },
+                    { name: "Strafbare Handlungen gegen die öffentliche Gewalt",                                        a: "285"    },
+                    { name: "Störung der Beziehung zum Ausland",                                                        a: "296"    },
+                    { name: "Verbrechen und Vergehen gegen die Rechtspflege",                                           a: "303"    },
+                    { name: "Strafbare Handlungen gegen die Amts- und Berufspflicht",                                  a: "312"    },
+                    { name: "Bestechung",                                                                               a: "322ter" },
+                    { name: "Übertretungen bundesrechtlicher Bestimmungen",                                             a: "323"    }
+                ]
+            }
+        ],
+        daten: [
+            { u: "Geltungsbereich", t: "StGB AT", a: "1" },
+            { u: "Strafbarkeit", t: "StGB AT", a: "10" },
+            { u: "Strafen und Massnahmen", t: "StGB AT", a: "34" },
+            { u: "Vollzug von Freiheitsstrafen und freiheitsentziehenden Massnahmen", t: "StGB AT", a: "74" },
+            { u: "Bewährungshilfe, Weisungen und freiwillige soziale Betreuung", t: "StGB AT", a: "93" },
+            { u: "Verjährung", t: "StGB AT", a: "97" },
+            { u: "Verantwortlichkeit des Unternehmens", t: "StGB AT", a: "102" },
+            { u: "Übertretung", t: "StGB AT", a: "103" },
+            { u: "Begriffe", t: "StGB AT", a: "110" },
+            { u: "Strafbare Handlungen gegen Leib und Leben", t: "StGB BT", a: "111" },
+            { u: "Strafbare Handlungen gegen das Vermögen", t: "StGB BT", a: "137" },
+            { u: "Strafbare Handlungen gegen die Ehre und den Geheim- oder Privatbereich", t: "StGB BT", a: "173" },
+            { u: "Verbrechen und Vergehen gegen die Freiheit", t: "StGB BT", a: "180" },
+            { u: "Strafbare Handlungen gegen die sexuelle Integrität", t: "StGB BT", a: "187" },
+            { u: "Verbrechen und Vergehen gegen die Familie", t: "StGB BT", a: "213" },
+            { u: "Gemeingefährliche Verbrechen und Vergehen", t: "StGB BT", a: "221" },
+            { u: "Verbrechen und Vergehen gegen die öffentliche Gesundheit", t: "StGB BT", a: "230bis" },
+            { u: "Verbrechen und Vergehen gegen den öffentlichen Verkehr", t: "StGB BT", a: "237" },
+            { u: "Fälschung von Geld, amtlichen Wertzeichen, amtlichen Zeichen, Mass und Gewicht", t: "StGB BT", a: "240" },
+            { u: "Urkundenfälschung", t: "StGB BT", a: "251" },
+            { u: "Verbrechen und Vergehen gegen den öffentlichen Frieden", t: "StGB BT", a: "258" },
+            { u: "Völkermord und Verbrechen gegen die Menschlichkeit", t: "StGB BT", a: "264" },
+            { u: "Kriegsverbrechen", t: "StGB BT", a: "264b" },
+            { u: "Gemeinsame Bestimmungen für den zwölften Titelbis und den zwölften Titelter", t: "StGB BT", a: "264k" },
+            { u: "Verbrechen und Vergehen gegen den Staat und die Landesverteidigung", t: "StGB BT", a: "265" },
+            { u: "Vergehen gegen den Volkswillen", t: "StGB BT", a: "279" },
+            { u: "Strafbare Handlungen gegen die öffentliche Gewalt", t: "StGB BT", a: "285" },
+            { u: "Störung der Beziehung zum Ausland", t: "StGB BT", a: "296" },
+            { u: "Verbrechen und Vergehen gegen die Rechtspflege", t: "StGB BT", a: "303" },
+            { u: "Strafbare Handlungen gegen die Amts- und Berufspflicht", t: "StGB BT", a: "312" },
+            { u: "Bestechung", t: "StGB BT", a: "322ter" },
+            { u: "Übertretungen bundesrechtlicher Bestimmungen", t: "StGB BT", a: "323" }
+        ]
+    },
+
+    OR_AT: {
+        name: "OR AT",
+        vollname: "Obligationenrecht — Allgemeiner Teil",
+        artikel: "das Schweizer",
+        teilFrage: "In welchem Titel des OR AT befindet sich der angezeigte Abschnitt?",
+        anleitungZeilen: [
+            "Dir wird ein <strong>Abschnitt oder Themenbereich</strong> des OR AT angezeigt – z.B. «Verjährung» oder «Die Solidarität».",
+            "Gib den passenden <strong>Titel</strong> ein: <em>Entstehung der Obligationen</em>, <em>Wirkung der Obligationen</em>, <em>Erlöschen der Obligationen</em>, <em>Besondere Verhältnisse bei Obligationen</em> oder <em>Abtretung von Forderungen und Schuldübernahme</em>.",
+            "Sobald der <strong>Titel</strong> korrekt eingegeben ist, startet der Timer automatisch.",
+            "Gib nun den korrekten <strong>ersten Artikel</strong> dieses Titels ein – es genügt die Zahl (z.B. <strong>1</strong> statt Art. 1).",
+            "Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert."
+        ],
+        anleitungZeilenExplorer: [
+            "Dir wird eine <strong>Artikelnummer</strong> angezeigt – z.B. «Art. 127».",
+            "Klicke den richtigen <strong>Titel</strong> an. Jeder falsche Klick kostet +3 Sekunden.",
+            "Beim richtigen Titel startet der Timer automatisch.",
+            "Klicke nun den richtigen <strong>Abschnitt</strong> an. Auch hier kostet ein falscher Klick +3 Sekunden.",
+            "Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert."
+        ],
+        alternativen: {
+            "Entstehung der Obligationen":                   ["Die Entstehung der Obligationen", "Erster Titel", "1. Titel"],
+            "Wirkung der Obligationen":                      ["Die Wirkung der Obligationen", "Zweiter Titel", "2. Titel"],
+            "Erlöschen der Obligationen":                    ["Das Erlöschen der Obligationen", "Dritter Titel", "3. Titel"],
+            "Besondere Verhältnisse bei Obligationen":       ["Vierter Titel", "4. Titel"],
+            "Abtretung von Forderungen und Schuldübernahme": ["Die Abtretung von Forderungen und die Schuldübernahme", "Fünfter Titel", "5. Titel"]
+        },
+        struktur: [
+            {
+                titel: "Entstehung der Obligationen",
+                abschnitte: [
+                    { name: "Die Entstehung durch Vertrag", a: "1" },
+                    { name: "Die Entstehung durch unerlaubte Handlungen", a: "41" },
+                    { name: "Die Entstehung aus ungerechtfertigter Bereicherung", a: "62" }
+                ]
+            },
+            {
+                titel: "Wirkung der Obligationen",
+                abschnitte: [
+                    { name: "Die Erfüllung der Obligationen", a: "68" },
+                    { name: "Die Folgen der Nichterfüllung", a: "97" },
+                    { name: "Beziehungen zu dritten Personen", a: "110" }
+                ]
+            },
+            {
+                titel: "Erlöschen der Obligationen",
+                abschnitte: [
+                    { name: "Erlöschen der Nebenrechte", a: "114" },
+                    { name: "Aufhebung durch Übereinkunft", a: "115" },
+                    { name: "Neuerung", a: "116" },
+                    { name: "Vereinigung", a: "118" },
+                    { name: "Unmöglichwerden einer Leistung", a: "119" },
+                    { name: "Verrechnung", a: "120" },
+                    { name: "Verjährung", a: "127" }
+                ]
+            },
+            {
+                titel: "Besondere Verhältnisse bei Obligationen",
+                abschnitte: [
+                    { name: "Die Solidarität", a: "143" },
+                    { name: "Die Bedingungen", a: "151" },
+                    { name: "Haft- und Reugeld. Lohnabzüge. Konventionalstrafe", a: "158" }
+                ]
+            },
+            {
+                titel: "Abtretung von Forderungen und Schuldübernahme",
+                abschnitte: [
+                    { name: "Die Abtretung von Forderungen", a: "164" },
+                    { name: "Die Schuldübernahme", a: "175" }
+                ]
+            }
+        ],
+        daten: [
+            { u: "Die Entstehung durch Vertrag",                      t: "Entstehung der Obligationen",                    a: "1"   },
+            { u: "Die Entstehung durch unerlaubte Handlungen",        t: "Entstehung der Obligationen",                    a: "41"  },
+            { u: "Die Entstehung aus ungerechtfertigter Bereicherung",t: "Entstehung der Obligationen",                    a: "62"  },
+            { u: "Die Erfüllung der Obligationen",                    t: "Wirkung der Obligationen",                       a: "68"  },
+            { u: "Die Folgen der Nichterfüllung",                     t: "Wirkung der Obligationen",                       a: "97"  },
+            { u: "Beziehungen zu dritten Personen",                   t: "Wirkung der Obligationen",                       a: "110" },
+            { u: "Erlöschen der Nebenrechte",                         t: "Erlöschen der Obligationen",                     a: "114" },
+            { u: "Aufhebung durch Übereinkunft",                      t: "Erlöschen der Obligationen",                     a: "115" },
+            { u: "Neuerung",                                          t: "Erlöschen der Obligationen",                     a: "116" },
+            { u: "Vereinigung",                                       t: "Erlöschen der Obligationen",                     a: "118" },
+            { u: "Unmöglichwerden einer Leistung",                    t: "Erlöschen der Obligationen",                     a: "119" },
+            { u: "Verrechnung",                                       t: "Erlöschen der Obligationen",                     a: "120" },
+            { u: "Verjährung",                                        t: "Erlöschen der Obligationen",                     a: "127" },
+            { u: "Die Solidarität",                                   t: "Besondere Verhältnisse bei Obligationen",        a: "143" },
+            { u: "Die Bedingungen",                                   t: "Besondere Verhältnisse bei Obligationen",        a: "151" },
+            { u: "Haft- und Reugeld. Lohnabzüge. Konventionalstrafe",t: "Besondere Verhältnisse bei Obligationen",        a: "158" },
+            { u: "Die Abtretung von Forderungen",                     t: "Abtretung von Forderungen und Schuldübernahme", a: "164" },
+            { u: "Die Schuldübernahme",                               t: "Abtretung von Forderungen und Schuldübernahme", a: "175" }
+        ]
+    },
+
+    OR: {
+        name: "OR BT",
+        vollname: "Obligationenrecht — Besonderer Teil",
+        artikel: "das Schweizer",
+        teilFrage: "",
+        anleitungZeilen: ["", "", ""],
+        daten: []
     }
 
-    function updateChart() {
-        if (!chart) return;
-        chart.data.labels = history.map((_, i) => i + 1);
-        chart.data.datasets[0].data = history.map(item => item.time);
-        chart.update();
-    }
+};
 
-    function updateStats() {
-        const statsBar = document.getElementById('statsBar');
-        if (history.length === 0) { statsBar.style.display = 'none'; return; }
-        const times = history.map(item => item.time);
-        document.getElementById('statCount').textContent = times.length;
-        document.getElementById('statAvg').textContent = (times.reduce((s, t) => s + t, 0) / times.length).toFixed(2) + 's';
-        document.getElementById('statBest').textContent = Math.min(...times).toFixed(2) + 's';
-        statsBar.style.display = 'flex';
-    }
+// ═══════════════════════════════════════════════════════════════════
+// SPIELLOGIK
+// ═══════════════════════════════════════════════════════════════════
 
-    function neueFrage() {
-        if (!aktiverErlass) return;
-        const daten = erlasse[aktiverErlass].daten;
-        aktuelleFrage = daten[Math.floor(Math.random() * daten.length)];
+let aktiverErlass = null;
+let spielModus    = 'tippen';
+let aktuelleFrage, startTime, timerInterval, chart;
+let history       = [];
+let navPenalty    = 0;
+let navPhase      = 1;
+let navAbschnitte = [];
+
+window.onload = function() {
+    renderTabs();
+    initChart();
+    const erster = Object.keys(erlasse).find(k => erlasse[k].daten.length > 0);
+    if (erster) wechsleErlass(erster);
+};
+
+// ── Tabs & Erlass-Wechsel ─────────────────────────────────────────
+
+function renderTabs() {
+    const container = document.getElementById('erlassTabs');
+    container.innerHTML = '';
+    Object.keys(erlasse).forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'erlass-tab';
+        btn.id = 'tab_' + key;
+        const hatDaten = erlasse[key].daten.length > 0;
+        btn.textContent = erlasse[key].name + (hatDaten ? '' : ' (bald)');
+        if (!hatDaten) {
+            btn.disabled = true;
+            btn.style.opacity = '0.45';
+            btn.style.cursor = 'default';
+        } else {
+            btn.onclick = () => wechsleErlass(key);
+        }
+        container.appendChild(btn);
+    });
+}
+
+function wechsleErlass(key) {
+    if (aktiverErlass === key) return;
+    clearInterval(timerInterval);
+    aktiverErlass = key;
+    const e = erlasse[key];
+
+    document.querySelectorAll('.erlass-tab').forEach(b => b.classList.remove('aktiv'));
+    document.getElementById('tab_' + key).classList.add('aktiv');
+    document.title = e.name + '-Guesser';
+    document.getElementById('spielTitel').textContent = e.name + '-Guesser';
+    document.getElementById('spielUntertitel').textContent = 'Meistere ' + (e.artikel || 'das Schweizer') + ' ' + e.vollname;
+    document.getElementById('chartTitel').textContent = 'Dein Fortschritt – ' + e.name + ' (Sekunden pro Runde)';
+
+    const modusToggle = document.getElementById('modusToggle');
+    const hasTabs = !!e.struktur;
+    modusToggle.style.display = hasTabs ? 'block' : 'none';
+    document.getElementById('mainCard').classList.toggle('has-tabs', hasTabs);
+
+    try { history = JSON.parse(localStorage.getItem('guesser_history_' + key)) || []; }
+    catch(err) { history = []; }
+
+    document.getElementById('inputUeberthema').placeholder = e.teilFrage || 'In welchem Teil des ' + key + ' befindet sich der angezeigte Titel?';
+
+    setModus('tippen');
+    updateChart();
+    updateStats();
+}
+
+function updateAnleitung() {
+    const e = erlasse[aktiverErlass];
+    const zeilen = spielModus === 'navigieren' && e.anleitungZeilenExplorer
+        ? e.anleitungZeilenExplorer
+        : e.anleitungZeilen;
+    if (!zeilen) return;
+    for (let i = 1; i <= 5; i++) {
+        const el = document.getElementById('anleitungZeile' + i);
+        if (el) el.innerHTML = zeilen[i - 1] || '';
+    }
+}
+
+function setModus(modus) {
+    spielModus = modus;
+    document.getElementById('tippModus').style.display = modus === 'tippen' ? 'block' : 'none';
+    document.getElementById('navigationsbaum').style.display = modus === 'navigieren' ? 'block' : 'none';
+    document.getElementById('fragenLabel').textContent = modus === 'tippen' ? 'Titel:' : 'Artikel:';
+    document.getElementById('switchClassic').classList.toggle('aktiv', modus === 'tippen');
+    document.getElementById('switchExplorer').classList.toggle('aktiv', modus === 'navigieren');
+    updateAnleitung();
+    clearInterval(timerInterval);
+    neueFrage();
+}
+
+// ── Neue Frage ────────────────────────────────────────────────────
+
+function neueFrage() {
+    if (!aktiverErlass) return;
+    clearInterval(timerInterval);
+
+    const daten = erlasse[aktiverErlass].daten;
+    aktuelleFrage = daten[Math.floor(Math.random() * daten.length)];
+
+    document.getElementById('timer').innerText = '0.00s';
+    document.getElementById('penaltyAnzeige').style.opacity = '0';
+    document.getElementById('btnAufgeben').style.display = 'none';
+    document.getElementById('antwortHinweis').innerText = '';
+
+    if (spielModus === 'tippen') {
         document.getElementById('frage').innerText = aktuelleFrage.u;
-
         const uInp = document.getElementById('inputUeberthema');
         const aInp = document.getElementById('inputArtikel');
-        uInp.value = ""; uInp.disabled = false; uInp.className = "";
-        aInp.value = ""; aInp.disabled = true; aInp.className = "";
-        document.getElementById('timer').innerText = "0.00s";
-        document.getElementById('btnAufgeben').style.display = 'none';
-        document.getElementById('antwortHinweis').innerText = '';
+        uInp.value = ''; uInp.disabled = false; uInp.className = '';
+        aInp.value = ''; aInp.disabled = true; aInp.className = '';
         uInp.focus();
+    } else {
+        document.getElementById('frage').innerText = 'Art. ' + aktuelleFrage.a;
+        document.getElementById('btnAufgeben').style.display = 'inline-block';
+        navPenalty = 0;
+        navPhase = 1;
+        navAbschnitte = [];
+        renderNavigationsbaum();
     }
+}
 
-    function aufgeben() {
+// ── Navigations-Modus ─────────────────────────────────────────────
+
+function renderNavigationsbaum() {
+    const struktur = erlasse[aktiverErlass].struktur;
+    if (!struktur) return;
+    const container = document.getElementById('navigationsbaum');
+    container.innerHTML = '';
+
+    const label = document.createElement('p');
+    label.className = 'nav-label';
+    label.textContent = navPhase === 1
+        ? 'Schritt 1: In welchem Titel befindet sich dieser Artikel?'
+        : 'Schritt 2: In welchem Abschnitt befindet sich dieser Artikel?';
+    container.appendChild(label);
+
+    struktur.forEach(titelObj => {
+        const btn = document.createElement('button');
+        btn.className = 'nav-titel-btn';
+        btn.textContent = titelObj.titel;
+        btn.onclick = () => navPhase === 1 ? titelKlick(titelObj, btn) : null;
+        container.appendChild(btn);
+
+        const abschnittDiv = document.createElement('div');
+        abschnittDiv.style.display = 'none';
+        abschnittDiv.style.padding = '4px 0 8px 16px';
+        btn._abschnittDiv = abschnittDiv;
+
+        titelObj.abschnitte.forEach(abs => {
+            const absBtn = document.createElement('button');
+            absBtn.className = 'nav-abschnitt-btn';
+            absBtn.textContent = abs.name;
+            absBtn.onclick = () => abschnittKlick(abs, absBtn);
+            abschnittDiv.appendChild(absBtn);
+        });
+        container.appendChild(abschnittDiv);
+    });
+}
+
+function titelKlick(titelObj, titelBtn) {
+    if (titelObj.titel === aktuelleFrage.t) {
+        titelBtn.classList.add('korrekt');
+        titelBtn.onclick = null;
+        titelBtn._abschnittDiv.style.display = 'block';
+        navPhase = 2;
+        document.querySelector('#navigationsbaum .nav-label').textContent =
+            'Schritt 2: In welchem Abschnitt befindet sich dieser Artikel?';
+        startTime = performance.now() - (navPenalty * 1000);
+        timerInterval = setInterval(() => {
+            document.getElementById('timer').innerText = ((performance.now() - startTime) / 1000).toFixed(2) + 's';
+        }, 50);
+        setTimeout(() => titelBtn._abschnittDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+    } else {
+        navPenalty += 3;
+        document.getElementById('timer').innerText = navPenalty.toFixed(2) + 's';
+        zeigePenalty();
+        zeigePenaltyAufButton(titelBtn);
+        titelBtn.classList.add('falsch');
+        setTimeout(() => titelBtn.classList.remove('falsch'), 700);
+    }
+}
+
+function abschnittKlick(abs, absBtn) {
+    if (abs.name === aktuelleFrage.u) {
         clearInterval(timerInterval);
+        const finalTime = parseFloat(((performance.now() - startTime) / 1000).toFixed(2));
+        absBtn.classList.add('korrekt');
+        absBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         document.getElementById('btnAufgeben').style.display = 'none';
+        saveResult(finalTime);
+        setTimeout(neueFrage, 1000);
+    } else {
+        startTime -= 3000;
+        zeigePenalty();
+        zeigePenaltyAufButton(absBtn);
+        absBtn.classList.add('falsch');
+        setTimeout(() => absBtn.classList.remove('falsch'), 700);
+    }
+}
+
+function zeigePenalty() {
+    const el = document.getElementById('penaltyAnzeige');
+    el.textContent = '+3s';
+    el.style.opacity = '1';
+    clearTimeout(el._timeout);
+    el._timeout = setTimeout(() => { el.style.opacity = '0'; }, 900);
+}
+
+function zeigePenaltyAufButton(btn) {
+    const badge = document.createElement('span');
+    badge.textContent = '+3s';
+    badge.style.cssText = 'position:absolute;top:50%;right:14px;transform:translateY(-50%);background:#e74c3c;color:white;font-size:0.78em;font-weight:700;padding:2px 7px;border-radius:10px;pointer-events:none;';
+    btn.style.position = 'relative';
+    btn.appendChild(badge);
+    setTimeout(() => badge.remove(), 900);
+}
+
+function aufgeben() {
+    clearInterval(timerInterval);
+    document.getElementById('btnAufgeben').style.display = 'none';
+    if (spielModus === 'tippen') {
         document.getElementById('inputArtikel').disabled = true;
+        document.getElementById('antwortHinweis').innerText = 'Richtige Antwort: Art. ' + aktuelleFrage.a;
+    } else {
         document.getElementById('antwortHinweis').innerText =
-            `Richtige Antwort: Art. ${aktuelleFrage.a} ${aktiverErlass}`;
-        setTimeout(neueFrage, 4000);
+            'Richtige Antwort: ' + aktuelleFrage.u + ' → ' + aktuelleFrage.t + ' (Art. ' + aktuelleFrage.a + ')';
     }
+    setTimeout(neueFrage, 4000);
+}
 
-    function istKorrekteTeil(eingabe) {
-        const val = eingabe.trim().toLowerCase();
-        if (val === aktuelleFrage.t.toLowerCase()) return true;
-        const alts = (erlasse[aktiverErlass].alternativen || {})[aktuelleFrage.t] || [];
-        return alts.some(a => val === a.toLowerCase());
+// ── Tipp-Modus ────────────────────────────────────────────────────
+
+function istKorrekteTeil(eingabe) {
+    const val = eingabe.trim().toLowerCase();
+    if (val === aktuelleFrage.t.toLowerCase()) return true;
+    const alts = (erlasse[aktiverErlass].alternativen || {})[aktuelleFrage.t] || [];
+    return alts.some(a => val === a.toLowerCase());
+}
+
+document.getElementById('inputUeberthema').addEventListener('input', function(e) {
+    if (istKorrekteTeil(e.target.value)) {
+        e.target.disabled = true;
+        e.target.className = 'correct';
+        document.getElementById('inputArtikel').disabled = false;
+        document.getElementById('inputArtikel').focus();
+        document.getElementById('btnAufgeben').style.display = 'inline-block';
+        startTime = performance.now();
+        timerInterval = setInterval(() => {
+            document.getElementById('timer').innerText = ((performance.now() - startTime) / 1000).toFixed(2) + 's';
+        }, 50);
     }
+});
 
-    document.getElementById('inputUeberthema').addEventListener('input', function(e) {
-        if (istKorrekteTeil(e.target.value)) {
-            e.target.disabled = true;
-            e.target.className = "correct";
-            document.getElementById('inputArtikel').disabled = false;
-            document.getElementById('inputArtikel').focus();
-            document.getElementById('btnAufgeben').style.display = 'inline-block';
-            startTime = performance.now();
-            timerInterval = setInterval(() => {
-                document.getElementById('timer').innerText = ((performance.now() - startTime) / 1000).toFixed(2) + "s";
-            }, 50);
+document.getElementById('inputArtikel').addEventListener('input', function(e) {
+    if (e.target.value.trim() === aktuelleFrage.a) {
+        clearInterval(timerInterval);
+        const finalTime = parseFloat(((performance.now() - startTime) / 1000).toFixed(2));
+        e.target.className = 'correct';
+        saveResult(finalTime);
+        setTimeout(neueFrage, 800);
+    }
+});
+
+// ── Chart & Stats ─────────────────────────────────────────────────
+
+function initChart() {
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Classic',
+                    data: [],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52,152,219,0.1)',
+                    pointRadius: 4,
+                    fill: false,
+                    tension: 0.3,
+                    spanGaps: false
+                },
+                {
+                    label: 'Explorer',
+                    data: [],
+                    borderColor: '#27ae60',
+                    backgroundColor: 'rgba(39,174,96,0.1)',
+                    pointRadius: 4,
+                    fill: false,
+                    tension: 0.3,
+                    spanGaps: false
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true, title: { display: true, text: 'Sekunden' } },
+                x: { title: { display: true, text: 'Anzahl Versuche' } }
+            }
         }
     });
+}
 
-    document.getElementById('inputArtikel').addEventListener('input', function(e) {
-        if (e.target.value.trim() === aktuelleFrage.a) {
-            clearInterval(timerInterval);
-            const finalTime = parseFloat(((performance.now() - startTime) / 1000).toFixed(2));
-            e.target.className = "correct";
-            saveResult(finalTime);
-            setTimeout(neueFrage, 800);
-        }
-    });
+function updateChart() {
+    if (!chart) return;
+    chart.data.labels = history.map((_, i) => i + 1);
+    chart.data.datasets[0].data = history.map(item =>
+        (!item.modus || item.modus === 'tippen') ? item.time : null
+    );
+    chart.data.datasets[1].data = history.map(item =>
+        item.modus === 'navigieren' ? item.time : null
+    );
+    chart.update();
+}
 
-    function saveResult(time) {
-        history.push({ time });
-        if (history.length > 50) history.shift();
-        localStorage.setItem('guesser_history_' + aktiverErlass, JSON.stringify(history));
+function updateStats() {
+    const statsBar = document.getElementById('statsBar');
+    if (history.length === 0) { statsBar.style.display = 'none'; return; }
+    const times = history.map(item => item.time);
+    document.getElementById('statCount').textContent = times.length;
+    document.getElementById('statAvg').textContent = (times.reduce((s, t) => s + t, 0) / times.length).toFixed(2) + 's';
+    document.getElementById('statBest').textContent = Math.min(...times).toFixed(2) + 's';
+    statsBar.style.display = 'flex';
+}
+
+function saveResult(time) {
+    history.push({ time, modus: spielModus });
+    if (history.length > 50) history.shift();
+    localStorage.setItem('guesser_history_' + aktiverErlass, JSON.stringify(history));
+    updateChart();
+    updateStats();
+}
+
+function clearHistory() {
+    if (confirm('Statistik für ' + aktiverErlass + ' wirklich löschen?')) {
+        history = [];
+        localStorage.removeItem('guesser_history_' + aktiverErlass);
         updateChart();
         updateStats();
     }
+}
 
-    function clearHistory() {
-        if (confirm("Statistik für " + aktiverErlass + " wirklich löschen?")) {
-            history = [];
-            localStorage.removeItem('guesser_history_' + aktiverErlass);
-            updateChart();
-            updateStats();
-        }
-    }
 </script>
 </body>
 </html>
