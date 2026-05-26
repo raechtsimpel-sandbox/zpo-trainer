@@ -89,7 +89,6 @@
         #btnAufgeben:hover { background: #c0392b; }
         #antwortHinweis { color: #e74c3c; font-size: 0.95em; min-height: 1.4em; margin-top: 4px; font-weight: 500; }
 
-        #navStickyHeader { display: none; position: sticky; top: 0; z-index: 10; background: white; padding: 10px 0 8px; border-bottom: 1px solid #eee; margin: 0 -30px 14px; padding-left: 30px; padding-right: 30px; }
         #navigationsbaum { text-align: left; margin: 10px 0; }
         .nav-label { font-size: 0.85em; color: #7f8c8d; margin-bottom: 8px; }
         .nav-titel-btn { width: 100%; text-align: left; padding: 10px 16px; background: #f4f6f8; border: 2px solid #ddd; border-radius: 8px; font-size: 0.97em; font-weight: 600; color: #2c3e50; cursor: pointer; margin-bottom: 6px; transition: all 0.15s; }
@@ -147,20 +146,19 @@
         <div class="card-content">
 
 
-        <h3 id="fragenLabel">Titel:</h3>
-        <h2 id="frage">Erlass auswählen...</h2>
+        <div id="fragenBereich">
+            <h3 id="fragenLabel">Titel:</h3>
+            <h2 id="frage">Erlass auswählen...</h2>
+        </div>
 
         <div id="tippModus">
             <input type="text" id="inputUeberthema" placeholder="In welchem Teil befindet sich der angezeigte Titel?" autocomplete="off" disabled>
             <input type="text" id="inputArtikel" placeholder="Ersten Artikel des Titels eingeben..." disabled autocomplete="off">
         </div>
 
-        <div id="navStickyHeader">
-            <div style="font-size:0.85em;color:#7f8c8d;margin-bottom:2px" id="navStickyLabel">Artikel:</div>
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span id="navStickyFrage" style="color:#e67e22;font-size:1.4em;font-weight:700;"></span>
-                <span id="navStickyTimer" style="font-size:1.4em;font-weight:700;color:#34495e;font-variant-numeric:tabular-nums;">0.00s</span>
-            </div>
+        <div id="explorerBar" style="display:none; position:sticky; top:0; background:white; z-index:10; border-bottom:1px solid #eee; padding:10px 30px; margin:0 -30px 14px; display:flex; justify-content:space-between; align-items:center;">
+            <span id="explorerBarFrage" style="color:#e67e22; font-size:1.1em; font-weight:700;"></span>
+            <span id="explorerBarTimer" style="font-size:1.1em; font-weight:600; color:#34495e; font-variant-numeric:tabular-nums;">0.00s</span>
         </div>
 
         <div id="navigationsbaum" style="display:none;"></div>
@@ -605,10 +603,13 @@ function updateAnleitung() {
 
 function setModus(modus) {
     spielModus = modus;
-    document.getElementById('tippModus').style.display = modus === 'tippen' ? 'block' : 'none';
-    document.getElementById('navigationsbaum').style.display = modus === 'navigieren' ? 'block' : 'none';
-    document.getElementById('navStickyHeader').style.display = modus === 'navigieren' ? 'block' : 'none';
-    document.getElementById('fragenLabel').textContent = modus === 'tippen' ? 'Titel:' : 'Artikel:';
+    const isNav = modus === 'navigieren';
+    document.getElementById('tippModus').style.display = isNav ? 'none' : 'block';
+    document.getElementById('navigationsbaum').style.display = isNav ? 'block' : 'none';
+    document.getElementById('fragenBereich').style.display = isNav ? 'none' : 'block';
+    document.getElementById('timer').style.display = isNav ? 'none' : 'block';
+    document.getElementById('explorerBar').style.display = isNav ? 'flex' : 'none';
+    document.getElementById('fragenLabel').textContent = 'Titel:';
     document.getElementById('switchClassic').classList.toggle('aktiv', modus === 'tippen');
     document.getElementById('switchExplorer').classList.toggle('aktiv', modus === 'navigieren');
     updateAnleitung();
@@ -626,6 +627,7 @@ function neueFrage() {
     aktuelleFrage = daten[Math.floor(Math.random() * daten.length)];
 
     document.getElementById('timer').innerText = '0.00s';
+    document.getElementById('explorerBarTimer').innerText = '0.00s';
     document.getElementById('penaltyAnzeige').style.opacity = '0';
     document.getElementById('btnAufgeben').style.display = 'none';
     document.getElementById('antwortHinweis').innerText = '';
@@ -639,8 +641,8 @@ function neueFrage() {
         uInp.focus();
     } else {
         document.getElementById('frage').innerText = 'Art. ' + aktuelleFrage.a;
-        document.getElementById('navStickyFrage').innerText = 'Art. ' + aktuelleFrage.a;
-        document.getElementById('navStickyTimer').innerText = '0.00s';
+        document.getElementById('explorerBarFrage').innerText = 'Art. ' + aktuelleFrage.a;
+        document.getElementById('explorerBarTimer').innerText = '0.00s';
         document.getElementById('btnAufgeben').style.display = 'inline-block';
         navPenalty = 0;
         navPhase = 1;
@@ -698,15 +700,13 @@ function titelKlick(titelObj, titelBtn) {
         startTime = performance.now() - (navPenalty * 1000);
         timerInterval = setInterval(() => {
             const t = ((performance.now() - startTime) / 1000).toFixed(2) + 's';
-            document.getElementById('timer').innerText = t;
-            document.getElementById('navStickyTimer').innerText = t;
+            document.getElementById('explorerBarTimer').innerText = t;
         }, 50);
         setTimeout(() => titelBtn._abschnittDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
     } else {
         navPenalty += 3;
         const pt = navPenalty.toFixed(2) + 's';
-        document.getElementById('timer').innerText = pt;
-        document.getElementById('navStickyTimer').innerText = pt;
+        document.getElementById('explorerBarTimer').innerText = pt;
         zeigePenalty();
         zeigePenaltyAufButton(titelBtn);
         titelBtn.classList.add('falsch');
