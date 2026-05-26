@@ -89,7 +89,7 @@
         #btnAufgeben:hover { background: #c0392b; }
         #antwortHinweis { color: #e74c3c; font-size: 0.95em; min-height: 1.4em; margin-top: 4px; font-weight: 500; }
 
-        /* Navigationsbaum */
+        #navStickyHeader { display: none; position: sticky; top: 0; z-index: 10; background: white; padding: 10px 0 8px; border-bottom: 1px solid #eee; margin: 0 -30px 14px; padding-left: 30px; padding-right: 30px; }
         #navigationsbaum { text-align: left; margin: 10px 0; }
         .nav-label { font-size: 0.85em; color: #7f8c8d; margin-bottom: 8px; }
         .nav-titel-btn { width: 100%; text-align: left; padding: 10px 16px; background: #f4f6f8; border: 2px solid #ddd; border-radius: 8px; font-size: 0.97em; font-weight: 600; color: #2c3e50; cursor: pointer; margin-bottom: 6px; transition: all 0.15s; }
@@ -153,6 +153,14 @@
         <div id="tippModus">
             <input type="text" id="inputUeberthema" placeholder="In welchem Teil befindet sich der angezeigte Titel?" autocomplete="off" disabled>
             <input type="text" id="inputArtikel" placeholder="Ersten Artikel des Titels eingeben..." disabled autocomplete="off">
+        </div>
+
+        <div id="navStickyHeader">
+            <div style="font-size:0.85em;color:#7f8c8d;margin-bottom:2px" id="navStickyLabel">Artikel:</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span id="navStickyFrage" style="color:#e67e22;font-size:1.4em;font-weight:700;"></span>
+                <span id="navStickyTimer" style="font-size:1.4em;font-weight:700;color:#34495e;font-variant-numeric:tabular-nums;">0.00s</span>
+            </div>
         </div>
 
         <div id="navigationsbaum" style="display:none;"></div>
@@ -599,6 +607,7 @@ function setModus(modus) {
     spielModus = modus;
     document.getElementById('tippModus').style.display = modus === 'tippen' ? 'block' : 'none';
     document.getElementById('navigationsbaum').style.display = modus === 'navigieren' ? 'block' : 'none';
+    document.getElementById('navStickyHeader').style.display = modus === 'navigieren' ? 'block' : 'none';
     document.getElementById('fragenLabel').textContent = modus === 'tippen' ? 'Titel:' : 'Artikel:';
     document.getElementById('switchClassic').classList.toggle('aktiv', modus === 'tippen');
     document.getElementById('switchExplorer').classList.toggle('aktiv', modus === 'navigieren');
@@ -630,6 +639,8 @@ function neueFrage() {
         uInp.focus();
     } else {
         document.getElementById('frage').innerText = 'Art. ' + aktuelleFrage.a;
+        document.getElementById('navStickyFrage').innerText = 'Art. ' + aktuelleFrage.a;
+        document.getElementById('navStickyTimer').innerText = '0.00s';
         document.getElementById('btnAufgeben').style.display = 'inline-block';
         navPenalty = 0;
         navPhase = 1;
@@ -686,12 +697,16 @@ function titelKlick(titelObj, titelBtn) {
             'Schritt 2: In welchem Abschnitt befindet sich dieser Artikel?';
         startTime = performance.now() - (navPenalty * 1000);
         timerInterval = setInterval(() => {
-            document.getElementById('timer').innerText = ((performance.now() - startTime) / 1000).toFixed(2) + 's';
+            const t = ((performance.now() - startTime) / 1000).toFixed(2) + 's';
+            document.getElementById('timer').innerText = t;
+            document.getElementById('navStickyTimer').innerText = t;
         }, 50);
         setTimeout(() => titelBtn._abschnittDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
     } else {
         navPenalty += 3;
-        document.getElementById('timer').innerText = navPenalty.toFixed(2) + 's';
+        const pt = navPenalty.toFixed(2) + 's';
+        document.getElementById('timer').innerText = pt;
+        document.getElementById('navStickyTimer').innerText = pt;
         zeigePenalty();
         zeigePenaltyAufButton(titelBtn);
         titelBtn.classList.add('falsch');
