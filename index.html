@@ -713,7 +713,7 @@ function abschnittKlick(abs, absBtn) {
         absBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         document.getElementById('btnAufgeben').style.display = 'none';
         saveResult(finalTime);
-        setTimeout(neueFrage, 1000);
+        setTimeout(neueFrage, 3000);
     } else {
         startTime -= 3000;
         zeigePenalty();
@@ -750,7 +750,7 @@ function aufgeben() {
         document.getElementById('antwortHinweis').innerText =
             'Richtige Antwort: ' + aktuelleFrage.u + ' → ' + aktuelleFrage.t + ' (Art. ' + aktuelleFrage.a + ')';
     }
-    setTimeout(neueFrage, 4000);
+    setTimeout(neueFrage, 6000);
 }
 
 // ── Tipp-Modus ────────────────────────────────────────────────────
