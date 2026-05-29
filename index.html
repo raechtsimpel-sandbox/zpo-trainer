@@ -114,6 +114,61 @@
         .stat-label { font-size: 0.78em; color: #95a5a6; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
         .stat-value { font-size: 1.5em; font-weight: 700; color: #2c3e50; font-variant-numeric: tabular-nums; }
         .stat-value.highlight { color: #3498db; }
+
+        /* ── Oberster Spiel-Wechsler ───────────────────────────────── */
+        .spiel-switcher { display: flex; justify-content: center; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+        .spiel-switch-btn { padding: 12px 26px; border-radius: 24px; border: 2px solid #ddd; background: white; color: #7f8c8d; font-size: 1.02em; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+        .spiel-switch-btn:hover { border-color: #3498db; color: #3498db; }
+        .spiel-switch-btn.aktiv { background: #2c3e50; border-color: #2c3e50; color: white; }
+
+        /* ── Delikt-Sprint ─────────────────────────────────────────── */
+        .ds-gruppen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; text-align: left; }
+        @media (max-width: 600px) { .ds-gruppen-grid { grid-template-columns: 1fr; } }
+        .ds-gruppe-btn { padding: 12px 16px; background: #f4f6f8; border: 2px solid #ddd; border-radius: 10px; font-size: 0.95em; font-weight: 600; color: #2c3e50; cursor: pointer; transition: all 0.15s; display: flex; justify-content: space-between; align-items: center; gap: 10px; text-align: left; }
+        .ds-gruppe-btn > span:first-child { flex: 1; text-align: left; }
+        .ds-gruppe-btn:hover { border-color: #3498db; color: #3498db; background: #eaf4fd; }
+        .ds-gruppe-btn .ds-anzahl { font-size: 0.82em; color: #95a5a6; font-weight: 700; background: #fff; border-radius: 12px; padding: 2px 10px; white-space: nowrap; }
+        .ds-gruppe-btn:hover .ds-anzahl { color: #3498db; }
+        .ds-gruppe-btn.ds-zufall { background: #fef5e7; border-color: #f0c987; color: #b9770e; grid-column: 1 / -1; justify-content: center; }
+        .ds-gruppe-btn.ds-zufall:hover { background: #fdebd0; border-color: #e67e22; color: #d35400; }
+
+        #dsSpielBereich, #dsErgebnisBereich { display: none; }
+        .ds-game-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
+        .ds-game-header .ds-gruppe-name { font-size: 1.15em; font-weight: 700; color: #e67e22; text-align: left; flex: 1; min-width: 200px; }
+        #dsTimer { font-size: 2.4em; font-weight: bold; color: #34495e; font-variant-numeric: tabular-nums; }
+        #dsTimer.warnung { color: #e74c3c; }
+        .ds-bar-aussen { background: #eef1f4; border-radius: 10px; height: 14px; overflow: hidden; margin: 8px 0 4px; }
+        .ds-bar-innen { background: linear-gradient(90deg,#3498db,#2ecc71); height: 100%; width: 0%; transition: width 0.3s; border-radius: 10px; }
+        .ds-bar-label { font-size: 0.9em; color: #7f8c8d; margin-bottom: 14px; }
+        .ds-bar-label b { color: #2c3e50; font-size: 1.05em; }
+        input#dsInput { padding: 14px; margin: 6px 0; border: 2px solid #ddd; border-radius: 8px; font-size: 17px; width: 95%; transition: border-color 0.2s; text-align: left; }
+        input#dsInput:focus { border-color: #3498db; outline: none; }
+        input#dsInput:disabled { background: #f4f6f8; color: #aaa; }
+        #dsFeedback { min-height: 1.5em; font-weight: 600; font-size: 0.98em; margin: 6px 0 10px; }
+        #dsFeedback.treffer { color: #27ae60; }
+        #dsFeedback.fehler { color: #e74c3c; }
+        #dsFeedback.doppelt { color: #e67e22; }
+        .ds-chips { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-top: 8px; }
+        .ds-chip { background: #eafaf1; border: 1.5px solid #27ae60; color: #1e8449; border-radius: 16px; padding: 5px 12px; font-size: 0.85em; font-weight: 600; animation: dsPop 0.25s ease; }
+        @keyframes dsPop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        button.ds-aktion { padding: 11px 24px; color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 14px; font-size: 0.95em; font-weight: 600; transition: background 0.15s; background: #3498db; }
+        button.ds-aktion:hover { background: #2980b9; }
+        button.ds-aktion.grau { background: #95a5a6; }
+        button.ds-aktion.grau:hover { background: #7f8c8d; }
+        button.ds-aktion.rot { background: #e74c3c; }
+        button.ds-aktion.rot:hover { background: #c0392b; }
+        .ds-score { font-size: 3em; font-weight: 800; color: #2c3e50; margin: 6px 0; }
+        .ds-score .ds-total { color: #95a5a6; font-size: 0.5em; font-weight: 600; }
+        .ds-prozent { font-size: 1.1em; color: #7f8c8d; margin-bottom: 4px; }
+        .ds-highscore-badge { display: inline-block; background: #fef9e7; border: 1.5px solid #f1c40f; color: #b7950b; border-radius: 16px; padding: 4px 14px; font-size: 0.85em; font-weight: 700; margin: 4px 0 14px; }
+        .ds-listen { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; text-align: left; }
+        @media (max-width: 600px) { .ds-listen { grid-template-columns: 1fr; } }
+        .ds-spalte h3 { font-size: 0.95em; margin: 0 0 8px; padding-bottom: 6px; border-bottom: 2px solid #eee; }
+        .ds-spalte.gefunden h3 { color: #27ae60; }
+        .ds-spalte.verpasst h3 { color: #e74c3c; }
+        .ds-spalte ul { list-style: none; padding: 0; margin: 0; }
+        .ds-spalte li { font-size: 0.88em; padding: 4px 0; border-bottom: 1px solid #f4f4f4; display: flex; justify-content: space-between; gap: 8px; }
+        .ds-spalte li .ds-art { color: #b0b8c1; font-size: 0.85em; white-space: nowrap; }
     </style>
 </head>
 <body>
@@ -124,11 +179,20 @@
         <div class="baustellen-inner">
             <div class="baustellen-text">
                 <strong>🚧 Hier entsteht bald: Rächt Aktuell</strong>
-                <p>Aktuelle Bundesgerichtsentscheide – rechtlich eingeordnet. In der Zwischenzeit: viel Spass mit dem Spiel! 👷</p>
+                <p>Aktuelle Bundesgerichtsentscheide – rechtlich eingeordnet. In der Zwischenzeit: viel Spass mit den Spielen! 👷</p>
             </div>
             <a href="https://open.spotify.com/search/R%C3%A4cht%20Aktuell" target="_blank">🎙️ Schon auf Spotify</a>
         </div>
     </div>
+
+    <!-- ═══ Oberster Spiel-Wechsler ═══ -->
+    <div class="spiel-switcher">
+        <button class="spiel-switch-btn aktiv" id="switchSpielErlass" onclick="wechsleSpiel('erlass')">🏛️ Erlass-Guesser</button>
+        <button class="spiel-switch-btn" id="switchSpielDelikt" onclick="wechsleSpiel('delikt')">⚖️ Delikt-Sprint</button>
+    </div>
+
+    <!-- ═══════════════ SPIEL 1: Erlass-Guesser ═══════════════ -->
+    <div id="spielErlass">
 
     <div id="modusToggle" style="display:none;">
         <div class="modus-tabs">
@@ -204,7 +268,58 @@
         </div>
     </details>
 
-</div>
+    </div><!-- ende spielErlass -->
+
+    <!-- ═══════════════ SPIEL 2: Delikt-Sprint ═══════════════ -->
+    <div id="spielDelikt" style="display:none;">
+        <div class="card">
+            <h1>Delikt-Sprint</h1>
+            <p class="subtitle">StGB Besonderer Teil – nenne in <b>60 Sekunden</b> so viele Delikte einer Gruppe wie möglich</p>
+
+            <div id="dsAuswahlBereich">
+                <p style="color:#7f8c8d; font-size:0.92em; margin-top:18px;">Wähle eine Deliktsgruppe:</p>
+                <div class="ds-gruppen-grid" id="dsGruppenGrid"></div>
+            </div>
+
+            <div id="dsSpielBereich">
+                <div class="ds-game-header">
+                    <div class="ds-gruppe-name" id="dsAktiveGruppe"></div>
+                    <div id="dsTimer">1:00</div>
+                </div>
+                <div class="ds-bar-aussen"><div class="ds-bar-innen" id="dsBar"></div></div>
+                <div class="ds-bar-label"><b id="dsAnzahlGefunden">0</b> / <span id="dsAnzahlTotal">0</span> Delikten gefunden</div>
+                <input type="text" id="dsInput" placeholder="Deliktsname eingeben und Enter drücken…" autocomplete="off">
+                <div id="dsFeedback"></div>
+                <div class="ds-chips" id="dsChips"></div>
+                <button class="ds-aktion rot" id="dsBtnBeenden" onclick="dsBeenden()">⏹ Beenden &amp; auflösen</button>
+            </div>
+
+            <div id="dsErgebnisBereich">
+                <div class="ds-score"><span id="dsFinalGefunden">0</span><span class="ds-total">/<span id="dsFinalTotal">0</span></span></div>
+                <div class="ds-prozent" id="dsFinalProzent"></div>
+                <div id="dsHighscoreZeile"></div>
+                <div class="ds-listen">
+                    <div class="ds-spalte gefunden"><h3>✅ Gefunden</h3><ul id="dsListeGefunden"></ul></div>
+                    <div class="ds-spalte verpasst"><h3>❌ Verpasst</h3><ul id="dsListeVerpasst"></ul></div>
+                </div>
+                <button class="ds-aktion" onclick="dsNochmal()">🔁 Gleiche Gruppe nochmal</button>
+                <button class="ds-aktion grau" onclick="dsZurueck()">📋 Andere Gruppe wählen</button>
+            </div>
+        </div>
+
+        <details class="anleitung">
+            <summary>So funktioniert's (Klicken zum Ausklappen)</summary>
+            <div class="anleitung-content">
+                <ol>
+                    <li>Wähle eine <strong>Deliktsgruppe</strong> (= ein Titel des StGB Besonderer Teil) oder lass dir per Zufall eine zuteilen.</li>
+                    <li>Sobald du auf die Gruppe klickst, läuft der <strong>60-Sekunden-Countdown</strong>.</li>
+                    <li>Tippe nacheinander die <strong>Deliktsnamen</strong> dieser Gruppe ein und bestätige mit <strong>Enter</strong> – z.B. «Diebstahl», «Raub», «Betrug».</li>
+                    <li>Klein-/Grossschreibung, Umlaute, «ß/ss» und Bindestriche sind egal. Jedes korrekte Delikt erscheint als grüner Chip.</li>
+                    <li>Nach Ablauf der Zeit (oder per «Beenden») siehst du, <strong>welche du gefunden und welche du verpasst</strong> hast – inkl. deiner Bestleistung pro Gruppe.</li>
+                </ol>
+            </div>
+        </details>
+    </div><!-- ende spielDelikt -->
 
 <p style="margin-top:30px;font-size:0.82em;color:#b0b8c1;">
     Fragen oder Feedback? <a href="mailto:kontakt@rächtsimpel.ch" style="color:#95a5a6;text-decoration:none;border-bottom:1px dotted #b0b8c1;">kontakt@rächtsimpel.ch</a>
@@ -864,6 +979,150 @@ function clearHistory() {
         updateStats();
     }
 }
+
+
+
+// ═══════════════════════════════════════════════════════════════════
+// SPIEL-WECHSLER (Erlass-Guesser  <->  Delikt-Sprint)
+// ═══════════════════════════════════════════════════════════════════
+function wechsleSpiel(welches) {
+    const istErlass = welches === 'erlass';
+    document.getElementById('spielErlass').style.display = istErlass ? 'block' : 'none';
+    document.getElementById('spielDelikt').style.display = istErlass ? 'none' : 'block';
+    document.getElementById('switchSpielErlass').classList.toggle('aktiv', istErlass);
+    document.getElementById('switchSpielDelikt').classList.toggle('aktiv', !istErlass);
+    document.title = istErlass ? 'Erlass-Guesser \u2013 R\u00e4chtSimpel' : 'Delikt-Sprint \u2013 R\u00e4chtSimpel';
+    if (!istErlass) { try { clearInterval(timerInterval); } catch(e){} }
+    else { try { DS.stop(); } catch(e){} }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DELIKT-SPRINT (gekapselt, eigener Namensraum DS)
+// ═══════════════════════════════════════════════════════════════════
+const DS = (function () {
+    const SPIELZEIT = 60;
+    const gruppen = [{"titel": "Strafbare Handlungen gegen Leib und Leben", "delikte": [{"name": "Vorsätzliche Tötung", "arts": ["111"]}, {"name": "Mord", "arts": ["112"]}, {"name": "Totschlag", "arts": ["113"]}, {"name": "Tötung auf Verlangen", "arts": ["114"]}, {"name": "Verleitung und Beihilfe zum Selbstmord", "arts": ["115"]}, {"name": "Kindestötung", "arts": ["116"]}, {"name": "Fahrlässige Tötung", "arts": ["117"]}, {"name": "Strafbarer Schwangerschaftsabbruch", "arts": ["118"]}, {"name": "Schwere Körperverletzung", "arts": ["122"]}, {"name": "Einfache Körperverletzung", "arts": ["123"]}, {"name": "Verstümmelung weiblicher Genitalien", "arts": ["124"]}, {"name": "Fahrlässige Körperverletzung", "arts": ["125"]}, {"name": "Tätlichkeiten", "arts": ["126"]}, {"name": "Aussetzung", "arts": ["127"]}, {"name": "Unterlassung der Nothilfe", "arts": ["128"]}, {"name": "Falscher Alarm", "arts": ["128bis"]}, {"name": "Gefährdung des Lebens", "arts": ["129", "130"]}, {"name": "Raufhandel", "arts": ["133"]}, {"name": "Angriff", "arts": ["134"]}, {"name": "Gewaltdarstellungen", "arts": ["135"]}, {"name": "Verabreichen gesundheitsgefährdender Stoffe an Kinder", "arts": ["136"]}]}, {"titel": "Strafbare Handlungen gegen das Vermögen", "delikte": [{"name": "Unrechtmässige Aneignung", "arts": ["137"]}, {"name": "Veruntreuung", "arts": ["138"]}, {"name": "Diebstahl", "arts": ["139"]}, {"name": "Raub", "arts": ["140"]}, {"name": "Sachentziehung", "arts": ["141"]}, {"name": "Unrechtmässige Verwendung von Vermögenswerten", "arts": ["141bis"]}, {"name": "Unrechtmässige Entziehung von Energie", "arts": ["142"]}, {"name": "Unbefugte Datenbeschaffung", "arts": ["143"]}, {"name": "Unbefugtes Eindringen in ein Datenverarbeitungssystem", "arts": ["143bis"]}, {"name": "Sachbeschädigung", "arts": ["144"]}, {"name": "Datenbeschädigung", "arts": ["144bis"]}, {"name": "Veruntreuung und Entzug von Pfandsachen und Retentionsgegenständen", "arts": ["145"]}, {"name": "Betrug", "arts": ["146"]}, {"name": "Betrügerischer Missbrauch einer Datenverarbeitungsanlage", "arts": ["147"]}, {"name": "Check- und Kreditkartenmissbrauch", "arts": ["148"]}, {"name": "Unrechtmässiger Bezug von Leistungen einer Sozialversicherung oder der Sozialhilfe", "arts": ["148a"]}, {"name": "Zechprellerei", "arts": ["149"]}, {"name": "Erschleichen einer Leistung", "arts": ["150"]}, {"name": "Herstellen und Inverkehrbringen von Materialien zur unbefugten Entschlüsselung codierter Angebote", "arts": ["150bis"]}, {"name": "Arglistige Vermögensschädigung", "arts": ["151"]}, {"name": "Unwahre Angaben über kaufmännische Gewerbe", "arts": ["152"]}, {"name": "Unwahre Angaben gegenüber Handelsregisterbehörden", "arts": ["153"]}, {"name": "Strafbarkeit der Mitglieder des Verwaltungsrats und der Geschäftsleitung von Gesellschaften, deren Aktien an einer Börse kotiert sind", "arts": ["154"]}, {"name": "Warenfälschung", "arts": ["155"]}, {"name": "Erpressung", "arts": ["156"]}, {"name": "Wucher", "arts": ["157"]}, {"name": "Ungetreue Geschäftsbesorgung", "arts": ["158"]}, {"name": "Missbrauch von Lohnabzügen", "arts": ["159"]}, {"name": "Hehlerei", "arts": ["160", "161", "161bis"]}, {"name": "Verletzung des Fabrikations- oder Geschäftsgeheimnisses", "arts": ["162"]}, {"name": "Betrügerischer Konkurs und Pfändungsbetrug", "arts": ["163"]}, {"name": "Gläubigerschädigung durch Vermögensminderung", "arts": ["164"]}, {"name": "Misswirtschaft", "arts": ["165"]}, {"name": "Unterlassung der Buchführung", "arts": ["166"]}, {"name": "Bevorzugung eines Gläubigers", "arts": ["167"]}, {"name": "Bestechung bei Zwangsvollstreckung", "arts": ["168"]}, {"name": "Verfügung über mit Beschlag belegte Vermögenswerte", "arts": ["169"]}, {"name": "Erschleichung eines gerichtlichen Nachlassvertrages", "arts": ["170"]}, {"name": "Gerichtlicher Nachlassvertrag", "arts": ["171", "171bis"]}, {"name": "Geringfügige Vermögensdelikte", "arts": ["172ter"]}]}, {"titel": "Strafbare Handlungen gegen die Ehre und den Geheim- oder Privatbereich", "delikte": [{"name": "Üble Nachrede", "arts": ["173"]}, {"name": "Verleumdung", "arts": ["174"]}, {"name": "Üble Nachrede oder Verleumdung gegen einen Verstorbenen oder einen verschollen Erklärten", "arts": ["175"]}, {"name": "Beschimpfung", "arts": ["177"]}, {"name": "Verletzung des Schriftgeheimnisses", "arts": ["179"]}, {"name": "Abhören und Aufnehmen fremder Gespräche", "arts": ["179bis"]}, {"name": "Unbefugtes Aufnehmen von Gesprächen", "arts": ["179ter"]}, {"name": "Verletzung des Geheim- oder Privatbereichs durch Aufnahmegeräte", "arts": ["179quater"]}, {"name": "Inverkehrbringen und Anpreisen von Abhör-, Ton- und Bildaufnahmegeräten", "arts": ["179sexies"]}, {"name": "Missbrauch einer Fernmeldeanlage", "arts": ["179septies"]}, {"name": "Unbefugtes Beschaffen von Personendaten", "arts": ["179novies"]}, {"name": "Identitätsmissbrauch", "arts": ["179decies"]}]}, {"titel": "Verbrechen und Vergehen gegen die Freiheit", "delikte": [{"name": "Drohung", "arts": ["180"]}, {"name": "Nötigung", "arts": ["181"]}, {"name": "Zwangsheirat, erzwungene eingetragene Partnerschaft", "arts": ["181a"]}, {"name": "Nachstellung", "arts": ["181b"]}, {"name": "Menschenhandel", "arts": ["182"]}, {"name": "Freiheitsberaubung und Entführung", "arts": ["183"]}, {"name": "Geiselnahme", "arts": ["185"]}, {"name": "Verschwindenlassen", "arts": ["185bis"]}, {"name": "Hausfriedensbruch", "arts": ["186"]}]}, {"titel": "Strafbare Handlungen gegen die sexuelle Integrität", "delikte": [{"name": "Sexuelle Handlungen mit Kindern", "arts": ["187"]}, {"name": "Sexuelle Handlungen mit Abhängigen", "arts": ["188"]}, {"name": "Sexueller Übergriff und sexuelle Nötigung", "arts": ["189"]}, {"name": "Vergewaltigung", "arts": ["190"]}, {"name": "Missbrauch einer urteilsunfähigen oder zum Widerstand unfähigen Person", "arts": ["191", "192"]}, {"name": "Ausnützung einer Notlage oder Abhängigkeit", "arts": ["193"]}, {"name": "Täuschung über den sexuellen Charakter einer Handlung", "arts": ["193a"]}, {"name": "Exhibitionismus", "arts": ["194"]}, {"name": "Förderung der Prostitution", "arts": ["195"]}, {"name": "Sexuelle Handlungen mit Minderjährigen gegen Entgelt", "arts": ["196"]}, {"name": "Pornografie", "arts": ["197"]}, {"name": "Unbefugtes Weiterleiten von nicht öffentlichen sexuellen Inhalten", "arts": ["197a"]}, {"name": "Sexuelle Belästigungen", "arts": ["198"]}, {"name": "Unzulässige Ausübung der Prostitution", "arts": ["199"]}, {"name": "Gemeinsame Begehung", "arts": ["200", "201"]}]}, {"titel": "Verbrechen und Vergehen gegen die Familie", "delikte": [{"name": "Inzest", "arts": ["213", "214"]}, {"name": "Mehrfache Ehe oder eingetragene Partnerschaft", "arts": ["215", "216"]}, {"name": "Vernachlässigung von Unterhaltspflichten", "arts": ["217", "218"]}, {"name": "Verletzung der Fürsorge- oder Erziehungspflicht", "arts": ["219"]}, {"name": "Entziehen von Minderjährigen", "arts": ["220"]}]}, {"titel": "Gemeingefährliche Verbrechen und Vergehen", "delikte": [{"name": "Brandstiftung", "arts": ["221"]}, {"name": "Fahrlässige Verursachung einer Feuersbrunst", "arts": ["222"]}, {"name": "Verursachung einer Explosion", "arts": ["223"]}, {"name": "Gefährdung durch Sprengstoffe und giftige Gase in verbrecherischer Absicht", "arts": ["224"]}, {"name": "Gefährdung ohne verbrecherische Absicht und fahrlässige Gefährdung", "arts": ["225"]}, {"name": "Herstellen, Verbergen, Weiterschaffen von Sprengstoffen und giftigen Gasen", "arts": ["226"]}, {"name": "Gefährdung durch Kernenergie, Radioaktivität und ionisierende Strahlen", "arts": ["226bis"]}, {"name": "Strafbare Vorbereitungshandlungen", "arts": ["226ter"]}, {"name": "Verursachen einer Überschwemmung oder eines Einsturzes", "arts": ["227"]}, {"name": "Beschädigung von elektrischen Anlagen, Wasserbauten und Schutzvorrichtungen", "arts": ["228"]}, {"name": "Gefährdung durch Verletzung der Regeln der Baukunde", "arts": ["229"]}, {"name": "Beseitigung oder Nichtanbringung von Sicherheitsvorrichtungen", "arts": ["230"]}]}, {"titel": "Verbrechen und Vergehen gegen die öffentliche Gesundheit", "delikte": [{"name": "Gefährdung durch gentechnisch veränderte oder pathogene Organismen", "arts": ["230bis"]}, {"name": "Verbreiten menschlicher Krankheiten", "arts": ["231"]}, {"name": "Verbreiten von Tierseuchen", "arts": ["232"]}, {"name": "Verbreiten von Schädlingen", "arts": ["233"]}, {"name": "Verunreinigung von Trinkwasser", "arts": ["234"]}, {"name": "Herstellen von gesundheitsschädlichem Futter", "arts": ["235"]}, {"name": "Inverkehrbringen von gesundheitsschädlichem Futter", "arts": ["236"]}]}, {"titel": "Verbrechen und Vergehen gegen den öffentlichen Verkehr", "delikte": [{"name": "Störung des öffentlichen Verkehrs", "arts": ["237", "238"]}, {"name": "Störung von Betrieben im Dienste der Allgemeinheit", "arts": ["239"]}]}, {"titel": "Fälschung von Geld, amtlichen Wertzeichen, amtlichen Zeichen, Mass und Gewicht", "delikte": [{"name": "Geldfälschung", "arts": ["240"]}, {"name": "Geldverfälschung", "arts": ["241"]}, {"name": "Umlaufsetzen falschen Geldes", "arts": ["242"]}, {"name": "Nachmachen von Banknoten, Münzen oder amtlichen Wertzeichen ohne Fälschungsabsicht", "arts": ["243"]}, {"name": "Einführen, Erwerben, Lagern falschen Geldes", "arts": ["244"]}, {"name": "Fälschung amtlicher Wertzeichen", "arts": ["245"]}, {"name": "Fälschung amtlicher Zeichen", "arts": ["246"]}, {"name": "Fälschungsgeräte; unrechtmässiger Gebrauch von Geräten", "arts": ["247"]}, {"name": "Fälschung von Mass und Gewicht", "arts": ["248"]}]}, {"titel": "Urkundenfälschung", "delikte": [{"name": "Urkundenfälschung", "arts": ["251"]}, {"name": "Fälschung von Ausweisen", "arts": ["252"]}, {"name": "Erschleichung einer falschen Beurkundung", "arts": ["253"]}, {"name": "Unterdrückung von Urkunden", "arts": ["254"]}, {"name": "Grenzverrückung", "arts": ["256"]}, {"name": "Beseitigung von Vermessungs- und Wasserstandszeichen", "arts": ["257"]}]}, {"titel": "Verbrechen und Vergehen gegen den öffentlichen Frieden", "delikte": [{"name": "Schreckung der Bevölkerung", "arts": ["258"]}, {"name": "Öffentliche Aufforderung zu Verbrechen oder zur Gewalttätigkeit", "arts": ["259"]}, {"name": "Landfriedensbruch", "arts": ["260"]}, {"name": "Strafbare Vorbereitungshandlungen", "arts": ["260bis"]}, {"name": "Kriminelle und terroristische Organisationen", "arts": ["260ter"]}, {"name": "Gefährdung der öffentlichen Sicherheit mit Waffen", "arts": ["260quater"]}, {"name": "Finanzierung des Terrorismus", "arts": ["260quinquies"]}, {"name": "Anwerbung, Ausbildung und Reisen im Hinblick auf eine terroristische Straftat", "arts": ["260sexies"]}, {"name": "Störung der Glaubens- und Kultusfreiheit", "arts": ["261"]}, {"name": "Diskriminierung und Aufruf zu Hass", "arts": ["261bis"]}, {"name": "Störung des Totenfriedens", "arts": ["262"]}, {"name": "Verübung einer Tat in selbstverschuldeter Unzurechnungsfähigkeit", "arts": ["263"]}]}, {"titel": "Völkermord und Verbrechen gegen die Menschlichkeit", "delikte": [{"name": "Völkermord", "arts": ["264"]}, {"name": "Andere unmenschliche Handlungen", "arts": ["264a"]}]}, {"titel": "Kriegsverbrechen", "delikte": [{"name": "Schwere Verletzungen der Genfer Konventionen", "arts": ["264c"]}, {"name": "Angriffe gegen zivile Personen und Objekte", "arts": ["264d"]}, {"name": "Ungerechtfertigte medizinische Behandlung, Verletzung der sexuellen Selbstbestimmung und der Menschenwürde", "arts": ["264e"]}, {"name": "Rekrutierung und Verwendung von Kindersoldaten", "arts": ["264f"]}, {"name": "Verbotene Methoden der Kriegführung", "arts": ["264g"]}, {"name": "Einsatz verbotener Waffen", "arts": ["264h"]}, {"name": "Bruch eines Waffenstillstandes oder des Friedens. Vergehen gegen einen Parlamentär. Verzögerte Heimschaffung von Kriegsgefangenen", "arts": ["264i"]}]}, {"titel": "Verbrechen und Vergehen gegen den Staat und die Landesverteidigung", "delikte": [{"name": "Hochverrat", "arts": ["265"]}, {"name": "Angriffe auf die Unabhängigkeit der Eidgenossenschaft", "arts": ["266"]}, {"name": "Gegen die Sicherheit der Schweiz gerichtete ausländische Unternehmungen und Bestrebungen", "arts": ["266bis"]}, {"name": "Diplomatischer Landesverrat", "arts": ["267"]}, {"name": "Verrückung staatlicher Grenzzeichen", "arts": ["268"]}, {"name": "Verletzung schweizerischer Gebietshoheit", "arts": ["269"]}, {"name": "Tätliche Angriffe auf schweizerische Hoheitszeichen", "arts": ["270"]}, {"name": "Verbotene Handlungen für einen fremden Staat", "arts": ["271"]}, {"name": "Politischer Nachrichtendienst", "arts": ["272"]}, {"name": "Wirtschaftlicher Nachrichtendienst", "arts": ["273"]}, {"name": "Militärischer Nachrichtendienst", "arts": ["274"]}, {"name": "Angriffe auf die verfassungsmässige Ordnung", "arts": ["275", "275bis"]}, {"name": "Aufforderung und Verleitung zur Verletzung militärischer Dienstpflichten", "arts": ["276"]}, {"name": "Fälschung von Aufgeboten oder Weisungen", "arts": ["277"]}, {"name": "Störung des Militärdienstes", "arts": ["278"]}]}, {"titel": "Vergehen gegen den Volkswillen", "delikte": [{"name": "Störung und Hinderung von Wahlen und Abstimmungen", "arts": ["279"]}, {"name": "Eingriffe in das Stimm- und Wahlrecht", "arts": ["280"]}, {"name": "Wahlbestechung", "arts": ["281"]}, {"name": "Wahlfälschung", "arts": ["282"]}, {"name": "Stimmenfang", "arts": ["282bis"]}, {"name": "Verletzung des Abstimmungs- und Wahlgeheimnisses", "arts": ["283", "284"]}]}, {"titel": "Strafbare Handlungen gegen die öffentliche Gewalt", "delikte": [{"name": "Gewalt und Drohung gegen Behörden und Beamte", "arts": ["285"]}, {"name": "Hinderung einer Amtshandlung", "arts": ["286"]}, {"name": "Amtsanmassung", "arts": ["287", "288"]}, {"name": "Bruch amtlicher Beschlagnahme", "arts": ["289"]}, {"name": "Siegelbruch", "arts": ["290"]}, {"name": "Verweisungsbruch", "arts": ["291"]}, {"name": "Ungehorsam gegen amtliche Verfügungen", "arts": ["292"]}, {"name": "Veröffentlichung amtlicher geheimer Verhandlungen", "arts": ["293"]}, {"name": "Missachtung eines Tätigkeitsverbots oder eines Kontakt- und Rayonverbots", "arts": ["294"]}, {"name": "Missachtung von Bewährungshilfe oder Weisungen", "arts": ["295"]}]}, {"titel": "Störung der Beziehungen zum Ausland", "delikte": [{"name": "Beleidigung eines fremden Staates", "arts": ["296"]}, {"name": "Beleidigung zwischenstaatlicher Organisationen", "arts": ["297"]}, {"name": "Tätliche Angriffe auf fremde Hoheitszeichen", "arts": ["298"]}, {"name": "Verletzung fremder Gebietshoheit", "arts": ["299"]}, {"name": "Feindseligkeiten gegen einen Kriegführenden oder fremde Truppen", "arts": ["300"]}, {"name": "Nachrichtendienst gegen fremde Staaten", "arts": ["301"]}]}, {"titel": "Verbrechen und Vergehen gegen die Rechtspflege", "delikte": [{"name": "Falsche Anschuldigung", "arts": ["303"]}, {"name": "Irreführung der Rechtspflege", "arts": ["304"]}, {"name": "Begünstigung", "arts": ["305"]}, {"name": "Geldwäscherei", "arts": ["305bis"]}, {"name": "Mangelnde Sorgfalt bei Finanzgeschäften und Melderecht", "arts": ["305ter"]}, {"name": "Falsche Beweisaussage der Partei", "arts": ["306"]}, {"name": "Falsches Zeugnis. Falsches Gutachten. Falsche Übersetzung", "arts": ["307"]}, {"name": "Befreiung von Gefangenen", "arts": ["310"]}, {"name": "Meuterei von Gefangenen", "arts": ["311"]}]}, {"titel": "Strafbare Handlungen gegen die Amts- und Berufspflicht", "delikte": [{"name": "Amtsmissbrauch", "arts": ["312"]}, {"name": "Gebührenüberforderung", "arts": ["313"]}, {"name": "Ungetreue Amtsführung", "arts": ["314", "315"]}, {"name": "Urkundenfälschung im Amt", "arts": ["317"]}, {"name": "Falsches ärztliches Zeugnis", "arts": ["318"]}, {"name": "Entweichenlassen von Gefangenen", "arts": ["319"]}, {"name": "Verletzung des Amtsgeheimnisses", "arts": ["320"]}, {"name": "Verletzung des Berufsgeheimnisses", "arts": ["321"]}, {"name": "Berufsgeheimnis in der Forschung am Menschen", "arts": ["321bis"]}, {"name": "Verletzung des Post- und Fernmeldegeheimnisses", "arts": ["321ter"]}, {"name": "Verletzung der Auskunftspflicht der Medien", "arts": ["322"]}, {"name": "Nichtverhinderung einer strafbaren Veröffentlichung", "arts": ["322bis"]}]}, {"titel": "Bestechung", "delikte": [{"name": "Bestechen", "arts": ["322ter"]}, {"name": "Sich bestechen lassen", "arts": ["322quater"]}, {"name": "Vorteilsgewährung", "arts": ["322quinquies"]}, {"name": "Vorteilsannahme", "arts": ["322sexies"]}, {"name": "Bestechung fremder Amtsträger", "arts": ["322septies"]}, {"name": "Bestechen", "arts": ["322octies"]}, {"name": "Sich bestechen lassen", "arts": ["322novies"]}]}, {"titel": "Übertretungen bundesrechtlicher Bestimmungen", "delikte": [{"name": "Ungehorsam des Schuldners im Betreibungs- und Konkursverfahren", "arts": ["323"]}, {"name": "Ungehorsam dritter Personen im Betreibungs-, Konkurs- und Nachlassverfahren", "arts": ["324"]}, {"name": "Ordnungswidrige Führung der Geschäftsbücher", "arts": ["325"]}, {"name": "Verletzung der Vorschriften betreffend die Berichterstattung über Zahlungen an staatliche Stellen", "arts": ["325bis"]}, {"name": "Verletzung anderer Berichtspflichten", "arts": ["325ter"]}, {"name": "Widerhandlungen gegen die Bestimmungen zum Schutz der Mieter von Wohn- und Geschäftsräumen", "arts": ["325quater"]}, {"name": "Übertretung firmen- und namensrechtlicher Bestimmungen", "arts": ["326ter"]}, {"name": "Unwahre Auskunft durch eine Personalvorsorgeeinrichtung", "arts": ["326quater"]}, {"name": "Verletzung der Pflichten zur Meldung der an Aktien oder Stammanteilen wirtschaftlich berechtigten Person", "arts": ["327"]}, {"name": "Verletzung der gesellschaftsrechtlichen Pflichten zur Führung von Verzeichnissen", "arts": ["327a"]}, {"name": "Verletzung gesetzlicher Pflichten von Vereinen", "arts": ["327b", "328"]}, {"name": "Verletzung militärischer Geheimnisse", "arts": ["329", "330"]}, {"name": "Unbefugtes Tragen der militärischen Uniform", "arts": ["331", "332"]}]}];
+
+    let aktiveGruppe = null, restZeit = SPIELZEIT, intervall = null;
+    let gefunden = [], normIndex = {}, laeuft = false;
+
+    function norm(s) {
+        return s.toLowerCase()
+            .replace(/\u00df/g,'ss').replace(/\u00e4/g,'a').replace(/\u00f6/g,'o').replace(/\u00fc/g,'u')
+            .replace(/[.,;:!?'"\u00ab\u00bb()\-\/]/g,' ').replace(/\s+/g,' ').trim();
+    }
+    function $(id){ return document.getElementById(id); }
+
+    function renderAuswahl() {
+        const grid = $('dsGruppenGrid'); grid.innerHTML = '';
+        const z = document.createElement('button');
+        z.className = 'ds-gruppe-btn ds-zufall'; z.innerHTML = '\ud83c\udfb2 Zuf\u00e4llige Gruppe';
+        z.onclick = () => start(Math.floor(Math.random()*gruppen.length));
+        grid.appendChild(z);
+        gruppen.forEach((g,i) => {
+            const b = document.createElement('button');
+            b.className = 'ds-gruppe-btn';
+            b.innerHTML = '<span>'+g.titel+'</span><span class="ds-anzahl">'+g.delikte.length+'</span>';
+            b.onclick = () => start(i);
+            grid.appendChild(b);
+        });
+    }
+
+    function start(gi) {
+        aktiveGruppe = gi;
+        const g = gruppen[gi];
+        gefunden = []; normIndex = {};
+        g.delikte.forEach((d,i) => { normIndex[norm(d.name)] = i; });
+
+        $('dsAuswahlBereich').style.display = 'none';
+        $('dsErgebnisBereich').style.display = 'none';
+        $('dsSpielBereich').style.display = 'block';
+        $('dsAktiveGruppe').textContent = g.titel;
+        $('dsAnzahlTotal').textContent = g.delikte.length;
+        $('dsAnzahlGefunden').textContent = '0';
+        $('dsBar').style.width = '0%';
+        $('dsChips').innerHTML = '';
+        $('dsFeedback').textContent = '';
+        const inp = $('dsInput'); inp.value = ''; inp.disabled = false; inp.focus();
+
+        restZeit = SPIELZEIT; laeuft = true; updateTimer();
+        clearInterval(intervall);
+        intervall = setInterval(() => { restZeit--; updateTimer(); if (restZeit<=0) beenden(); }, 1000);
+    }
+
+    function updateTimer() {
+        const m = Math.floor(restZeit/60), s = restZeit%60;
+        const el = $('dsTimer');
+        el.textContent = m+':'+(s<10?'0':'')+s;
+        el.classList.toggle('warnung', restZeit<=10);
+    }
+
+    function feedback(t, k) {
+        const fb = $('dsFeedback'); fb.textContent = t; fb.className = k;
+        clearTimeout(fb._t); fb._t = setTimeout(() => { fb.textContent=''; fb.className=''; }, 1600);
+    }
+
+    function pruefe() {
+        if (!laeuft) return;
+        const inp = $('dsInput'), roh = inp.value, n = norm(roh);
+        if (!n) return;
+        if (!(n in normIndex)) { feedback('\u201e'+roh.trim()+'" ist kein Delikt dieser Gruppe','fehler'); return; }
+        const idx = normIndex[n];
+        if (gefunden.includes(idx)) { feedback('Hast du schon: '+gruppen[aktiveGruppe].delikte[idx].name,'doppelt'); inp.value=''; return; }
+        gefunden.push(idx);
+        const d = gruppen[aktiveGruppe].delikte[idx];
+        feedback('\u2713 '+d.name,'treffer'); inp.value='';
+        const chip = document.createElement('span'); chip.className='ds-chip'; chip.textContent=d.name;
+        $('dsChips').appendChild(chip);
+        const total = gruppen[aktiveGruppe].delikte.length;
+        $('dsAnzahlGefunden').textContent = gefunden.length;
+        $('dsBar').style.width = (gefunden.length/total*100)+'%';
+        if (gefunden.length === total) { feedback('\ud83c\udf89 Alle gefunden!','treffer'); beenden(); }
+    }
+
+    function beenden() {
+        if (!laeuft) return;
+        laeuft = false; clearInterval(intervall); $('dsInput').disabled = true;
+        const g = gruppen[aktiveGruppe], total = g.delikte.length, anz = gefunden.length;
+        $('dsSpielBereich').style.display = 'none';
+        $('dsErgebnisBereich').style.display = 'block';
+        $('dsFinalGefunden').textContent = anz;
+        $('dsFinalTotal').textContent = total;
+        $('dsFinalProzent').textContent = Math.round(anz/total*100)+'% der Gruppe \u201e'+g.titel+'"';
+
+        const key = 'deliktsprint_best_'+aktiveGruppe;
+        let best = 0; try { best = parseInt(localStorage.getItem(key))||0; } catch(e){}
+        const hs = $('dsHighscoreZeile');
+        if (anz > best) { try { localStorage.setItem(key, anz); } catch(e){} hs.innerHTML = '<span class="ds-highscore-badge">\ud83c\udfc6 Neue Bestleistung!</span>'; }
+        else if (best > 0) { hs.innerHTML = '<span class="ds-highscore-badge">Deine Bestleistung: '+best+' / '+total+'</span>'; }
+        else { hs.innerHTML = ''; }
+
+        const lg = $('dsListeGefunden'), lv = $('dsListeVerpasst');
+        lg.innerHTML = ''; lv.innerHTML = '';
+        g.delikte.forEach((d,i) => {
+            const li = document.createElement('li');
+            li.innerHTML = '<span>'+d.name+'</span><span class="ds-art">Art. '+d.arts.join('/')+'</span>';
+            (gefunden.includes(i) ? lg : lv).appendChild(li);
+        });
+        if (!lg.children.length) lg.innerHTML = '<li style="color:#b0b8c1;">\u2013 keine \u2013</li>';
+        if (!lv.children.length) lv.innerHTML = '<li style="color:#27ae60;">Alle gefunden! \ud83c\udf89</li>';
+    }
+
+    function stop() { laeuft = false; clearInterval(intervall); }
+
+    renderAuswahl();
+    $('dsInput').addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); pruefe(); } });
+
+    return {
+        nochmal: () => start(aktiveGruppe),
+        zurueck: () => { $('dsErgebnisBereich').style.display='none'; $('dsSpielBereich').style.display='none'; $('dsAuswahlBereich').style.display='block'; },
+        beenden, stop
+    };
+})();
+
+function dsBeenden() { DS.beenden(); }
+function dsNochmal() { DS.nochmal(); }
+function dsZurueck() { DS.zurueck(); }
 
 </script>
 </body>
