@@ -275,6 +275,7 @@
         <div class="card">
             <h1>Delikt-Sprint</h1>
             <p class="subtitle">StGB Besonderer Teil – nenne in <b>60 Sekunden</b> so viele Delikte einer Gruppe wie möglich</p>
+            <a href="#" onclick="document.getElementById('dsAnleitung').open=true; document.getElementById('dsAnleitung').scrollIntoView({behavior:'smooth'}); return false;" style="font-size:0.85em;color:#95a5a6;text-decoration:none;border-bottom:1px dotted #b0b8c1;">Wie funktioniert's?</a>
 
             <div id="dsAuswahlBereich">
                 <p style="color:#7f8c8d; font-size:0.92em; margin-top:18px;">Wähle eine Deliktsgruppe:</p>
@@ -307,7 +308,7 @@
             </div>
         </div>
 
-        <details class="anleitung">
+        <details class="anleitung" id="dsAnleitung">
             <summary>So funktioniert's (Klicken zum Ausklappen)</summary>
             <div class="anleitung-content">
                 <ol>
