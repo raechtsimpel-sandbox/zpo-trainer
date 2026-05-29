@@ -684,7 +684,7 @@ function wechsleErlass(key) {
 
     document.querySelectorAll('.erlass-tab').forEach(b => b.classList.remove('aktiv'));
     document.getElementById('tab_' + key).classList.add('aktiv');
-    document.title = e.name + '-Guesser';
+    document.title = e.name + '-Guesser \u2013 R\u00e4chtSimpel';
     document.getElementById('spielTitel').textContent = e.name + '-Guesser';
     document.getElementById('spielUntertitel').textContent = 'Meistere ' + (e.artikel || 'das Schweizer') + ' ' + e.vollname;
     document.getElementById('chartTitel').textContent = 'Dein Fortschritt – ' + e.name + ' (Sekunden pro Runde)';
@@ -992,7 +992,12 @@ function wechsleSpiel(welches) {
     document.getElementById('spielDelikt').style.display = istErlass ? 'none' : 'block';
     document.getElementById('switchSpielErlass').classList.toggle('aktiv', istErlass);
     document.getElementById('switchSpielDelikt').classList.toggle('aktiv', !istErlass);
-    document.title = istErlass ? 'Erlass-Guesser \u2013 R\u00e4chtSimpel' : 'Delikt-Sprint \u2013 R\u00e4chtSimpel';
+    if (istErlass) {
+        const eName = (typeof aktiverErlass !== 'undefined' && aktiverErlass && erlasse[aktiverErlass]) ? erlasse[aktiverErlass].name : 'Erlass';
+        document.title = eName + '-Guesser \u2013 R\u00e4chtSimpel';
+    } else {
+        document.title = 'Delikt-Sprint \u2013 R\u00e4chtSimpel';
+    }
     if (!istErlass) { try { clearInterval(timerInterval); } catch(e){} }
     else { try { DS.stop(); } catch(e){} }
 }
