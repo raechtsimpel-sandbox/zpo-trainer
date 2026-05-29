@@ -133,10 +133,16 @@
         .ds-gruppe-btn.ds-zufall:hover { background: #fdebd0; border-color: #e67e22; color: #d35400; }
 
         #dsSpielBereich, #dsErgebnisBereich { display: none; }
-        .ds-game-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
+        .ds-game-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; margin-bottom: 6px; }
         .ds-game-header .ds-gruppe-name { font-size: 1.15em; font-weight: 700; color: #e67e22; text-align: left; flex: 1; min-width: 200px; }
         #dsTimer { font-size: 2.4em; font-weight: bold; color: #34495e; font-variant-numeric: tabular-nums; }
         #dsTimer.warnung { color: #e74c3c; }
+        #dsTimer.bonus { animation: dsTimerFlash 0.5s ease; }
+        @keyframes dsTimerFlash { 0% { color: #27ae60; transform: scale(1); } 35% { color: #27ae60; transform: scale(1.18); } 100% { transform: scale(1); } }
+        .ds-timer-wrap { position: relative; display: inline-block; }
+        .ds-bonus-float { position: absolute; top: -2px; left: 50%; transform: translateX(-50%); color: #1e8a4c; font-size: 1.05em; font-weight: 900; pointer-events: none; opacity: 0; text-shadow: 0 1px 4px rgba(255,255,255,0.9), 0 0 10px rgba(46,204,113,0.5); white-space: nowrap; }
+        .ds-bonus-float.go { animation: dsBonusFloat 1s ease-out forwards; }
+        @keyframes dsBonusFloat { 0% { opacity: 0; transform: translateX(-50%) translateY(10px) scale(0.6); } 20% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.1); } 100% { opacity: 0; transform: translateX(-50%) translateY(-42px) scale(1); } }
         .ds-bar-aussen { background: #eef1f4; border-radius: 10px; height: 14px; overflow: hidden; margin: 8px 0 4px; }
         .ds-bar-innen { background: linear-gradient(90deg,#3498db,#2ecc71); height: 100%; width: 0%; transition: width 0.3s; border-radius: 10px; }
         .ds-bar-label { font-size: 0.9em; color: #7f8c8d; margin-bottom: 14px; }
@@ -274,7 +280,7 @@
     <div id="spielDelikt" style="display:none;">
         <div class="card">
             <h1>Delikt-Sprint</h1>
-            <p class="subtitle">StGB Besonderer Teil – nenne in <b>60 Sekunden</b> so viele Delikte einer Gruppe wie möglich</p>
+            <p class="subtitle">StGB Besonderer Teil – nenne so viele Delikte einer Gruppe wie möglich, bevor die Zeit abläuft.</p>
             <a href="#" onclick="document.getElementById('dsAnleitung').open=true; document.getElementById('dsAnleitung').scrollIntoView({behavior:'smooth'}); return false;" style="font-size:0.85em;color:#95a5a6;text-decoration:none;border-bottom:1px dotted #b0b8c1;">Wie funktioniert's?</a>
 
             <div id="dsAuswahlBereich">
@@ -285,7 +291,7 @@
             <div id="dsSpielBereich">
                 <div class="ds-game-header">
                     <div class="ds-gruppe-name" id="dsAktiveGruppe"></div>
-                    <div id="dsTimer">1:00</div>
+                    <div class="ds-timer-wrap"><div id="dsTimer">1:00</div><span class="ds-bonus-float" id="dsBonusFloat">+1</span></div>
                 </div>
                 <div class="ds-bar-aussen"><div class="ds-bar-innen" id="dsBar"></div></div>
                 <div class="ds-bar-label"><b id="dsAnzahlGefunden">0</b> / <span id="dsAnzahlTotal">0</span> Delikten gefunden</div>
@@ -314,7 +320,7 @@
                 <ol>
                     <li>Wähle eine <strong>Deliktsgruppe</strong> (= ein Titel des StGB Besonderer Teil) oder lass dir per Zufall eine zuteilen.</li>
                     <li>Sobald du auf die Gruppe klickst, läuft der <strong>60-Sekunden-Countdown</strong>.</li>
-                    <li>Tippe nacheinander die <strong>Deliktsnamen</strong> dieser Gruppe ein und bestätige mit <strong>Enter</strong> – z.B. «Diebstahl», «Raub», «Betrug».</li>
+                    <li>Tippe nacheinander die <strong>Deliktsnamen</strong> dieser Gruppe ein und bestätige mit <strong>Enter</strong> – z.B. «Diebstahl», «Raub», «Betrug». Jeder Treffer schenkt dir <strong>+1 Sekunde</strong>.</li>
                     <li>Klein-/Grossschreibung, Umlaute, «ß/ss» und Bindestriche sind egal. Jedes korrekte Delikt erscheint als grüner Chip.</li>
                     <li>Nach Ablauf der Zeit (oder per «Beenden») siehst du, <strong>welche du gefunden und welche du verpasst</strong> hast – inkl. deiner Bestleistung pro Gruppe.</li>
                 </ol>
@@ -1063,6 +1069,13 @@ const DS = (function () {
         el.classList.toggle('warnung', restZeit<=10);
     }
 
+    function zeigeBonus() {
+        const t = $('dsTimer');
+        t.classList.remove('bonus'); void t.offsetWidth; t.classList.add('bonus');
+        const f = $('dsBonusFloat');
+        f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
+    }
+
     function feedback(t, k) {
         const fb = $('dsFeedback'); fb.textContent = t; fb.className = k;
         clearTimeout(fb._t); fb._t = setTimeout(() => { fb.textContent=''; fb.className=''; }, 1600);
@@ -1077,7 +1090,8 @@ const DS = (function () {
         if (gefunden.includes(idx)) { feedback('Hast du schon: '+gruppen[aktiveGruppe].delikte[idx].name,'doppelt'); inp.value=''; return; }
         gefunden.push(idx);
         const d = gruppen[aktiveGruppe].delikte[idx];
-        feedback('\u2713 '+d.name,'treffer'); inp.value='';
+        restZeit += 1; updateTimer(); zeigeBonus();
+        feedback('\u2713 '+d.name+'  (+1 Sek.)','treffer'); inp.value='';
         const chip = document.createElement('span'); chip.className='ds-chip'; chip.textContent=d.name;
         $('dsChips').appendChild(chip);
         const total = gruppen[aktiveGruppe].delikte.length;
