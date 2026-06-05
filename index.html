@@ -100,40 +100,6 @@
         .nav-abschnitt-btn.korrekt { border-color: #27ae60 !important; background: #eafaf1 !important; color: #1e8449 !important; font-weight: 600; }
         .nav-abschnitt-btn.falsch { border-color: #e74c3c !important; background: #fdedec !important; color: #c0392b !important; }
 
-        /* ── Vertragsrecht-Modus (OR BT) ───────────────────────────── */
-        .vt-opt-label { font-size: 0.8em; color: #95a5a6; text-transform: uppercase; letter-spacing: 0.05em; margin: 18px 0 8px; text-align: left; }
-        .vt-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
-        .vt-chip { padding: 8px 16px; border-radius: 20px; border: 2px solid #ddd; background: white; color: #7f8c8d; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.15s; }
-        .vt-chip:hover { border-color: #3498db; color: #3498db; }
-        .vt-chip.aktiv { background: #2c3e50; border-color: #2c3e50; color: white; }
-        .vt-stuetz { display: flex; align-items: center; gap: 8px; font-size: 0.88em; color: #7f8c8d; cursor: pointer; user-select: none; margin: 20px 0 4px; text-align: left; }
-        .vt-stuetz input { width: auto; margin: 0; }
-        .vt-start { display: block; width: 100%; padding: 14px; margin-top: 22px; background: #2ecc71; color: white; font-size: 1.05em; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.15s; }
-        .vt-start:hover { background: #27ae60; }
-        .vt-start.vt-grau { background: #95a5a6; margin-top: 10px; }
-        .vt-start.vt-grau:hover { background: #7f8c8d; }
-
-        .vt-run-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .vt-fortschritt { font-size: 0.9em; color: #7f8c8d; font-weight: 600; }
-        .vt-timer { font-size: 1.6em; font-weight: 700; color: #34495e; font-variant-numeric: tabular-nums; }
-        .vt-bar-aussen { height: 8px; background: #eef1f4; border-radius: 6px; overflow: hidden; margin-bottom: 18px; }
-        .vt-bar-innen { height: 100%; width: 0%; background: #3498db; border-radius: 6px; transition: width 0.3s; }
-        #vertragAnker { font-size: 0.9em; color: #7f8c8d; background: #f4f6f8; border-radius: 8px; padding: 8px 12px; margin: 0 0 12px; text-align: left; }
-        .vt-frage-box { margin: 6px 0 14px; }
-        .vt-typ { color: #2c3e50; font-size: 1.5em; font-weight: 700; }
-        .vt-unter { color: #e67e22; font-size: 1.15em; font-weight: 700; margin-top: 4px; }
-        #vtFeedback { min-height: 1.4em; margin-top: 6px; font-size: 0.95em; font-weight: 600; }
-        .vt-run-actions { display: flex; gap: 10px; margin-top: 14px; }
-        .vt-skip { flex: 1; background: #f39c12; color: white; font-size: 0.9em; padding: 10px; border: none; border-radius: 8px; cursor: pointer; margin: 0; }
-        .vt-skip:hover { background: #e67e22; }
-        .vt-abbruch { flex: 1; background: #e74c3c; color: white; font-size: 0.9em; padding: 10px; border: none; border-radius: 8px; cursor: pointer; margin: 0; }
-        .vt-abbruch:hover { background: #c0392b; }
-
-        .vt-erg-zeit { font-size: 3em; font-weight: 800; color: #2c3e50; font-variant-numeric: tabular-nums; margin-top: 10px; }
-        .vt-erg-label { font-size: 0.95em; color: #7f8c8d; }
-        .vt-erg-best { font-size: 1.1em; font-weight: 700; color: #27ae60; min-height: 1.4em; margin: 10px 0; }
-        .vt-erg-stats { font-size: 0.9em; color: #7f8c8d; margin-bottom: 6px; }
-
         .baustellen-banner { background: white; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.07); }
         .baustellen-banner::before { content: ''; display: block; height: 5px; background: repeating-linear-gradient(90deg, #f9c200 0, #f9c200 14px, #1a1a1a 14px, #1a1a1a 28px); }
         .baustellen-inner { padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; text-align: left; }
@@ -268,64 +234,6 @@
         </div>
 
         <div id="navigationsbaum" style="display:none;"></div>
-
-        <div id="vertragModus" style="display:none;">
-
-            <!-- Phase 1: Auswahl -->
-            <div id="vtAuswahl">
-                <p style="color:#7f8c8d; font-size:0.92em; margin-top:18px;">Stelle dir dein Set zusammen:</p>
-
-                <div class="vt-opt-label">Anzahl Fragen</div>
-                <div class="vt-chip-row" id="vtLaengeRow"></div>
-
-                <div class="vt-opt-label">Vertragstyp</div>
-                <div class="vt-chip-row" id="vtTypRow"></div>
-
-                <label class="vt-stuetz">
-                    <input type="checkbox" id="toggleStuetzraeder" onchange="setStuetzraeder(this.checked)">
-                    🚲 Stützräder: Anfang des Vertragstyps anzeigen
-                </label>
-
-                <div id="vtInfo" style="font-size:0.88em; color:#7f8c8d; margin-top:16px; text-align:left;"></div>
-                <button class="vt-start" id="vtStartBtn" onclick="vtStart()">▶ Los geht's</button>
-            </div>
-
-            <!-- Phase 2: Run -->
-            <div id="vtRun" style="display:none;">
-                <div class="vt-run-header">
-                    <div class="vt-fortschritt" id="vtFortschritt">Frage 1 von 10</div>
-                    <div class="vt-timer" id="vtTimer">0.00s</div>
-                </div>
-                <div class="vt-bar-aussen"><div class="vt-bar-innen" id="vtBar"></div></div>
-
-                <div id="vertragAnker" style="display:none;"></div>
-
-                <div class="vt-frage-box">
-                    <div class="vt-typ" id="vtTyp">Vertragstyp</div>
-                    <div class="vt-unter" id="vtUnter">Unterthema</div>
-                </div>
-
-                <input type="text" id="inputVertragArtikel" placeholder="Artikel eingeben (z.B. 269b)…" autocomplete="off">
-                <div id="vtFeedback"></div>
-
-                <div class="vt-run-actions">
-                    <button class="vt-skip" id="vtSkipBtn" onclick="vtSkip()">⏭ Später</button>
-                    <button class="vt-abbruch" onclick="vtAbbrechen()">✕ Set abbrechen</button>
-                </div>
-            </div>
-
-            <!-- Phase 3: Ergebnis -->
-            <div id="vtErgebnis" style="display:none;">
-                <div class="vt-erg-zeit" id="vtErgZeit">0.00s</div>
-                <div class="vt-erg-label" id="vtErgLabel"></div>
-                <div class="vt-erg-best" id="vtErgBest"></div>
-                <div class="vt-erg-stats" id="vtErgStats"></div>
-                <button class="vt-start" onclick="vtNochmal()">🔁 Gleiches Set nochmal</button>
-                <button class="vt-start vt-grau" onclick="vtZurueck()">📋 Anderes Set wählen</button>
-            </div>
-
-        </div>
-
         <div>
             <button id="btnAufgeben" onclick="aufgeben()">❌ Aufgeben</button>
         </div>
@@ -725,295 +633,15 @@ const erlasse = {
     },
 
     OR: {
-        name: "Vertragstypen",
-        vollname: "Obligationenrecht — Besondere Vertragsverhältnisse",
-        artikel: "das Schweizer",
-        vertrag: true,            // Spezial-Modus: Vertragsrecht (eine Artikel-Eingabe)
-        teilFrage: "",
-        anleitungZeilen: [
-            "Stelle dir ein <strong>Set</strong> zusammen: Anzahl Fragen (5/10/15) und ob du alle Vertragstypen oder gezielt einen übst.",
-            "Pro Frage siehst du einen <strong>Vertragstyp</strong> (z.B. «Die Miete») und ein <strong style='color:#e67e22'>Unterthema</strong> in orange. Gib die Artikelnummer ein, bei der das Unterthema beginnt – die Zahl genügt, bei Buchstaben-Artikeln z.B. <strong>269b</strong>.",
-            "Weißt du eine Frage gerade nicht, drück <strong>⏭ Später</strong> – sie kommt am Ende des Sets nochmal. Lösen musst du am Schluss alle.",
-            "Die Uhr läuft über das ganze Set. Am Ende siehst du deine Gesamtzeit – schlag deine <strong>Bestzeit</strong> für genau dieses Set!",
-            "Mit den <strong>🚲 Stützrädern</strong> kannst du dir einblenden lassen, ab welchem Artikel der Vertragstyp selbst beginnt – als Orientierungshilfe."
-        ],
-        // Daten werden aus OR_BT_VERTRAGSTYPEN befüllt (siehe unten)
-        daten: []
-    },
-
-    GesR: {
-        name: "Gesellschaftsrecht",
-        vollname: "Gesellschaftsrecht",
+        name: "OR BT",
+        vollname: "Obligationenrecht — Besonderer Teil",
         artikel: "das Schweizer",
         teilFrage: "",
         anleitungZeilen: ["", "", ""],
-        daten: []   // leer → Reiter erscheint als «Gesellschaftsrecht (bald)»
+        daten: []
     }
 
 };
-
-// ── OR BT: Vertragsrecht-Daten (Besonderer Teil) ──────────────────
-// Generiert aus SR 220 (Stand 01.01.2026). Pro Vertragstyp: name, start (erster
-// Artikel des Titels) und subs (Unterthemen mit Anfangsartikel a).
-const OR_BT_VERTRAGSTYPEN = [
-    { name: 'Kauf und Tausch', start: '184', subs: [
-        { u: 'Rechte und Pflichten im Allgemeinen', a: '184' },
-        { u: 'Nutzen und Gefahr', a: '185' },
-        { u: 'Vorbehalt der kantonalen Gesetzgebung', a: '186' },
-        { u: 'Gegenstand', a: '187' },
-        { u: 'Verpflichtungen des Verkäufers', a: '188' },
-        { u: 'Verpflichtungen des Käufers', a: '211' },
-        { u: 'Formvorschriften', a: '216' },
-        { u: 'Befristung und Vormerkung', a: '216a' },
-        { u: 'Vererblichkeit und Abtretung', a: '216b' },
-        { u: 'Vorkaufsrechte', a: '216c' },
-        { u: 'Bedingter Kauf und Eigentumsvorbehalt', a: '217' },
-        { u: 'Landwirtschaftliche Grundstücke', a: '218' },
-        { u: 'Gewährleistung', a: '219' },
-        { u: 'Nutzen und Gefahr', a: '220' },
-        { u: 'Verweisung auf den Fahrniskauf', a: '221' },
-        { u: 'Kauf nach Muster', a: '222' },
-        { u: 'Kauf auf Probe oder auf Besicht', a: '223' },
-        { u: 'Versteigerung', a: '229' },
-        { u: 'Verweisung auf den Kauf', a: '237' },
-        { u: 'Gewährleistung', a: '238' },
-    ] },
-    { name: 'Die Schenkung', start: '239', subs: [
-        { u: 'Inhalt der Schenkung', a: '239' },
-        { u: 'Persönliche Fähigkeit', a: '240' },
-        { u: 'Errichtung der Schenkung', a: '242' },
-        { u: 'Bedingungen und Auflagen', a: '245' },
-        { u: 'Verantwortlichkeit des Schenkers', a: '248' },
-        { u: 'Aufhebung der Schenkung', a: '249' },
-    ] },
-    { name: 'Die Miete', start: '253', subs: [
-        { u: 'Begriff und Geltungsbereich', a: '253' },
-        { u: 'Koppelungsgeschäfte', a: '254' },
-        { u: 'Dauer des Mietverhältnisses', a: '255' },
-        { u: 'Pflichten des Vermieters', a: '256' },
-        { u: 'Pflichten des Mieters', a: '257' },
-        { u: 'Nichterfüllung oder mangelhafte Erfüllung des Vertrags bei Übergabe der Sache', a: '258' },
-        { u: 'Mängel während der Mietdauer', a: '259' },
-        { u: 'Erneuerungen und Änderungen', a: '260' },
-        { u: 'Wechsel des Eigentümers', a: '261' },
-        { u: 'Untermiete', a: '262' },
-        { u: 'Übertragung der Miete auf einen Dritten', a: '263' },
-        { u: 'Vorzeitige Rückgabe der Sache', a: '264' },
-        { u: 'Verrechnung', a: '265' },
-        { u: 'Beendigung des Mietverhältnisses', a: '266' },
-        { u: 'Rückgabe der Sache', a: '267' },
-        { u: 'Retentionsrecht des Vermieters', a: '268' },
-        { u: 'Missbräuchliche Mietzinse', a: '269' },
-        { u: 'Indexierte Mietzinse', a: '269b' },
-        { u: 'Gestaffelte Mietzinse', a: '269c' },
-        { u: 'Mietzinserhöhungen und andere einseitige Vertragsänderungen durch den Vermieter', a: '269d' },
-        { u: 'Anfechtung des Mietzinses', a: '270' },
-        { u: 'Weitergeltung des Mietvertrages während des Anfechtungsverfahrens', a: '270e' },
-        { u: 'Anfechtbarkeit der Kündigung', a: '271' },
-        { u: 'Erstreckung des Mietverhältnisses', a: '272' },
-        { u: 'Fristen und Verfahren Fassung gemäss Anhang 1 Ziff. II 5 der Zivilprozessordnung vom 19. Dez. 2008, in Kraft seit 1. Jan. 2011 (AS 2010 1739; BBl 2006 7221).', a: '273' },
-        { u: 'Wohnung der Familie', a: '273a' },
-        { u: 'Untermiete', a: '273b' },
-        { u: 'Zwingende Bestimmungen', a: '273c' },
-    ] },
-    { name: 'Die Pacht', start: '275', subs: [
-        { u: 'Begriff und Geltungsbereich', a: '275' },
-        { u: 'Inventaraufnahme', a: '277' },
-        { u: 'Pflichten des Verpächters', a: '278' },
-        { u: 'Pflichten des Pächters', a: '281' },
-        { u: 'Rechte des Pächters bei Nichterfüllung des Vertrags und bei Mängeln', a: '288' },
-        { u: 'Erneuerungen und Änderungen', a: '289' },
-        { u: 'Wechsel des Eigentümers', a: '290' },
-        { u: 'Unterpacht', a: '291' },
-        { u: 'Übertragung der Pacht auf einen Dritten', a: '292' },
-        { u: 'Vorzeitige Rückgabe der Sache', a: '293' },
-        { u: 'Verrechnung', a: '294' },
-        { u: 'Beendigung des Pachtverhältnisses', a: '295' },
-        { u: 'Rückgabe der Sache', a: '299' },
-        { u: 'Retentionsrecht', a: '299c' },
-        { u: 'Kündigungsschutz bei der Pacht von Wohn- und Geschäftsräumen', a: '300' },
-        { u: 'Verfahren', a: '301' },
-        { u: 'Viehpacht und Viehverstellung', a: '302' },
-    ] },
-    { name: 'Die Leihe', start: '305', subs: [
-        { u: 'Begriff', a: '305' },
-        { u: 'Wirkung', a: '306' },
-        { u: 'Beendigung', a: '309' },
-        { u: 'Begriff', a: '312' },
-        { u: 'Wirkung', a: '313' },
-        { u: 'Hingabe an Geldes Statt', a: '317' },
-        { u: 'Zeit der Rückzahlung', a: '318' },
-    ] },
-    { name: 'Der Arbeitsvertrag', start: '319', subs: [
-        { u: 'Begriff und Entstehung', a: '319' },
-        { u: 'Pflichten des Arbeitnehmers', a: '321' },
-        { u: 'Pflichten des Arbeitgebers', a: '322' },
-        { u: 'Personalvorsorge', a: '331' },
-        { u: 'Rechte an Erfindungen und Designs', a: '332' },
-        { u: 'Übergang des Arbeitsverhältnisses', a: '333' },
-        { u: 'Beendigung des Arbeitsverhältnisses', a: '334' },
-        { u: 'Unverzichtbarkeit und Verjährung', a: '341' },
-        { u: 'Vorbehalt und zivilrechtliche Wirkungen des öffentlichen Rechts', a: '342' },
-        { u: 'Der Lehrvertrag', a: '344' },
-        { u: 'Der Handelsreisendenvertrag', a: '347' },
-        { u: 'Der Heimarbeitsvertrag', a: '351' },
-        { u: 'Anwendbarkeit der allgemeinen Vorschriften', a: '355' },
-        { u: 'Gesamtarbeitsvertrag', a: '356' },
-        { u: 'Normalarbeitsvertrag', a: '359' },
-        { u: 'Unabänderlichkeit zuungunsten des Arbeitgebers und des Arbeitnehmers', a: '361' },
-        { u: 'Unabänderlichkeit zuungunsten des Arbeitnehmers', a: '362' },
-    ] },
-    { name: 'Der Werkvertrag', start: '363', subs: [
-        { u: 'Begriff', a: '363' },
-        { u: 'Wirkungen – Pflichten des Unternehmers', a: '364' },
-        { u: 'Wirkungen – Pflichten des Bestellers', a: '372' },
-        { u: 'Beendigung – Rücktritt wegen Überschreitung des Kostenansatzes', a: '375' },
-        { u: 'Beendigung – Untergang des Werkes', a: '376' },
-        { u: 'Beendigung – Rücktritt des Bestellers gegen Schadloshaltung', a: '377' },
-        { u: 'Beendigung – Unmöglichkeit der Erfüllung aus Verhältnissen des Bestellers', a: '378' },
-        { u: 'Beendigung – Tod und Unfähigkeit des Unternehmers', a: '379' },
-    ] },
-    { name: 'Der Verlagsvertrag', start: '380', subs: [
-        { u: 'Begriff', a: '380' },
-        { u: 'Wirkungen – Übertragung des Urheberrechts und Gewährleistung', a: '381' },
-        { u: 'Wirkungen – Verfügung des Verlaggebers', a: '382' },
-        { u: 'Wirkungen – Bestimmung der Auflagen', a: '383' },
-        { u: 'Wirkungen – Vervielfältigung und Vertrieb', a: '384' },
-        { u: 'Wirkungen – Verbesserungen und Berichtigungen', a: '385' },
-        { u: 'Wirkungen – Gesamtausgaben und Einzelausgaben', a: '386' },
-        { u: 'Wirkungen – Übersetzungsrecht', a: '387' },
-        { u: 'Wirkungen – Honorar des Verlaggebers', a: '388' },
-        { u: 'Beendigung – Untergang des Werkes', a: '390' },
-        { u: 'Beendigung – Untergang der Auflage', a: '391' },
-        { u: 'Beendigung – Endigungsgründe in der Person des Urhebers und des Verlegers', a: '392' },
-        { u: 'Bearbeitung eines Werkes nach Plan des Verlegers', a: '393' },
-    ] },
-    { name: 'Der Auftrag', start: '394', subs: [
-        { u: 'Begriff', a: '394' },
-        { u: 'Entstehung', a: '395' },
-        { u: 'Wirkungen', a: '396' },
-        { u: 'Beendigung', a: '404' },
-        { u: 'Begriff und anwendbares Recht', a: '406a' },
-        { u: 'Vermittlung von oder an Personen aus dem Ausland', a: '406b' },
-        { u: 'Form und Inhalt', a: '406d' },
-        { u: 'Inkrafttreten, Widerruf, Kündigung', a: '406e' },
-        { u: 'Information und Datenschutz', a: '406g' },
-        { u: 'Herabsetzung', a: '406h' },
-        { u: 'Kreditbrief', a: '407' },
-        { u: 'Kreditauftrag', a: '408' },
-        { u: 'Begriff und Form', a: '412' },
-        { u: 'Mäklerlohn', a: '413' },
-        { u: 'Vorbehalt kantonalen Rechtes', a: '418' },
-        { u: 'Allgemeines', a: '418a' },
-        { u: 'Pflichten des Agenten', a: '418c' },
-        { u: 'Vertretungsbefugnis', a: '418e' },
-        { u: 'Pflichten des Auftraggebers', a: '418f' },
-        { u: 'Beendigung', a: '418p' },
-    ] },
-    { name: 'Die Geschäftsführung ohne Auftrag', start: '419', subs: [
-        { u: 'Stellung des Geschäftsführers – Art der Ausführung', a: '419' },
-        { u: 'Stellung des Geschäftsführers – Haftung des Geschäftsführers im Allgemeinen', a: '420' },
-        { u: 'Stellung des Geschäftsführers – Haftung des vertragsunfähigen Geschäftsführers', a: '421' },
-        { u: 'Stellung des Geschäftsherrn – Geschäftsführung im Interesse des Geschäftsherrn', a: '422' },
-        { u: 'Stellung des Geschäftsherrn – Geschäftsführung im Interesse des Geschäftsführers', a: '423' },
-        { u: 'Stellung des Geschäftsherrn – Genehmigung der Geschäftsführung', a: '424' },
-    ] },
-    { name: 'Die Kommission', start: '425', subs: [
-        { u: 'Einkaufs- und Verkaufskommission – Pflichten des Kommissionärs', a: '426' },
-        { u: 'Einkaufs- und Verkaufskommission – Rechte des Kommissionärs', a: '431' },
-        { u: 'Speditionsvertrag', a: '439' },
-    ] },
-    { name: 'Der Frachtvertrag', start: '440', subs: [
-        { u: 'Begriff', a: '440' },
-        { u: 'Wirkungen – Stellung des Absenders', a: '441' },
-        { u: 'Wirkungen – Stellung des Frachtführers', a: '444' },
-        { u: 'Staatlich genehmigte und staatliche Transportanstalten', a: '455' },
-        { u: 'Mitwirkung einer öffentlichen Transportanstalt', a: '456' },
-        { u: 'Haftung des Spediteurs', a: '457' },
-    ] },
-    { name: 'Die Prokura und andere Handlungsvollmachten', start: '458', subs: [
-        { u: 'Prokura – Begriff und Bestellung', a: '458' },
-        { u: 'Prokura – Umfang der Vollmacht', a: '459' },
-        { u: 'Prokura – Beschränkbarkeit', a: '460' },
-        { u: 'Prokura – Löschung der Prokura', a: '461' },
-        { u: 'Andere Handlungsvollmachten', a: '462' },
-        { u: 'Konkurrenzverbot', a: '464' },
-        { u: 'Erlöschen der Prokura und der andern Handlungsvollmachten', a: '465' },
-    ] },
-    { name: 'Die Anweisung', start: '466', subs: [
-        { u: 'Begriff', a: '466' },
-        { u: 'Wirkungen – Verhältnis des Anweisenden zum Anweisungsempfänger', a: '467' },
-        { u: 'Wirkungen – Verpflichtung des Angewiesenen', a: '468' },
-        { u: 'Wirkungen – Anzeigepflicht bei nicht erfolgter Zahlung', a: '469' },
-        { u: 'Widerruf', a: '470' },
-        { u: 'Anweisung bei Wertpapieren', a: '471' },
-    ] },
-    { name: 'Der Hinterlegungsvertrag', start: '472', subs: [
-        { u: 'Hinterlegung im Allgemeinen – Pflichten des Hinterlegers', a: '473' },
-        { u: 'Hinterlegung im Allgemeinen – Pflichten des Aufbewahrers', a: '474' },
-        { u: 'Hinterlegung im Allgemeinen – Sequester', a: '480' },
-        { u: 'Die Hinterlegung vertretbarer Sachen', a: '481' },
-        { u: 'Lagergeschäft – Berechtigung zur Ausgabe von Warenpapieren', a: '482' },
-        { u: 'Lagergeschäft – Aufbewahrungspflicht des Lagerhalters', a: '483' },
-        { u: 'Lagergeschäft – Vermengung der Güter', a: '484' },
-        { u: 'Lagergeschäft – Anspruch des Lagerhalters', a: '485' },
-        { u: 'Lagergeschäft – Rückgabe der Güter', a: '486' },
-        { u: 'Gast- und Stallwirte – Haftung der Gastwirte', a: '487' },
-        { u: 'Gast- und Stallwirte – Haftung der Stallwirte', a: '490' },
-        { u: 'Gast- und Stallwirte – Retentionsrecht', a: '491' },
-    ] },
-    { name: 'Die Bürgschaft', start: '492', subs: [
-        { u: 'Voraussetzungen – Form', a: '493' },
-        { u: 'Voraussetzungen – Zustimmung des Ehegatten', a: '494' },
-        { u: 'Inhalt – Besonderheiten der einzelnen Bürgschaftsarten', a: '495' },
-        { u: 'Inhalt – Gemeinsamer Inhalt', a: '499' },
-        { u: 'Beendigung der Bürgschaft – Dahinfallen von Gesetzes wegen', a: '509' },
-        { u: 'Beendigung der Bürgschaft – Bürgschaft auf Zeit; Rücktritt', a: '510' },
-        { u: 'Beendigung der Bürgschaft – Unbefristete Bürgschaft', a: '511' },
-        { u: 'Beendigung der Bürgschaft – Amts- und Dienstbürgschaft', a: '512' },
-    ] },
-    { name: 'Spiel und Wette', start: '513', subs: [
-        { u: 'Unklagbarkeit der Forderung', a: '513' },
-        { u: 'Schuldverschreibungen und freiwillige Zahlung', a: '514' },
-        { u: 'Lotterie- und Ausspielgeschäfte', a: '515' },
-        { u: 'Spiel in Spielbanken, Darlehen von Spielbanken', a: '515a' },
-    ] },
-    { name: 'Der Leibrentenvertrag und die Verpfründung', start: '516', subs: [
-        { u: 'Leibrentenvertrag – Form der Entstehung', a: '517' },
-        { u: 'Leibrentenvertrag – Rechte des Gläubigers', a: '518' },
-        { u: 'Leibrentenvertrag – Leibrenten nach dem Gesetz über den Versicherungsvertrag', a: '520' },
-        { u: 'Verpfründung – Entstehung', a: '522' },
-        { u: 'Verpfründung – Anfechtung und Herabsetzung', a: '525' },
-        { u: 'Verpfründung – Aufhebung', a: '526' },
-        { u: 'Verpfründung – Unübertragbarkeit, Geltendmachung bei Konkurs und Pfändung', a: '529' },
-    ] },
-    { name: 'Die einfache Gesellschaft', start: '530', subs: [
-        { u: 'Begriff', a: '530' },
-        { u: 'Verhältnis der Gesellschafter unter sich – Beiträge', a: '531' },
-        { u: 'Verhältnis der Gesellschafter unter sich – Gewinn und Verlust', a: '532' },
-        { u: 'Verhältnis der Gesellschafter unter sich – Gesellschaftsbeschlüsse', a: '534' },
-        { u: 'Verhältnis der Gesellschafter unter sich – Geschäftsführung', a: '535' },
-        { u: 'Verhältnis der Gesellschafter unter sich – Verantwortlichkeit unter sich', a: '536' },
-        { u: 'Verhältnis der Gesellschafter unter sich – Entzug und Beschränkung der Geschäftsführung', a: '539' },
-        { u: 'Verhältnis der Gesellschafter unter sich – Geschäftsführende und nicht geschäftsführende Gesellschafter', a: '540' },
-        { u: 'Verhältnis der Gesellschafter unter sich – Aufnahme neuer Gesellschafter und Unterbeteiligung', a: '542' },
-        { u: 'Verhältnis der Gesellschafter gegenüber Dritten – Vertretung', a: '543' },
-        { u: 'Verhältnis der Gesellschafter gegenüber Dritten – Wirkung der Vertretung', a: '544' },
-        { u: 'Beendigung der Gesellschaft – Auflösungsgründe', a: '545' },
-        { u: 'Beendigung der Gesellschaft – Wirkung der Auflösung auf die Geschäftsführung', a: '547' },
-        { u: 'Beendigung der Gesellschaft – Liquidation', a: '548' },
-        { u: 'Beendigung der Gesellschaft – Haftung gegenüber Dritten', a: '551' },
-    ] },
-];
-
-// Flache Frageliste für den Vertrags-Modus aufbauen
-erlasse.OR.vertragstypen = OR_BT_VERTRAGSTYPEN;
-erlasse.OR.daten = [];
-OR_BT_VERTRAGSTYPEN.forEach(function(vt) {
-    vt.subs.forEach(function(s) {
-        erlasse.OR.daten.push({ typ: vt.name, typStart: vt.start, u: s.u, a: s.a });
-    });
-});
 
 // ═══════════════════════════════════════════════════════════════════
 // SPIELLOGIK
@@ -1059,7 +687,6 @@ function renderTabs() {
 function wechsleErlass(key) {
     if (aktiverErlass === key) return;
     clearInterval(timerInterval);
-    if (typeof vtTimerInterval !== 'undefined') clearInterval(vtTimerInterval);
     aktiverErlass = key;
     const e = erlasse[key];
 
@@ -1071,8 +698,7 @@ function wechsleErlass(key) {
     document.getElementById('chartTitel').textContent = 'Dein Fortschritt – ' + e.name + ' (Sekunden pro Runde)';
 
     const modusToggle = document.getElementById('modusToggle');
-    const istVertrag = !!e.vertrag;
-    const hasTabs = !!e.struktur && !istVertrag;
+    const hasTabs = !!e.struktur;
     modusToggle.style.display = hasTabs ? 'block' : 'none';
     document.getElementById('mainCard').classList.toggle('has-tabs', hasTabs);
 
@@ -1081,7 +707,7 @@ function wechsleErlass(key) {
 
     document.getElementById('inputUeberthema').placeholder = e.teilFrage || 'In welchem Teil des ' + key + ' befindet sich der angezeigte Titel?';
 
-    setModus(istVertrag ? 'vertrag' : 'tippen');
+    setModus('tippen');
     updateChart();
     updateStats();
 }
@@ -1101,297 +727,20 @@ function updateAnleitung() {
 function setModus(modus) {
     spielModus = modus;
     const isNav = modus === 'navigieren';
-    const isVertrag = modus === 'vertrag';
-    document.getElementById('tippModus').style.display = (isNav || isVertrag) ? 'none' : 'block';
+    document.getElementById('tippModus').style.display = isNav ? 'none' : 'block';
     document.getElementById('navigationsbaum').style.display = isNav ? 'block' : 'none';
-    document.getElementById('vertragModus').style.display = isVertrag ? 'block' : 'none';
-    // Im Vertrags-Modus übernimmt das Set-Modul die komplette Anzeige:
-    // gemeinsame Spielleiste (Frage/Timer/Aufgeben) und Penalty ausblenden.
-    document.getElementById('gameBar').style.display = isVertrag ? 'none' : 'flex';
-    document.getElementById('penaltyAnzeige').style.display = isVertrag ? 'none' : '';
-    document.getElementById('btnAufgeben').parentElement.style.display = isVertrag ? 'none' : '';
-    document.getElementById('antwortHinweis').style.display = isVertrag ? 'none' : '';
     document.getElementById('fragenLabel').textContent = isNav ? 'Artikel:' : 'Titel:';
-    if (!isVertrag) {
-        document.getElementById('switchClassic').classList.toggle('aktiv', modus === 'tippen');
-        document.getElementById('switchExplorer').classList.toggle('aktiv', modus === 'navigieren');
-    }
+    document.getElementById('switchClassic').classList.toggle('aktiv', modus === 'tippen');
+    document.getElementById('switchExplorer').classList.toggle('aktiv', modus === 'navigieren');
     updateAnleitung();
     clearInterval(timerInterval);
-    if (isVertrag) {
-        vtZeigeAuswahl();   // Phase 1: Set zusammenstellen
-    } else {
-        neueFrage();
-    }
+    neueFrage();
 }
-
-// Stützräder-Zustand (pro Browser gemerkt)
-let stuetzraederAn = false;
-try { stuetzraederAn = localStorage.getItem('guesser_stuetzraeder') === '1'; } catch(e) {}
-
-function setStuetzraeder(an) {
-    stuetzraederAn = an;
-    try { localStorage.setItem('guesser_stuetzraeder', an ? '1' : '0'); } catch(e) {}
-    if (typeof vtAktualisiereAnker === 'function') vtAktualisiereAnker();
-}
-
-// ════════════════════════════════════════════════════════════════
-//  OR BT – Vertragsrecht im Set-Format (Auswahl → Run → Ergebnis)
-// ════════════════════════════════════════════════════════════════
-
-const VT_LAENGEN = [5, 10, 15];
-let vtConfig = { laenge: 10, typen: [] };   // typen: leeres Array = alle Typen
-let vtQueue = [];          // verbleibende Fragen (Warteschlange)
-let vtErledigt = 0;        // korrekt beantwortete in diesem Set
-let vtZurueckgestellt = 0; // aktuell zurückgestellte
-let vtAktuelle = null;     // aktuelle Frage im Run
-let vtRunStart = 0;        // performance.now() beim Set-Start
-let vtTimerInterval = null;
-
-// Auswahl-Phase anzeigen
-function vtZeigeAuswahl() {
-    clearInterval(vtTimerInterval);
-    document.getElementById('vtAuswahl').style.display = 'block';
-    document.getElementById('vtRun').style.display = 'none';
-    document.getElementById('vtErgebnis').style.display = 'none';
-    vtRenderChips();
-    document.getElementById('toggleStuetzraeder').checked = stuetzraederAn;
-}
-
-function vtRenderChips() {
-    // Längen-Chips
-    const lr = document.getElementById('vtLaengeRow');
-    lr.innerHTML = '';
-    VT_LAENGEN.forEach(n => {
-        const c = document.createElement('button');
-        c.className = 'vt-chip' + (vtConfig.laenge === n ? ' aktiv' : '');
-        c.textContent = n + ' Fragen';
-        c.onclick = () => { vtConfig.laenge = n; vtRenderChips(); };
-        lr.appendChild(c);
-    });
-    // Typ-Chips: "Alle" (Schnellwahl) + jeder Vertragstyp (mehrfach ankreuzbar)
-    const tr = document.getElementById('vtTypRow');
-    tr.innerHTML = '';
-    const alleAktiv = vtConfig.typen.length === 0;
-    const alle = document.createElement('button');
-    alle.className = 'vt-chip' + (alleAktiv ? ' aktiv' : '');
-    alle.textContent = '🎲 Alle Typen';
-    alle.onclick = () => { vtConfig.typen = []; vtRenderChips(); };
-    tr.appendChild(alle);
-    (erlasse.OR.vertragstypen || []).forEach(vt => {
-        const aktiv = vtConfig.typen.indexOf(vt.name) !== -1;
-        const c = document.createElement('button');
-        c.className = 'vt-chip' + (aktiv ? ' aktiv' : '');
-        c.textContent = vt.name;
-        c.onclick = () => {
-            const i = vtConfig.typen.indexOf(vt.name);
-            if (i === -1) vtConfig.typen.push(vt.name);
-            else vtConfig.typen.splice(i, 1);
-            vtRenderChips();
-        };
-        tr.appendChild(c);
-    });
-    vtUpdateInfo();
-}
-
-// Live-Anzeige: wie viele Fragen kommen tatsächlich?
-function vtUpdateInfo() {
-    const poolN = vtPool().length;
-    const effektiv = Math.min(vtConfig.laenge, poolN);
-    const info = document.getElementById('vtInfo');
-    const btn = document.getElementById('vtStartBtn');
-    if (poolN === 0) {
-        info.innerHTML = '<span style="color:#e74c3c;">Bitte mindestens einen Vertragstyp wählen.</span>';
-        btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed';
-        return;
-    }
-    btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
-    const wahl = vtConfig.typen.length === 0
-        ? 'allen Typen'
-        : (vtConfig.typen.length + (vtConfig.typen.length === 1 ? ' Typ' : ' Typen'));
-    if (effektiv < vtConfig.laenge) {
-        info.innerHTML = 'Dieses Set hat nur <strong>' + effektiv + '</strong> Fragen ' +
-            '(so viele Unterthemen gibt es bei ' + wahl + ').';
-    } else {
-        info.innerHTML = '<strong>' + effektiv + '</strong> Fragen aus ' + wahl + '.';
-    }
-}
-
-// Fragenpool für die aktuelle Konfiguration zusammenstellen
-function vtPool() {
-    const alle = erlasse.OR.daten;
-    if (vtConfig.typen.length === 0) return alle.slice();   // leer = alle
-    return alle.filter(f => vtConfig.typen.indexOf(f.typ) !== -1);
-}
-
-function vtShuffle(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-}
-
-// Run starten
-function vtStart() {
-    const pool = vtShuffle(vtPool());
-    if (pool.length === 0) { vtUpdateInfo(); return; }   // nichts ausgewählt
-    // Set-Länge auf Poolgröße begrenzen (kleine Typen haben < 15 Fragen)
-    const n = Math.min(vtConfig.laenge, pool.length);
-    vtQueue = pool.slice(0, n);
-    vtSetLaengeEffektiv = n;
-    vtErledigt = 0;
-    vtZurueckgestellt = 0;
-
-    document.getElementById('vtAuswahl').style.display = 'none';
-    document.getElementById('vtErgebnis').style.display = 'none';
-    document.getElementById('vtRun').style.display = 'block';
-
-    vtRunStart = performance.now();
-    clearInterval(vtTimerInterval);
-    vtTimerInterval = setInterval(() => {
-        document.getElementById('vtTimer').innerText =
-            ((performance.now() - vtRunStart) / 1000).toFixed(2) + 's';
-    }, 50);
-
-    vtNaechste();
-}
-let vtSetLaengeEffektiv = 10;
-
-// Nächste Frage aus der Warteschlange holen
-function vtNaechste() {
-    document.getElementById('vtFeedback').innerHTML = '';
-    const inp = document.getElementById('inputVertragArtikel');
-    inp.value = ''; inp.disabled = false; inp.className = '';
-
-    if (vtQueue.length === 0) { vtFertig(); return; }
-
-    vtAktuelle = vtQueue[0];
-
-    // Fortschritt
-    const gesamt = vtSetLaengeEffektiv;
-    let txt = 'Frage ' + (vtErledigt + 1) + ' von ' + gesamt;
-    if (vtZurueckgestellt > 0) txt += ' · ' + vtZurueckgestellt + ' zurückgestellt';
-    document.getElementById('vtFortschritt').innerText = txt;
-    document.getElementById('vtBar').style.width = (vtErledigt / gesamt * 100) + '%';
-
-    // Frage anzeigen
-    document.getElementById('vtTyp').innerText = vtAktuelle.typ;
-    document.getElementById('vtUnter').innerText = vtAktuelle.u;
-    vtAktualisiereAnker();
-
-    inp.focus();
-}
-
-function vtAktualisiereAnker() {
-    const a = document.getElementById('vertragAnker');
-    if (stuetzraederAn && vtAktuelle && vtAktuelle.typStart) {
-        a.innerHTML = '🚲 <strong>' + vtAktuelle.typ + '</strong> beginnt bei Art. ' + vtAktuelle.typStart + ' ff.';
-        a.style.display = 'block';
-    } else {
-        a.style.display = 'none';
-    }
-}
-
-// Eingabe prüfen (live)
-document.getElementById('inputVertragArtikel').addEventListener('input', function(e) {
-    if (spielModus !== 'vertrag' || !vtAktuelle) return;
-    if (normArtikel(e.target.value) === normArtikel(vtAktuelle.a)) {
-        e.target.disabled = true;
-        e.target.className = 'correct';
-        document.getElementById('vtFeedback').innerHTML =
-            '<span style="color:#27ae60;">✓ Art. ' + vtAktuelle.a + ' – richtig!</span>';
-        vtQueue.shift();          // erledigte Frage raus
-        vtErledigt++;
-        setTimeout(vtNaechste, 650);
-    }
-});
-
-// Enter im Eingabefeld = bei leerem Feld nichts, sonst kurze Fehleranzeige
-document.getElementById('inputVertragArtikel').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && spielModus === 'vertrag' && vtAktuelle) {
-        const v = e.target.value.trim();
-        if (v && normArtikel(v) !== normArtikel(vtAktuelle.a)) {
-            document.getElementById('vtFeedback').innerHTML =
-                '<span style="color:#e74c3c;">Nicht ganz – schlag nach und versuch es nochmal.</span>';
-        }
-    }
-});
-
-// Frage zurückstellen (ans Ende der Warteschlange)
-function vtSkip() {
-    if (vtQueue.length <= 1) {
-        // letzte verbleibende Frage – Überspringen sinnlos
-        document.getElementById('vtFeedback').innerHTML =
-            '<span style="color:#7f8c8d;">Das ist die letzte Frage – die musst du noch lösen.</span>';
-        return;
-    }
-    const f = vtQueue.shift();
-    vtQueue.push(f);
-    vtZurueckgestellt = Math.min(vtZurueckgestellt + 1, vtQueue.length);
-    vtNaechste();
-}
-
-// Set vorzeitig abbrechen
-function vtAbbrechen() {
-    if (!confirm('Set wirklich abbrechen? Dein Lauf wird nicht gewertet.')) return;
-    clearInterval(vtTimerInterval);
-    vtZeigeAuswahl();
-}
-
-// Set fertig – Ergebnis anzeigen
-function vtFertig() {
-    clearInterval(vtTimerInterval);
-    const gesamtMs = performance.now() - vtRunStart;
-    const gesamtSek = gesamtMs / 1000;
-    const schnitt = gesamtSek / vtSetLaengeEffektiv;
-
-    document.getElementById('vtRun').style.display = 'none';
-    document.getElementById('vtErgebnis').style.display = 'block';
-
-    // Beschreibung der Typ-Auswahl (für Label und Bestzeit-Schlüssel)
-    let typBeschr, typKey;
-    if (vtConfig.typen.length === 0) {
-        typBeschr = 'Alle Typen'; typKey = 'ALLE';
-    } else if (vtConfig.typen.length === 1) {
-        typBeschr = vtConfig.typen[0]; typKey = vtConfig.typen[0];
-    } else {
-        typBeschr = vtConfig.typen.length + ' Typen';
-        // stabiler Schlüssel: sortierte Typnamen, damit Reihenfolge egal ist
-        typKey = vtConfig.typen.slice().sort().join('|');
-    }
-
-    document.getElementById('vtErgZeit').innerText = gesamtSek.toFixed(2) + 's';
-    document.getElementById('vtErgLabel').innerText =
-        vtSetLaengeEffektiv + ' Fragen · ' + typBeschr;
-    document.getElementById('vtErgStats').innerText =
-        'Ø ' + schnitt.toFixed(2) + 's pro Frage';
-
-    // Bestzeit pro Konfiguration (Typ-Auswahl + effektive Länge)
-    const key = 'guesser_vtbest_' + typKey + '_' + vtSetLaengeEffektiv;
-    let best = null;
-    try { best = parseFloat(localStorage.getItem(key)); } catch(e) {}
-    const bestEl = document.getElementById('vtErgBest');
-    if (!best || isNaN(best)) {
-        try { localStorage.setItem(key, gesamtSek.toFixed(2)); } catch(e) {}
-        bestEl.innerHTML = '⭐ Deine erste Zeit für dieses Set!';
-    } else if (gesamtSek < best) {
-        const diff = (best - gesamtSek).toFixed(2);
-        try { localStorage.setItem(key, gesamtSek.toFixed(2)); } catch(e) {}
-        bestEl.innerHTML = '🏆 Neue Bestzeit! (' + diff + 's schneller als ' + best.toFixed(2) + 's)';
-    } else {
-        bestEl.innerHTML = 'Bestzeit für dieses Set: ' + best.toFixed(2) + 's';
-    }
-}
-
-function vtNochmal() { vtStart(); }
-function vtZurueck() { vtZeigeAuswahl(); }
 
 // ── Neue Frage ────────────────────────────────────────────────────
 
 function neueFrage() {
     if (!aktiverErlass) return;
-    if (spielModus === 'vertrag') return;   // Vertrags-Modus läuft über das Set-Modul
     clearInterval(timerInterval);
 
     const daten = erlasse[aktiverErlass].daten;
@@ -1561,14 +910,6 @@ document.getElementById('inputArtikel').addEventListener('input', function(e) {
     }
 });
 
-// Artikel-Eingabe tolerant normalisieren: "269b", "269 b", "Art. 269b", "art.269 B" → "269b"
-function normArtikel(s) {
-    return s.toLowerCase()
-        .replace(/art\.?/g, '')
-        .replace(/[\s.]/g, '')
-        .trim();
-}
-
 // ── Chart & Stats ─────────────────────────────────────────────────
 
 function initChart() {
@@ -1613,7 +954,7 @@ function updateChart() {
     if (!chart) return;
     chart.data.labels = history.map((_, i) => i + 1);
     chart.data.datasets[0].data = history.map(item =>
-        (!item.modus || item.modus === 'tippen' || item.modus === 'vertrag') ? item.time : null
+        (!item.modus || item.modus === 'tippen') ? item.time : null
     );
     chart.data.datasets[1].data = history.map(item =>
         item.modus === 'navigieren' ? item.time : null
