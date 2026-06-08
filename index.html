@@ -632,6 +632,142 @@ const erlasse = {
         ]
     },
 
+    ATSG: {
+        name: "ATSG",
+        vollname: "Allgemeiner Teil des Sozialversicherungsrechts",
+        artikel: "das Schweizer",
+        teilFrage: "In welchem Kapitel des ATSG befindet sich das angezeigte Thema?",
+        ebene2Label: "Abschnitt bzw. Artikelthema",
+        ebene1Label: "Kapitel",
+        fragenLabel: "Thema:",
+        anleitungZeilen: [
+            "Dir wird ein <strong>Abschnitt oder Artikelthema</strong> des ATSG in <strong style='color:#e67e22'>orange</strong> angezeigt.",
+            "Gib das zum Abschnitt oder Artikelthema passende <strong>Kapitel des ATSG</strong> ein, in dem sich das angezeigte Thema befindet: <em>Anwendungsbereich</em>, <em>Definitionen</em>, <em>Leistungen und Beiträge</em>, <em>Verfahrensbestimmungen</em>, <em>Koordinationsregeln</em>, <em>Internationale Abkommen</em> oder <em>Verschiedene Bestimmungen</em>.",
+            "Sobald du das <strong>Kapitel</strong> korrekt angegeben hast, startet der Timer automatisch.",
+            "Gib nun den korrekten <strong>ersten Artikel des angezeigten Abschnittes oder Artikelthemas</strong> ein – es genügt die Zahl (z.B. <strong>27</strong> statt Art. 27).",
+            "Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert."
+        ],
+        anleitungZeilenExplorer: [
+            "Dir wird eine <strong>Artikelnummer</strong> in <strong style='color:#e67e22'>orange</strong> angezeigt – z.B. «Art. 56».",
+            "Klicke das <strong>Kapitel des ATSG</strong> an, in dem sich der angezeigte Artikel befindet. Jeder falsche Klick kostet +3 Sekunden.",
+            "Sobald du das richtige <strong>Kapitel</strong> angeklickt hast, startet der Timer automatisch.",
+            "Klicke nun das <strong>Abschnitt- oder Artikelthema des ATSG</strong> an, in dem sich der angezeigte Artikel befindet. Auch hier kostet ein falscher Klick +3 Sekunden.",
+            "Bei Erfolg wird deine Zeit gestoppt und im Diagramm unten gespeichert."
+        ],
+        alternativen: {
+            "1. Kapitel: Anwendungsbereich":                                         ["Anwendungsbereich", "Erstes Kapitel", "1. Kapitel"],
+            "2. Kapitel: Definitionen allgemeiner Begriffe":                         ["Definitionen", "Definitionen allgemeiner Begriffe", "Zweites Kapitel", "2. Kapitel"],
+            "3. Kapitel: Allgemeine Bestimmungen über Leistungen und Beiträge":      ["Leistungen und Beiträge", "Allgemeine Bestimmungen über Leistungen und Beiträge", "Drittes Kapitel", "3. Kapitel"],
+            "4. Kapitel: Allgemeine Verfahrensbestimmungen":                         ["Verfahrensbestimmungen", "Allgemeine Verfahrensbestimmungen", "Viertes Kapitel", "4. Kapitel"],
+            "5. Kapitel: Koordinationsregeln":                                       ["Koordinationsregeln", "Fünftes Kapitel", "5. Kapitel"],
+            "5a. Kapitel: Durchführung internationaler Sozialversicherungsabkommen": ["Durchführung internationaler Sozialversicherungsabkommen", "Internationale Sozialversicherungsabkommen", "5a Kapitel", "5a. Kapitel"],
+            "6. Kapitel: Verschiedene Bestimmungen":                                 ["Verschiedene Bestimmungen", "Sechstes Kapitel", "6. Kapitel"]
+        },
+        struktur: [
+            {
+                titel: "1. Kapitel: Anwendungsbereich",
+                abschnitte: [
+                    { name: "Zweck und Gegenstand",                                  a: "1" },
+                    { name: "Geltungsbereich und Verhältnis zu den Einzelgesetzen",  a: "2" }
+                ]
+            },
+            {
+                titel: "2. Kapitel: Definitionen allgemeiner Begriffe",
+                abschnitte: [
+                    { name: "Krankheit",                              a: "3"   },
+                    { name: "Unfall",                                 a: "4"   },
+                    { name: "Mutterschaft",                           a: "5"   },
+                    { name: "Arbeitsunfähigkeit",                     a: "6"   },
+                    { name: "Erwerbsunfähigkeit",                     a: "7"   },
+                    { name: "Invalidität",                            a: "8"   },
+                    { name: "Hilflosigkeit",                          a: "9"   },
+                    { name: "Arbeitnehmerinnen und Arbeitnehmer",     a: "10"  },
+                    { name: "Arbeitgeber",                            a: "11"  },
+                    { name: "Selbstständigerwerbende",                a: "12"  },
+                    { name: "Wohnsitz und gewöhnlicher Aufenthalt",   a: "13"  },
+                    { name: "Eingetragene Partnerschaft",             a: "13a" }
+                ]
+            },
+            {
+                titel: "3. Kapitel: Allgemeine Bestimmungen über Leistungen und Beiträge",
+                abschnitte: [
+                    { name: "1. Abschnitt: Sachleistungen",                          a: "14" },
+                    { name: "2. Abschnitt: Geldleistungen",                          a: "15" },
+                    { name: "3. Abschnitt: Kürzung und Verweigerung von Leistungen", a: "21" },
+                    { name: "4. Abschnitt: Spezielle Bestimmungen",                  a: "22" }
+                ]
+            },
+            {
+                titel: "4. Kapitel: Allgemeine Verfahrensbestimmungen",
+                abschnitte: [
+                    { name: "1. Abschnitt: Auskunft, Verwaltungshilfe, Schweigepflicht", a: "27" },
+                    { name: "2. Abschnitt: Sozialversicherungsverfahren",                a: "34" },
+                    { name: "3. Abschnitt: Rechtspflegeverfahren",                       a: "56" }
+                ]
+            },
+            {
+                titel: "5. Kapitel: Koordinationsregeln",
+                abschnitte: [
+                    { name: "1. Abschnitt: Leistungskoordination", a: "63" },
+                    { name: "2. Abschnitt: Rückgriff",             a: "72" }
+                ]
+            },
+            {
+                titel: "5a. Kapitel: Durchführung internationaler Sozialversicherungsabkommen",
+                abschnitte: [
+                    { name: "Zuständige Stellen",                  a: "75a" },
+                    { name: "Infrastruktur für die Durchführung",  a: "75b" },
+                    { name: "Finanzierung der Infrastruktur",      a: "75c" }
+                ]
+            },
+            {
+                titel: "6. Kapitel: Verschiedene Bestimmungen",
+                abschnitte: [
+                    { name: "Aufsichtsbehörde",                        a: "76"  },
+                    { name: "Elektronischer Datenaustausch",           a: "76a" },
+                    { name: "Berichterstattung und Statistik",         a: "77"  },
+                    { name: "Verantwortlichkeit",                      a: "78"  },
+                    { name: "Strafbestimmungen",                       a: "79"  },
+                    { name: "Steuerfreiheit der Versicherungsträger",  a: "80"  }
+                ]
+            }
+        ],
+        daten: [
+            { u: "Zweck und Gegenstand",                                  t: "1. Kapitel: Anwendungsbereich",                                        a: "1"   },
+            { u: "Geltungsbereich und Verhältnis zu den Einzelgesetzen",  t: "1. Kapitel: Anwendungsbereich",                                        a: "2"   },
+            { u: "Krankheit",                            t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "3"   },
+            { u: "Unfall",                               t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "4"   },
+            { u: "Mutterschaft",                         t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "5"   },
+            { u: "Arbeitsunfähigkeit",                   t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "6"   },
+            { u: "Erwerbsunfähigkeit",                   t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "7"   },
+            { u: "Invalidität",                          t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "8"   },
+            { u: "Hilflosigkeit",                        t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "9"   },
+            { u: "Arbeitnehmerinnen und Arbeitnehmer",   t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "10"  },
+            { u: "Arbeitgeber",                          t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "11"  },
+            { u: "Selbstständigerwerbende",              t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "12"  },
+            { u: "Wohnsitz und gewöhnlicher Aufenthalt", t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "13"  },
+            { u: "Eingetragene Partnerschaft",           t: "2. Kapitel: Definitionen allgemeiner Begriffe",                        a: "13a" },
+            { u: "1. Abschnitt: Sachleistungen",                          t: "3. Kapitel: Allgemeine Bestimmungen über Leistungen und Beiträge",     a: "14"  },
+            { u: "2. Abschnitt: Geldleistungen",                          t: "3. Kapitel: Allgemeine Bestimmungen über Leistungen und Beiträge",     a: "15"  },
+            { u: "3. Abschnitt: Kürzung und Verweigerung von Leistungen", t: "3. Kapitel: Allgemeine Bestimmungen über Leistungen und Beiträge",     a: "21"  },
+            { u: "4. Abschnitt: Spezielle Bestimmungen",                  t: "3. Kapitel: Allgemeine Bestimmungen über Leistungen und Beiträge",     a: "22"  },
+            { u: "1. Abschnitt: Auskunft, Verwaltungshilfe, Schweigepflicht", t: "4. Kapitel: Allgemeine Verfahrensbestimmungen",                    a: "27"  },
+            { u: "2. Abschnitt: Sozialversicherungsverfahren",            t: "4. Kapitel: Allgemeine Verfahrensbestimmungen",                        a: "34"  },
+            { u: "3. Abschnitt: Rechtspflegeverfahren",                   t: "4. Kapitel: Allgemeine Verfahrensbestimmungen",                        a: "56"  },
+            { u: "1. Abschnitt: Leistungskoordination",                   t: "5. Kapitel: Koordinationsregeln",                                      a: "63"  },
+            { u: "2. Abschnitt: Rückgriff",                               t: "5. Kapitel: Koordinationsregeln",                                      a: "72"  },
+            { u: "Zuständige Stellen",                                    t: "5a. Kapitel: Durchführung internationaler Sozialversicherungsabkommen", a: "75a" },
+            { u: "Infrastruktur für die Durchführung",                    t: "5a. Kapitel: Durchführung internationaler Sozialversicherungsabkommen", a: "75b" },
+            { u: "Finanzierung der Infrastruktur",                        t: "5a. Kapitel: Durchführung internationaler Sozialversicherungsabkommen", a: "75c" },
+            { u: "Aufsichtsbehörde",                                      t: "6. Kapitel: Verschiedene Bestimmungen",                                a: "76"  },
+            { u: "Elektronischer Datenaustausch",                         t: "6. Kapitel: Verschiedene Bestimmungen",                                a: "76a" },
+            { u: "Berichterstattung und Statistik",                       t: "6. Kapitel: Verschiedene Bestimmungen",                                a: "77"  },
+            { u: "Verantwortlichkeit",                                    t: "6. Kapitel: Verschiedene Bestimmungen",                                a: "78"  },
+            { u: "Strafbestimmungen",                                     t: "6. Kapitel: Verschiedene Bestimmungen",                                a: "79"  },
+            { u: "Steuerfreiheit der Versicherungsträger",                t: "6. Kapitel: Verschiedene Bestimmungen",                                a: "80"  }
+        ]
+    },
+
     OR: {
         name: "OR BT",
         vollname: "Obligationenrecht — Besonderer Teil",
@@ -729,7 +865,7 @@ function setModus(modus) {
     const isNav = modus === 'navigieren';
     document.getElementById('tippModus').style.display = isNav ? 'none' : 'block';
     document.getElementById('navigationsbaum').style.display = isNav ? 'block' : 'none';
-    document.getElementById('fragenLabel').textContent = isNav ? 'Artikel:' : 'Titel:';
+    document.getElementById('fragenLabel').textContent = isNav ? 'Artikel:' : ((erlasse[aktiverErlass] && erlasse[aktiverErlass].fragenLabel) || 'Titel:');
     document.getElementById('switchClassic').classList.toggle('aktiv', modus === 'tippen');
     document.getElementById('switchExplorer').classList.toggle('aktiv', modus === 'navigieren');
     updateAnleitung();
@@ -778,9 +914,11 @@ function renderNavigationsbaum() {
 
     const label = document.createElement('p');
     label.className = 'nav-label';
+    const ebene1 = erlasse[aktiverErlass].ebene1Label || 'Titel';
+    const ebene2 = erlasse[aktiverErlass].ebene2Label || 'Abschnitt';
     label.textContent = navPhase === 1
-        ? 'Schritt 1: In welchem Titel befindet sich dieser Artikel?'
-        : 'Schritt 2: In welchem Abschnitt befindet sich dieser Artikel?';
+        ? 'Schritt 1: In welchem ' + ebene1 + ' befindet sich dieser Artikel?'
+        : 'Schritt 2: In welchem ' + ebene2 + ' befindet sich dieser Artikel?';
     container.appendChild(label);
 
     struktur.forEach(titelObj => {
@@ -813,7 +951,7 @@ function titelKlick(titelObj, titelBtn) {
         titelBtn._abschnittDiv.style.display = 'block';
         navPhase = 2;
         document.querySelector('#navigationsbaum .nav-label').textContent =
-            'Schritt 2: In welchem Abschnitt befindet sich dieser Artikel?';
+            'Schritt 2: In welchem ' + (erlasse[aktiverErlass].ebene2Label || 'Abschnitt') + ' befindet sich dieser Artikel?';
         startTime = performance.now() - (navPenalty * 1000);
         timerInterval = setInterval(() => {
             document.getElementById('timer').innerText = ((performance.now() - startTime) / 1000).toFixed(2) + 's';
