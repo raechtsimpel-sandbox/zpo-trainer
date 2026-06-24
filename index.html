@@ -306,7 +306,6 @@
                 </div>
                 <div class="ds-bar-aussen"><div class="ds-bar-innen" id="dsBar"></div></div>
                 <div class="ds-bar-label"><b id="dsAnzahlGefunden">0</b> / <span id="dsAnzahlTotal">0</span> Delikten gefunden</div>
-                <div id="dsReihePos" style="display:none; font-size:0.95em; font-weight:600; color:#3498db; margin:2px 0 8px;"></div>
                 <input type="text" id="dsInput" placeholder="Deliktsname eingeben und Enter drücken…" autocomplete="off">
                 <div id="dsFeedback"></div>
                 <div class="ds-chips" id="dsChips"></div>
@@ -1210,10 +1209,6 @@ const DS = (function () {
         $('dsFeedback').textContent = '';
         const inp = $('dsInput'); inp.value = ''; inp.disabled = false; inp.focus();
 
-        const posEl = $('dsReihePos');
-        if (modus === 'reihe') { posEl.style.display = 'block'; posEl.textContent = 'Nächstes: Delikt 1 von ' + g.delikte.length; }
-        else { posEl.style.display = 'none'; }
-
         restZeit = SPIELZEIT; laeuft = true; updateTimer();
         clearInterval(intervall);
         intervall = setInterval(() => { restZeit--; updateTimer(); if (restZeit<=0) beenden(); }, 1000);
@@ -1250,7 +1245,7 @@ const DS = (function () {
             const total = gruppen[aktiveGruppe].delikte.length;
             const erwartet = gefunden.length;
             if (idx !== erwartet) {
-                feedback('\u2716 Nicht an der Reihe \u2013 als N\u00e4chstes ist Delikt '+(erwartet+1)+' dran','fehler');
+                feedback('\u2716 Nicht an der Reihe \u2013 das ist nicht das n\u00e4chste Delikt','fehler');
                 return;
             }
         }
@@ -1264,11 +1259,6 @@ const DS = (function () {
         const total = gruppen[aktiveGruppe].delikte.length;
         $('dsAnzahlGefunden').textContent = gefunden.length;
         $('dsBar').style.width = (gefunden.length/total*100)+'%';
-        if (modus === 'reihe') {
-            const posEl = $('dsReihePos');
-            if (gefunden.length < total) posEl.textContent = 'N\u00e4chstes: Delikt '+(gefunden.length+1)+' von '+total;
-            else posEl.textContent = '';
-        }
         if (gefunden.length === total) { feedback('\ud83c\udf89 Alle gefunden!','treffer'); beenden(); }
     }
 
