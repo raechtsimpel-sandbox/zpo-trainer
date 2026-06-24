@@ -124,6 +124,12 @@
         /* ── Delikt-Sprint ─────────────────────────────────────────── */
         .ds-gruppen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; text-align: left; }
         @media (max-width: 600px) { .ds-gruppen-grid { grid-template-columns: 1fr; } }
+
+        .ds-modus-toggle { display: flex; justify-content: center; gap: 8px; margin-top: 18px; }
+        .ds-modus-btn { padding: 9px 22px; border-radius: 20px; border: 2px solid #ddd; background: white; color: #7f8c8d; font-size: 0.92em; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .ds-modus-btn:hover { border-color: #3498db; color: #3498db; }
+        .ds-modus-btn.aktiv { background: #3498db; border-color: #3498db; color: white; }
+        .ds-modus-info { font-size: 0.85em; color: #95a5a6; margin: 10px 0 0; }
         .ds-gruppe-btn { padding: 12px 16px; background: #f4f6f8; border: 2px solid #ddd; border-radius: 10px; font-size: 0.95em; font-weight: 600; color: #2c3e50; cursor: pointer; transition: all 0.15s; display: flex; justify-content: space-between; align-items: center; gap: 10px; text-align: left; }
         .ds-gruppe-btn > span:first-child { flex: 1; text-align: left; }
         .ds-gruppe-btn:hover { border-color: #3498db; color: #3498db; background: #eaf4fd; }
@@ -284,6 +290,11 @@
             <a href="#" onclick="document.getElementById('dsAnleitung').open=true; document.getElementById('dsAnleitung').scrollIntoView({behavior:'smooth'}); return false;" style="font-size:0.85em;color:#95a5a6;text-decoration:none;border-bottom:1px dotted #b0b8c1;">Wie funktioniert's?</a>
 
             <div id="dsAuswahlBereich">
+                <div class="ds-modus-toggle">
+                    <button class="ds-modus-btn aktiv" id="dsModusFrei" onclick="dsSetModus('frei')">🔀 Frei</button>
+                    <button class="ds-modus-btn" id="dsModusReihe" onclick="dsSetModus('reihe')">🔢 Der Reihe nach</button>
+                </div>
+                <p class="ds-modus-info" id="dsModusInfo">Frei: Nenne die Delikte in beliebiger Reihenfolge.</p>
                 <p style="color:#7f8c8d; font-size:0.92em; margin-top:18px;">Wähle eine Deliktsgruppe:</p>
                 <div class="ds-gruppen-grid" id="dsGruppenGrid"></div>
             </div>
@@ -295,6 +306,7 @@
                 </div>
                 <div class="ds-bar-aussen"><div class="ds-bar-innen" id="dsBar"></div></div>
                 <div class="ds-bar-label"><b id="dsAnzahlGefunden">0</b> / <span id="dsAnzahlTotal">0</span> Delikten gefunden</div>
+                <div id="dsReihePos" style="display:none; font-size:0.95em; font-weight:600; color:#3498db; margin:2px 0 8px;"></div>
                 <input type="text" id="dsInput" placeholder="Deliktsname eingeben und Enter drücken…" autocomplete="off">
                 <div id="dsFeedback"></div>
                 <div class="ds-chips" id="dsChips"></div>
@@ -1157,6 +1169,7 @@ const DS = (function () {
 
     let aktiveGruppe = null, restZeit = SPIELZEIT, intervall = null;
     let gefunden = [], normIndex = {}, laeuft = false;
+    let modus = 'frei';
 
     function norm(s) {
         return s.toLowerCase()
@@ -1197,6 +1210,10 @@ const DS = (function () {
         $('dsFeedback').textContent = '';
         const inp = $('dsInput'); inp.value = ''; inp.disabled = false; inp.focus();
 
+        const posEl = $('dsReihePos');
+        if (modus === 'reihe') { posEl.style.display = 'block'; posEl.textContent = 'Nächstes: Delikt 1 von ' + g.delikte.length; }
+        else { posEl.style.display = 'none'; }
+
         restZeit = SPIELZEIT; laeuft = true; updateTimer();
         clearInterval(intervall);
         intervall = setInterval(() => { restZeit--; updateTimer(); if (restZeit<=0) beenden(); }, 1000);
@@ -1228,6 +1245,16 @@ const DS = (function () {
         if (!(n in normIndex)) { feedback('\u201e'+roh.trim()+'" ist kein Delikt dieser Gruppe','fehler'); return; }
         const idx = normIndex[n];
         if (gefunden.includes(idx)) { feedback('Hast du schon: '+gruppen[aktiveGruppe].delikte[idx].name,'doppelt'); inp.value=''; return; }
+
+        if (modus === 'reihe') {
+            const total = gruppen[aktiveGruppe].delikte.length;
+            const erwartet = gefunden.length;
+            if (idx !== erwartet) {
+                feedback('\u2716 Nicht an der Reihe \u2013 als N\u00e4chstes ist Delikt '+(erwartet+1)+' dran','fehler');
+                return;
+            }
+        }
+
         gefunden.push(idx);
         const d = gruppen[aktiveGruppe].delikte[idx];
         restZeit += 1; updateTimer(); zeigeBonus();
@@ -1237,6 +1264,11 @@ const DS = (function () {
         const total = gruppen[aktiveGruppe].delikte.length;
         $('dsAnzahlGefunden').textContent = gefunden.length;
         $('dsBar').style.width = (gefunden.length/total*100)+'%';
+        if (modus === 'reihe') {
+            const posEl = $('dsReihePos');
+            if (gefunden.length < total) posEl.textContent = 'N\u00e4chstes: Delikt '+(gefunden.length+1)+' von '+total;
+            else posEl.textContent = '';
+        }
         if (gefunden.length === total) { feedback('\ud83c\udf89 Alle gefunden!','treffer'); beenden(); }
     }
 
@@ -1250,7 +1282,7 @@ const DS = (function () {
         $('dsFinalTotal').textContent = total;
         $('dsFinalProzent').textContent = Math.round(anz/total*100)+'% der Gruppe \u201e'+g.titel+'"';
 
-        const key = 'deliktsprint_best_'+aktiveGruppe;
+        const key = 'deliktsprint_best_'+modus+'_'+aktiveGruppe;
         let best = 0; try { best = parseInt(localStorage.getItem(key))||0; } catch(e){}
         const hs = $('dsHighscoreZeile');
         if (anz > best) { try { localStorage.setItem(key, anz); } catch(e){} hs.innerHTML = '<span class="ds-highscore-badge">\ud83c\udfc6 Neue Bestleistung!</span>'; }
@@ -1270,19 +1302,30 @@ const DS = (function () {
 
     function stop() { laeuft = false; clearInterval(intervall); }
 
+    function setModus(m) {
+        if (m !== 'frei' && m !== 'reihe') return;
+        modus = m;
+        $('dsModusFrei').classList.toggle('aktiv', m === 'frei');
+        $('dsModusReihe').classList.toggle('aktiv', m === 'reihe');
+        $('dsModusInfo').textContent = m === 'reihe'
+            ? 'Der Reihe nach: Nenne die Delikte in der richtigen Reihenfolge (nach Artikelnummer).'
+            : 'Frei: Nenne die Delikte in beliebiger Reihenfolge.';
+    }
+
     renderAuswahl();
     $('dsInput').addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); pruefe(); } });
 
     return {
         nochmal: () => start(aktiveGruppe),
         zurueck: () => { $('dsErgebnisBereich').style.display='none'; $('dsSpielBereich').style.display='none'; $('dsAuswahlBereich').style.display='block'; },
-        beenden, stop
+        beenden, stop, setModus
     };
 })();
 
 function dsBeenden() { DS.beenden(); }
 function dsNochmal() { DS.nochmal(); }
 function dsZurueck() { DS.zurueck(); }
+function dsSetModus(m) { DS.setModus(m); }
 
 </script>
 </body>
