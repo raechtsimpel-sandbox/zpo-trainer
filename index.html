@@ -129,14 +129,19 @@
   #scrollHint {
     position: fixed;
     left: 50%;
-    bottom: calc(44px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(32px + env(safe-area-inset-bottom, 0px));
     transform: translateX(-50%);
     z-index: 2;
     color: #FFFFFF;
-    pointer-events: none;
+    background: none; border: 0; padding: 12px 20px; margin: 0;
+    font: inherit; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
     animation: bounce 1.8s ease-in-out infinite;
     display: flex; flex-direction: column; align-items: center; gap: 8px;
   }
+  #scrollHint:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; border-radius: 12px; }
+  #scrollHint .scroll-ring { transition: background 0.2s; }
+  #scrollHint:hover .scroll-ring { background: rgba(255,255,255,0.12); }
   #scrollHint .scroll-label {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
@@ -570,12 +575,12 @@
     </div>
   </div>
 
-  <div id="scrollHint">
+  <button type="button" id="scrollHint" aria-label="Nach unten scrollen">
     <span class="scroll-label">SCROLL</span>
     <span class="scroll-ring">
       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </span>
-  </div>
+  </button>
 
   <div id="cursorDot"></div>
 
@@ -788,7 +793,9 @@
       hero.style.opacity = heroOpacity;
       hero.style.pointerEvents = heroOpacity <= 0.01 ? 'none' : 'auto';
       if (heroCta) heroCta.style.pointerEvents = heroOpacity <= 0.01 ? 'none' : 'auto';
-      scrollHint.style.opacity = Math.max(0, 1 - p / 0.3);
+      const hintOpacity = Math.max(0, 1 - p / 0.3);
+      scrollHint.style.opacity = hintOpacity;
+      scrollHint.style.pointerEvents = hintOpacity <= 0.01 ? 'none' : 'auto';
       logoText.style.opacity = e;
       logoText.style.color = lerpRgb(WHITE, DARK, e);
       iconlinks.forEach(a => {
@@ -799,6 +806,29 @@
         console.error('scroll update failed:', err);
       }
     }
+
+    // Klick auf den Scroll-Hinweis: sanft bis zum Inhalt scrollen
+    scrollHint.addEventListener('click', () => {
+      const mainEl = document.querySelector('main');
+      const top = mainEl ? mainEl.getBoundingClientRect().top + window.scrollY : window.innerHeight * 0.42;
+      if (reduceMotion) { window.scrollTo(0, top); return; }
+      // Eigene, langsamere Scroll-Animation. Dauer in Millisekunden:
+      const SCROLL_DAUER = 1200;
+      const start = window.scrollY, dist = top - start, t0 = performance.now();
+      let abbruch = false;
+      const stop = () => { abbruch = true; };
+      window.addEventListener('wheel', stop, { once: true, passive: true });
+      window.addEventListener('touchstart', stop, { once: true, passive: true });
+      window.addEventListener('keydown', stop, { once: true });
+      function schritt(now) {
+        if (abbruch) return;
+        const t = Math.min(1, (now - t0) / SCROLL_DAUER);
+        const e = 1 - (1 - t) * (1 - t); // startet sofort und bremst zum Schluss ab
+        window.scrollTo(0, start + dist * e);
+        if (t < 1) requestAnimationFrame(schritt);
+      }
+      requestAnimationFrame(schritt);
+    });
 
     window.addEventListener('scroll', () => requestAnimationFrame(update));
     window.addEventListener('resize', update);
