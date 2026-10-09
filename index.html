@@ -805,7 +805,8 @@
     update();
 
     const cursorDot = document.getElementById('cursorDot');
-    if (cursorDot) {
+    // Nur auf Geräten mit Maus, nicht auf Handys und Tablets
+    if (cursorDot && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
       let cx = window.innerWidth / 2, cy = window.innerHeight / 2, hovering = false;
       function applyCursorTransform() {
         cursorDot.style.transform = 'translate(' + cx + 'px,' + cy + 'px) scale(' + (hovering ? 3.2 : 1) + ')';
@@ -1046,7 +1047,7 @@
       try { legacyCopy(address); } catch (e) { /* ignore */ }
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(address);
+          navigator.clipboard.writeText(address).catch(() => {});
         }
       } catch (e) { /* ignore */ }
       const toast = document.getElementById('copyToast');
