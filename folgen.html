@@ -1,0 +1,22 @@
+---
+permalink: /folgen/
+titel: Alle Folgen
+beschreibung: Alle Folgen von Rächt Simpel, dem Podcast zum Schweizer Recht. Aktuelle Gerichtsentscheide und Rechtsfragen aus Alltag und Praxis, jeweils mit schriftlicher Zusammenfassung.
+---
+{% include kopf.html titel=page.titel beschreibung=page.beschreibung %}
+  <main class="archive">
+    <a href="{{ '/' | relative_url }}" class="back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Startseite
+    </a>
+    <h1>Alle Folgen</h1>
+    <p class="ep-lead">Aktuelle Gerichtsentscheide und Rechtsfragen aus Alltag und Praxis, die neuesten zuerst.</p>
+    <div class="episode-list">
+      {%- assign alle = site.folgen | sort: "datum" | reverse -%}
+      {%- for f in alle %}
+        {% include folgenkarte.html folge=f %}
+      {%- endfor %}
+    </div>
+  </main>
+
+{% include fuss.html %}

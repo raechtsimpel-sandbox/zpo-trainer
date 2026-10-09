@@ -1,0 +1,114 @@
+{%- assign text = content | strip -%}
+{%- if text == "" -%}
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url={{ page.spotify }}">
+<title>{{ page.titel | escape }} – Rächt Simpel</title>
+</head>
+<body>
+  <p><a href="{{ page.spotify }}">Zur Folge auf Spotify</a></p>
+</body>
+</html>
+{%- else -%}
+{% include kopf.html titel=page.titel beschreibung=page.beschreibung typ="article" %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "PodcastEpisode",
+    "name": {{ page.titel | jsonify }},
+    "description": {{ page.beschreibung | strip | jsonify }},
+    "url": {{ page.url | absolute_url | jsonify }},
+    "episodeNumber": {{ page.nummer | jsonify }},
+    "datePublished": "{{ page.datum | date: "%Y-%m-%d" }}",
+    {%- if page.dauer %}
+    "timeRequired": "PT{{ page.dauer }}M",
+    {%- endif %}
+    "inLanguage": "de-CH",
+    "partOfSeries": { "@type": "PodcastSeries", "name": "Rächt Simpel", "url": {{ '/' | absolute_url | jsonify }} },
+    "author": { "@type": "Person", "name": "Istenç Açikalin", "sameAs": ["https://www.linkedin.com/in/istenc-acikalin/"] },
+    "associatedMedia": { "@type": "MediaObject", "contentUrl": {{ page.spotify | jsonify }} }
+  }
+  </script>
+
+  <main>
+    <article>
+      <a href="{{ '/folgen/' | relative_url }}" class="back">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Alle Folgen
+      </a>
+
+      <p class="ep-kicker">{{ page.format | upcase }}, EP. {{ page.nummer }}</p>
+      <h1>{{ page.titel | escape }}</h1>
+      <p class="ep-lead">{{ page.beschreibung | strip | escape }}</p>
+      <p class="ep-byline">Von <a href="https://www.linkedin.com/in/istenc-acikalin/" target="_blank" rel="noopener">Istenç Açikalin</a>, veröffentlicht am <time datetime="{{ page.datum | date: "%Y-%m-%d" }}">{{ page.datum | date: "%d.%m.%Y" }}</time></p>
+
+      <a href="{{ page.spotify }}" target="_blank" rel="noopener" class="listen">
+        <span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+        <span class="copy">
+          <strong>Folge anhören</strong>
+          <span>{{ page.format }}, Ep. {{ page.nummer }}{% if page.dauer %}, {{ page.dauer }} Minuten{% endif %}</span>
+        </span>
+        <span class="pill">Auf Spotify öffnen</span>
+      </a>
+
+      {%- assign eckdaten = false -%}
+      {%- if page.gericht or page.entscheid or page.entscheid_datum or page.rechtsgebiet or page.normen -%}{%- assign eckdaten = true -%}{%- endif %}
+
+      <div class="layout{% unless eckdaten %} ohne-eckdaten{% endunless %}">
+        {%- if eckdaten %}
+        <dl class="facts">
+          {%- if page.gericht %}
+          <div><dt>Gericht</dt><dd>{{ page.gericht | escape }}</dd></div>
+          {%- endif %}
+          {%- if page.entscheid %}
+          <div><dt>Entscheid</dt><dd>{% if page.entscheid_link %}<a href="{{ page.entscheid_link }}" target="_blank" rel="noopener">{{ page.entscheid | escape }}</a>{% else %}{{ page.entscheid | escape }}{% endif %}</dd></div>
+          {%- endif %}
+          {%- if page.entscheid_datum %}
+          <div><dt>Datum</dt><dd>{{ page.entscheid_datum | date: "%d.%m.%Y" }}</dd></div>
+          {%- endif %}
+          {%- if page.rechtsgebiet %}
+          <div><dt>Rechtsgebiet</dt><dd>{{ page.rechtsgebiet | escape }}</dd></div>
+          {%- endif %}
+          {%- if page.normen %}
+          <div><dt>Normen</dt><dd>{{ page.normen | escape }}</dd></div>
+          {%- endif %}
+        </dl>
+        {%- endif %}
+
+        <div class="text">
+          {%- if page.frage %}
+          <h2>{{ page.frage | escape }}</h2>
+          {%- if page.antwort %}
+          <p class="answer">{{ page.antwort | strip | escape }}</p>
+          {%- endif %}
+          {%- endif %}
+          {{ content }}
+          <p class="note">Diese Zusammenfassung dient der allgemeinen Information und ist keine Rechtsberatung. Für Richtigkeit und Vollständigkeit übernehme ich keine Gewähr. Mehr dazu im <a href="{{ '/datenschutz.html' | relative_url }}#inhalte">Hinweis zu den Inhalten</a>.</p>
+        </div>
+      </div>
+    </article>
+
+    {%- assign alle = site.folgen | sort: "datum" | reverse -%}
+    {%- assign gezeigt = 0 %}
+    <section class="more">
+      <h2>Weitere Folgen.</h2>
+      <div class="episode-list">
+        {%- for f in alle -%}
+          {%- if f.url != page.url and gezeigt < 2 %}
+        {% include folgenkarte.html folge=f %}
+            {%- assign gezeigt = gezeigt | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor %}
+      </div>
+      <a href="{{ '/folgen/' | relative_url }}" class="all-link">
+        Alle Folgen
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </section>
+  </main>
+
+{% include fuss.html %}
+{%- endif -%}

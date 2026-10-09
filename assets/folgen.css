@@ -1,0 +1,198 @@
+/* Gestaltung der Folgenseiten und der Übersicht. Gilt nicht für die Startseite. */
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  font-family: 'Neue Haas Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  background: #FFFFFF; color: #171316;
+}
+a:focus-visible, button:focus-visible { outline: 2px solid #C4122F; outline-offset: 3px; border-radius: 4px; }
+
+html.has-custom-cursor * { cursor: none !important; }
+#cursorDot {
+  position: fixed; top: 0; left: 0;
+  width: 10px; height: 10px; margin-left: -5px; margin-top: -5px;
+  border-radius: 50%; background: #FFFFFF; mix-blend-mode: difference;
+  pointer-events: none; z-index: 100; display: none;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease;
+  will-change: transform;
+}
+html.has-custom-cursor #cursorDot { display: block; }
+#cursorDot.cursor-hover { opacity: 0.85; }
+
+/* ── Navigation: gleicher Zustand wie die Startseite nach dem Scrollen ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 3;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 48px;
+  background: transparent;
+}
+/* Inhalt blendet nach oben hin weich aus, wie auf der Startseite (130px Verlauf) */
+body::before {
+  content: ""; position: fixed; top: 0; left: 0; right: 0; height: 130px; z-index: 2;
+  background: linear-gradient(to bottom, #FFFFFF 0, rgba(255,255,255,0) 100%);
+  pointer-events: none;
+}
+nav .left-group { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+nav .rec-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #C4122F;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(196,18,47,0.5); }
+  50% { box-shadow: 0 0 0 5px rgba(196,18,47,0); }
+}
+nav .logo { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; color: #171316; }
+nav .navlinks { display: flex; align-items: center; gap: 16px; }
+nav .icon-link {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(23,19,22,0.25);
+  color: rgba(23,19,22,0.75);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+nav .icon-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+nav .icon-link:hover { background: rgba(23,19,22,0.06); }
+
+main { max-width: 800px; margin: 0 auto; padding: 136px 24px 40px; }
+
+/* ── Kopf der Folge ── */
+.back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 600; color: rgba(23,19,22,0.6);
+  text-decoration: none; margin-bottom: 36px;
+}
+.back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.2; }
+.back:hover { color: #171316; }
+
+.ep-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: #C4122F; margin: 0 0 14px; }
+h1 {
+  font-size: clamp(30px, 5.4vw, 46px); line-height: 1.1; font-weight: 700;
+  letter-spacing: -0.025em; margin: 0 0 18px; max-width: 16em;
+  overflow-wrap: break-word;
+}
+.ep-lead { font-size: 18px; line-height: 1.5; color: rgba(23,19,22,0.72); margin: 0 0 18px; max-width: 36em; }
+.ep-byline { font-size: 13px; color: rgba(23,19,22,0.55); margin: 0 0 32px; }
+.ep-byline a { color: inherit; text-decoration: underline; text-decoration-color: rgba(23,19,22,0.3); text-underline-offset: 3px; }
+.ep-byline a:hover { color: #171316; }
+
+/* ── Bereich zum Anhören: heller Rahmen wie bei den Folgenkarten ── */
+.listen {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 18px 22px; margin-bottom: 64px;
+  background: #FFFFFF; border: 1px solid rgba(23,19,22,0.10); border-radius: 16px;
+  text-decoration: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.listen:hover { border-color: rgba(23,19,22,0.18); box-shadow: 0 14px 30px rgba(23,19,22,0.08); }
+.listen .play {
+  width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%;
+  background: #171316;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s ease;
+}
+.listen .play svg { width: 14px; height: 14px; fill: #FFFFFF; margin-left: 2px; }
+.listen:hover .play { background: #C4122F; }
+.listen .copy { flex: 1; min-width: 180px; }
+.listen .copy strong { display: block; font-size: 16px; font-weight: 700; color: #171316; letter-spacing: -0.01em; margin-bottom: 2px; }
+.listen .copy span { font-size: 13px; color: rgba(23,19,22,0.6); }
+.listen .pill {
+  padding: 10px 20px; border: 1px solid rgba(23,19,22,0.25); border-radius: 999px;
+  font-size: 14px; font-weight: 600; color: #171316; flex-shrink: 0;
+}
+.listen:hover .pill { background: rgba(23,19,22,0.06); }
+
+/* ── Inhalt: Eckdaten links, Text rechts ── */
+.layout { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 56px; margin-bottom: 72px; }
+.facts { align-self: start; position: sticky; top: 140px; margin: 0; }
+.facts div { padding: 12px 0; border-top: 1px solid rgba(23,19,22,0.10); }
+.facts div:last-child { border-bottom: 1px solid rgba(23,19,22,0.10); }
+.facts dt { font-size: 12px; color: rgba(23,19,22,0.5); margin-bottom: 3px; }
+.facts dd { font-size: 14px; font-weight: 600; line-height: 1.4; margin: 0; }
+.facts a { color: #C4122F; text-decoration: none; border-bottom: 1px solid rgba(196,18,47,0.55); }
+.facts a:hover { border-color: #C4122F; }
+
+.text h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; margin: 44px 0 12px; }
+.text h2:first-child { margin-top: 0; }
+.text p, .text li { font-size: 16px; line-height: 1.65; color: rgba(23,19,22,0.78); }
+.text p { margin: 0 0 14px; }
+.text ul { margin: 0 0 14px; padding-left: 20px; }
+.text li { margin-bottom: 6px; }
+.text a { color: #C4122F; text-decoration: none; border-bottom: 1px solid rgba(196,18,47,0.55); }
+.text a:hover { border-color: #C4122F; }
+/* Hinweis am Ende jeder Folgenseite */
+.text .note { font-size: 13px; line-height: 1.55; color: rgba(23,19,22,0.55); margin: 44px 0 0; padding-top: 16px; border-top: 1px solid rgba(23,19,22,0.10); }
+/* Kurzantwort: grösser gesetzt, weil sie die Frage der Folge direkt beantwortet */
+.text .answer { font-size: 19px; line-height: 1.5; color: #171316; margin-bottom: 0; }
+
+
+/* ── Weitere Folgen (identisch zur Startseite) ── */
+.more h2 { font-size: 20px; font-weight: 700; margin: 0 0 20px; letter-spacing: -0.01em; }
+.episode-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 28px; }
+.episode-item {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
+  padding: 24px; border-radius: 16px; border: 1px solid rgba(23,19,22,0.10);
+  text-decoration: none; color: inherit;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.episode-item:hover { transform: translateY(-3px); border-color: rgba(23,19,22,0.18); box-shadow: 0 14px 30px rgba(23,19,22,0.08); }
+.episode-item .ep-num { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: #C4122F; margin: 0 0 10px; }
+.episode-item .ep-title { font-size: 17px; font-weight: 700; margin: 0 0 8px; line-height: 1.4; overflow-wrap: break-word; }
+.episode-item .ep-desc { font-size: 13px; color: rgba(23,19,22,0.6); margin: 0; line-height: 1.5; overflow-wrap: break-word; }
+.episode-item .ep-play {
+  align-self: flex-start; width: 38px; height: 38px; border-radius: 50%; background: #171316;
+  display: flex; align-items: center; justify-content: center; transition: background 0.2s ease;
+}
+.episode-item .ep-play svg { width: 13px; height: 13px; fill: #FFFFFF; margin-left: 2px; }
+.episode-item:hover .ep-play { background: #C4122F; }
+.all-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: #C4122F; font-weight: 700; font-size: 15px; text-decoration: none;
+  border-bottom: 1px solid rgba(196,18,47,0.55); padding-bottom: 2px;
+  transition: border-color 0.2s, gap 0.2s;
+}
+.all-link:hover { border-color: #C4122F; gap: 10px; }
+.all-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.2; }
+
+footer { border-top: 1px solid rgba(23,19,22,0.10); padding: 28px 24px; margin-top: 56px; }
+footer .footer-inner {
+  max-width: 800px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+footer .footer-copy { font-size: 13px; color: rgba(23,19,22,0.5); }
+footer .footer-links { display: flex; gap: 20px; }
+footer .footer-links a { font-size: 13px; color: rgba(23,19,22,0.6); text-decoration: none; }
+footer .footer-links a:hover { color: #171316; }
+
+@media (max-width: 720px) {
+  nav { padding: 16px 20px; }
+  nav .navlinks { gap: 8px; }
+  main { padding-top: 104px; }
+  .back { margin-bottom: 28px; }
+  .listen { padding: 18px; margin-bottom: 48px; }
+  .listen .pill { width: 100%; text-align: center; }
+  .layout { grid-template-columns: 1fr; gap: 40px; margin-bottom: 56px; }
+  .facts { position: static; display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; }
+  .facts div:nth-last-child(2) { border-bottom: 1px solid rgba(23,19,22,0.10); }
+  .episode-list { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  nav .rec-dot { animation: none; }
+  * { transition: none !important; }
+}
+
+/* ── Folge ohne Eckdaten (z.B. Aktennotiz): Text einspaltig ── */
+.layout.ohne-eckdaten { grid-template-columns: minmax(0, 1fr); }
+.layout.ohne-eckdaten .text { max-width: 36em; }
+
+/* ── Übersicht aller Folgen ── */
+.archive h1 { margin-bottom: 14px; }
+.archive .ep-lead { margin-bottom: 40px; }
+
+/* ── Impressum, Datenschutz und andere reine Textseiten ── */
+.legal h1 { margin-bottom: 40px; }
+.legal .text { max-width: 38em; }
+.legal .text h2 { scroll-margin-top: 130px; margin-top: 56px; }
+.legal .text h2:first-child { margin-top: 0; }
+.legal .text h3 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin: 30px 0 8px; }

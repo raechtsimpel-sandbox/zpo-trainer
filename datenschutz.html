@@ -1,56 +1,44 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+---
+titel: Impressum und Datenschutz
+beschreibung: Impressum und Datenschutzerklärung von Rächt Simpel.
+---
+{% include kopf.html titel=page.titel beschreibung=page.beschreibung noindex=true %}
+  <main class="legal">
+    <a href="{{ '/' | relative_url }}" class="back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Startseite
+    </a>
+    <h1>Impressum und Datenschutz</h1>
 
-    <title>Datenschutzerklärung – RächtSimpel</title>
-    <meta name="description" content="Datenschutzerklärung von RächtSimpel.">
-    <meta name="robots" content="noindex">
-    <link rel="icon" type="image/png" href="https://rächtsimpel.ch/favicon.png">
+    <div class="text">
+      <h2 id="impressum">Impressum</h2>
+      <p>Rächt Simpel<br>Istenç Açikalin<br>Postfach<br>8036 Zürich<br><a href="mailto:kontakt@xn--rchtsimpel-q5a.ch">kontakt@rächtsimpel.ch</a></p>
 
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f0f2f5; color: #333; }
-        .container { max-width: 800px; margin: auto; }
-        .card { background: white; padding: 30px 35px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h1 { color: #2c3e50; font-size: 2em; margin-bottom: 0.6em; text-align: center; }
-        h2 { color: #2c3e50; font-size: 1.1em; margin: 1.6em 0 0.4em; }
-        p { font-size: 0.97em; line-height: 1.65; margin: 0.4em 0; }
-        a { color: #3498db; }
-        .intro { color: #555; }
-        .back-link { display: inline-block; margin-bottom: 18px; font-size: 0.9em; color: #95a5a6; text-decoration: none; border-bottom: 1px dotted #b0b8c1; }
-        .back-link:hover { color: #3498db; }
-        .footer-note { text-align: center; font-size: 0.82em; color: #b0b8c1; margin-top: 24px; }
-        .footer-note a { color: #95a5a6; text-decoration: none; border-bottom: 1px dotted #b0b8c1; }
-    </style>
-</head>
-<body>
+      <h2 id="inhalte">Hinweis zu den Inhalten</h2>
+      <p>Die Inhalte dieser Webseite, des Podcasts und der Lernspiele dienen der allgemeinen Information und der Weiterbildung. Sie stellen keine Rechtsberatung dar und können eine Beratung im Einzelfall nicht ersetzen. Durch ihre Nutzung entsteht kein Mandats- oder Beratungsverhältnis.</p>
+      <p>Ich erstelle die Inhalte sorgfältig, übernehme aber keine Gewähr dafür, dass sie richtig, vollständig und aktuell sind. Gesetzgebung und Rechtsprechung können sich jederzeit ändern. Die Haftung für Schäden, die aus der Nutzung der Inhalte entstehen, ist ausgeschlossen, soweit dies gesetzlich zulässig ist.</p>
 
-<div class="container">
-    <a href="index.html" class="back-link">← Zurück zur Hauptseite</a>
+      <h2 id="datenschutz">Datenschutzerklärung</h2>
+      <p>Verantwortlich für diese Webseite ist Istenç Açikalin. Bei Fragen zum Datenschutz erreichst du mich unter <a href="mailto:kontakt@xn--rchtsimpel-q5a.ch">kontakt@rächtsimpel.ch</a>.</p>
 
-    <div class="card">
-        <h1>Datenschutzerklärung</h1>
+      <h3>Spielstände auf deinem Gerät</h3>
+      <p>Die Spiele speichern deine Ergebnisse (z.B. Bestzeiten und Bestleistungen) ausschliesslich lokal in deinem Browser («localStorage»). Diese Spielergebnisse bleiben auf deinem Gerät und werden nicht an mich oder an Dritte übermittelt. Du kannst sie jederzeit löschen. Den Verlauf im Erlass-Guesser entfernst du über «Statistik löschen» direkt im Spiel, sämtliche Spielstände über die Einstellungen deines Browsers, indem du dort die gespeicherten Websitedaten löschst.</p>
 
-        <p class="intro">Verantwortlich für diese Webseite ist Istenç Açikalin. Bei Fragen zum Datenschutz erreichst du mich unter <a href="mailto:kontakt@rächtsimpel.ch">kontakt@rächtsimpel.ch</a>.</p>
+      <h3>Hosting</h3>
+      <p>Diese Webseite wird über GitHub Pages (GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, United States) bereitgestellt. Beim Aufruf der Seite verarbeitet GitHub als Hosting-Anbieter technisch notwendige Verbindungsdaten wie deine IP-Adresse, den Zeitpunkt des Zugriffs und Angaben zu deinem Browser. Dies ist erforderlich, um die Webseite überhaupt ausliefern zu können. Da die USA aus Schweizer Sicht nicht über einen angemessenen gesetzlichen Datenschutz verfügen, stützt sich GitHub für die Datenübermittlung auf das vom Bundesrat anerkannte Swiss-U.S. Data Privacy Framework (Swiss-U.S. DPF), unter dem GitHub zertifiziert ist, sowie ergänzend auf die Standardvertragsklauseln (SCC) der EU-Kommission. Nähere Informationen findest du in den <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">Datenschutzbestimmungen von GitHub</a>.</p>
 
-        <h2>Spielstände auf deinem Gerät</h2>
-        <p>Die Spiele speichern deine Ergebnisse (z.B. Bestzeiten und Bestleistungen) ausschliesslich lokal in deinem Browser («localStorage»). Diese Spielergebnisse bleiben auf deinem Gerät und werden nicht an mich oder an Dritte übermittelt.</p>
+      <h3>Links zu Drittseiten</h3>
+      <p>Diese Seite enthält Links zu externen Angeboten (z.B. Spotify und LinkedIn sowie die in den Quellenangaben der Folgen verlinkten Gerichtsentscheide, Gesetzestexte, Aufsätze und weiteren Online-Quellen). Beim Anklicken verlässt du diese Webseite; für diese Angebote gelten die jeweiligen eigenen Datenschutzbestimmungen. Auf die Inhalte dieser Angebote habe ich keinen Einfluss und übernehme dafür keine Verantwortung.</p>
 
-        <h2>Hosting</h2>
-        <p>Diese Webseite wird über GitHub Pages (GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, United States) bereitgestellt. Beim Aufruf der Seite verarbeitet GitHub als Hosting-Anbieter technisch notwendige Verbindungsdaten wie deine IP-Adresse, den Zeitpunkt des Zugriffs und Angaben zu deinem Browser. Dies ist erforderlich, um die Webseite überhaupt ausliefern zu können. Da die USA aus Schweizer Sicht nicht über einen angemessenen gesetzlichen Datenschutz verfügen, stützt sich GitHub für die Datenübermittlung auf das vom Bundesrat anerkannte Swiss-U.S. Data Privacy Framework (Swiss-U.S. DPF), unter dem GitHub zertifiziert ist, sowie ergänzend auf die Standardvertragsklauseln (SCC) der EU-Kommission. Nähere Informationen findest du in den <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">Datenschutzbestimmungen von GitHub</a>.</p>
+      <h3>E-Mail-Adresse kopieren</h3>
+      <p>Wenn du auf der Startseite eine der E-Mail-Schaltflächen anklickst, wird meine Kontaktadresse in die Zwischenablage deines Geräts kopiert. Dabei wird ausschliesslich diese Adresse in die Zwischenablage geschrieben; ein bereits vorhandener Inhalt der Zwischenablage wird dadurch ersetzt. Die Webseite liest den Inhalt deiner Zwischenablage zu keinem Zeitpunkt aus. Der Vorgang findet nur lokal in deinem Browser statt. Es werden dabei keine Daten an mich oder an Dritte übermittelt und es wird nichts gespeichert.</p>
 
-        <h2>Links zu Drittseiten</h2>
-        <p>Diese Seite enthält Links zu externen Angeboten (z.B. Spotify und LinkedIn). Beim Anklicken verlässt du diese Webseite; für diese Angebote gelten die jeweiligen eigenen Datenschutzbestimmungen.</p>
+      <h3>Kontaktaufnahme</h3>
+      <p>Wenn du mir per E-Mail schreibst, verarbeite ich die von dir mitgeteilten Angaben (z.B. Name, E-Mail-Adresse, Inhalt deiner Nachricht), um deine Anfrage zu beantworten. Ich bewahre diese Daten nur so lange auf, wie es dafür nötig ist.</p>
 
-        <h2>Kontaktaufnahme</h2>
-        <p>Wenn du mir per E-Mail schreibst, verarbeite ich die von dir mitgeteilten Angaben (z.B. Name, E-Mail-Adresse, Inhalt deiner Nachricht), um deine Anfrage zu beantworten. Ich bewahre diese Daten nur so lange auf, wie es dafür nötig ist.</p>
-
-        <h2>Deine Rechte</h2>
-        <p>Du hast das Recht, Auskunft über deine von mir bearbeiteten Personendaten zu verlangen, sowie deren Berichtigung oder Löschung zu fordern. Wende dich hierfür einfach an die oben genannte E-Mail-Adresse.</p>
+      <h3>Deine Rechte</h3>
+      <p>Du hast das Recht, Auskunft über deine von mir bearbeiteten Personendaten zu verlangen, sowie deren Berichtigung oder Löschung zu fordern. Wende dich hierfür einfach an die oben genannte E-Mail-Adresse.</p>
     </div>
+  </main>
 
-</div>
-
-</body>
-</html>
+{% include fuss.html %}

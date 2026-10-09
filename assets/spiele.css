@@ -1,0 +1,129 @@
+/* Gestaltung der Spielseite (Erlass-Guesser, Delikt-Sprint). Ergänzt folgen.css. */
+.game { text-align: center; }
+.game-top { text-align: left; }
+.game .back { margin-bottom: 28px; }
+.game h1 { font-size: clamp(26px, 4.4vw, 36px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 auto 8px; max-width: none; }
+.game h3 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 14px; }
+.game p.subtitle { color: rgba(23,19,22,0.6); font-size: 15px; line-height: 1.5; margin: 0 0 10px; }
+.game .hint-link { font-size: 13px; color: rgba(23,19,22,0.55); text-decoration: none; border-bottom: 1px solid rgba(23,19,22,0.25); }
+.game .hint-link:hover { color: #171316; border-color: #171316; }
+
+/* Flächen */
+.card, .chart-container { background: #FFFFFF; border: 1px solid rgba(23,19,22,0.10); border-radius: 20px; }
+.card { padding: 30px; margin-bottom: 20px; overflow: hidden; }
+.card.has-tabs { border-radius: 0 0 20px 20px; }
+.chart-container { padding: 24px; }
+
+/* Wechsel zwischen den Spielen */
+.spiel-switcher { display: flex; justify-content: center; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+.game .spiel-switch-btn { padding: 12px 24px; margin: 0; border-radius: 999px; border: 1px solid rgba(23,19,22,0.25); background: #FFFFFF; color: #171316; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.game .spiel-switch-btn:hover { background: rgba(23,19,22,0.06); }
+.game .spiel-switch-btn.aktiv { background: #171316; border-color: #171316; color: #FFFFFF; }
+
+/* Auswahl des Erlasses */
+.erlass-tabs { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 24px; }
+.game .erlass-tab { padding: 8px 20px; margin: 0; border-radius: 999px; border: 1px solid rgba(23,19,22,0.18); background: #FFFFFF; color: rgba(23,19,22,0.65); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.game .erlass-tab:hover { border-color: #171316; color: #171316; background: #FFFFFF; }
+.game .erlass-tab.aktiv { background: #C4122F; border-color: #C4122F; color: #FFFFFF; }
+
+/* Classic / Explorer */
+.modus-tabs { display: flex; gap: 4px; }
+.game .modus-tab { flex: 1; padding: 12px 10px; margin: 0; font-size: 14px; font-weight: 600; color: rgba(23,19,22,0.6); background: rgba(23,19,22,0.05); border: 1px solid rgba(23,19,22,0.10); border-bottom: none; border-radius: 16px 16px 0 0; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.game .modus-tab:hover { background: rgba(23,19,22,0.09); color: #171316; }
+.game .modus-tab.aktiv { background: #FFFFFF; color: #171316; }
+
+/* Anleitung */
+.anleitung { background: #FFFFFF; border: 1px solid rgba(23,19,22,0.10); border-radius: 16px; margin: 20px 0; font-size: 15px; line-height: 1.6; text-align: left; overflow: hidden; color: rgba(23,19,22,0.78); }
+.anleitung summary { padding: 16px 22px; cursor: pointer; color: #171316; font-weight: 700; outline: none; list-style: none; }
+.anleitung summary::-webkit-details-marker { display: none; }
+.anleitung summary:hover { color: #C4122F; }
+.anleitung-content { padding: 0 24px 22px; }
+.anleitung-content ol { margin: 0; padding-left: 20px; }
+.anleitung-content li { margin: 6px 0; }
+
+/* Eingaben und Schaltflächen */
+.game input { padding: 13px 14px; margin: 8px 0; border: 1px solid rgba(23,19,22,0.25); border-radius: 12px; font-family: inherit; font-size: 16px; width: 95%; color: #171316; background: #FFFFFF; transition: border-color 0.2s; text-align: left; }
+.game input:focus { border-color: #171316; outline: none; }
+.game input:disabled { background: rgba(23,19,22,0.04); color: rgba(23,19,22,0.4); }
+.game .correct { border-color: #27ae60 !important; background-color: #eafaf1; }
+.game button { font-family: inherit; padding: 9px 18px; background: #FFFFFF; color: #171316; border: 1px solid rgba(23,19,22,0.25); border-radius: 999px; cursor: pointer; margin-top: 10px; font-size: 13px; font-weight: 600; }
+.game button:hover { background: rgba(23,19,22,0.06); }
+#btnAufgeben { display: none; font-size: 14px; padding: 10px 22px; }
+.game .clear-btn { display: block; width: 100%; margin-top: 16px; padding: 16px 0 0; border: none; border-top: 1px solid rgba(23,19,22,0.10); border-radius: 0; background: none; color: rgba(23,19,22,0.55); font-size: 13px; font-weight: 600; text-align: right; }
+.game .clear-btn:hover { background: none; color: #C4122F; }
+
+#timer { font-size: 2em; font-weight: 700; color: #171316; margin: 15px 0 4px; font-variant-numeric: tabular-nums; }
+#penaltyAnzeige { color: #C4122F; font-weight: 700; font-size: 1.1em; transition: opacity 0.5s; opacity: 0; }
+#frage { color: #C4122F; font-size: 1.8em; min-height: 1.6em; font-weight: 700; margin-top: 10px; }
+#antwortHinweis { color: #C4122F; font-size: 15px; min-height: 1.4em; margin-top: 4px; font-weight: 500; }
+
+/* Explorer: Struktur des Gesetzes */
+#navigationsbaum { text-align: left; margin: 10px 0; }
+.nav-label { font-size: 13px; color: rgba(23,19,22,0.6); margin-bottom: 8px; }
+.game .nav-titel-btn { width: 100%; text-align: left; padding: 11px 16px; margin: 0 0 6px; background: rgba(23,19,22,0.04); border: 1px solid rgba(23,19,22,0.12); border-radius: 12px; font-size: 15px; font-weight: 600; color: #171316; cursor: pointer; transition: all 0.15s; }
+.game .nav-titel-btn:hover { border-color: #171316; background: rgba(23,19,22,0.07); }
+.game .nav-abschnitt-btn { width: 100%; text-align: left; padding: 9px 14px; margin: 0 0 5px; background: #FFFFFF; border: 1px solid rgba(23,19,22,0.12); border-radius: 10px; font-size: 14px; font-weight: 500; color: rgba(23,19,22,0.78); cursor: pointer; transition: all 0.15s; }
+.game .nav-abschnitt-btn:hover { border-color: #171316; color: #171316; background: #FFFFFF; }
+.game .nav-titel-btn.korrekt, .game .nav-abschnitt-btn.korrekt { border-color: #27ae60 !important; background: #eafaf1 !important; color: #1e8449 !important; font-weight: 600; }
+.game .nav-titel-btn.falsch, .game .nav-abschnitt-btn.falsch { border-color: #C4122F !important; background: rgba(196,18,47,0.08) !important; color: #A60F27 !important; }
+
+/* Statistik */
+.stats-bar { display: flex; justify-content: center; gap: 30px; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(23,19,22,0.10); flex-wrap: wrap; }
+.stat-item { display: flex; flex-direction: column; align-items: center; }
+.stat-label { font-size: 12px; color: rgba(23,19,22,0.5); margin-bottom: 4px; }
+.stat-value { font-size: 1.5em; font-weight: 700; color: #171316; font-variant-numeric: tabular-nums; }
+.stat-value.highlight { color: #C4122F; }
+
+/* ── Delikt-Sprint ── */
+.ds-gruppen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; text-align: left; }
+@media (max-width: 600px) { .ds-gruppen-grid { grid-template-columns: 1fr; } }
+.game .ds-gruppe-btn { padding: 13px 16px; margin: 0; background: #FFFFFF; border: 1px solid rgba(23,19,22,0.12); border-radius: 12px; font-size: 14px; font-weight: 600; color: #171316; cursor: pointer; transition: all 0.15s; display: flex; justify-content: space-between; align-items: center; gap: 10px; text-align: left; }
+.ds-gruppe-btn > span:first-child { flex: 1; text-align: left; }
+.game .ds-gruppe-btn:hover { border-color: #171316; background: rgba(23,19,22,0.04); }
+.ds-gruppe-btn .ds-anzahl { font-size: 12px; color: rgba(23,19,22,0.55); font-weight: 700; background: rgba(23,19,22,0.06); border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
+.game .ds-gruppe-btn.ds-zufall { background: #171316; border-color: #171316; color: #FFFFFF; grid-column: 1 / -1; justify-content: center; }
+.game .ds-gruppe-btn.ds-zufall:hover { background: #C4122F; border-color: #C4122F; }
+
+#dsSpielBereich, #dsErgebnisBereich { display: none; }
+.ds-game-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; margin-bottom: 6px; }
+.ds-game-header .ds-gruppe-name { font-size: 1.15em; font-weight: 700; color: #C4122F; text-align: left; flex: 1; min-width: 200px; }
+#dsTimer { font-size: 2.4em; font-weight: 700; color: #171316; font-variant-numeric: tabular-nums; }
+#dsTimer.warnung { color: #C4122F; }
+#dsTimer.bonus { animation: dsTimerFlash 0.5s ease; }
+@keyframes dsTimerFlash { 0% { color: #27ae60; transform: scale(1); } 35% { color: #27ae60; transform: scale(1.18); } 100% { transform: scale(1); } }
+.ds-timer-wrap { position: relative; display: inline-block; }
+.ds-bonus-float { position: absolute; top: -2px; left: 50%; transform: translateX(-50%); color: #1e8a4c; font-size: 1.05em; font-weight: 900; pointer-events: none; opacity: 0; text-shadow: 0 1px 4px rgba(255,255,255,0.9), 0 0 10px rgba(46,204,113,0.5); white-space: nowrap; }
+.ds-bonus-float.go { animation: dsBonusFloat 1s ease-out forwards; }
+@keyframes dsBonusFloat { 0% { opacity: 0; transform: translateX(-50%) translateY(10px) scale(0.6); } 20% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.1); } 100% { opacity: 0; transform: translateX(-50%) translateY(-42px) scale(1); } }
+.ds-bar-aussen { background: rgba(23,19,22,0.08); border-radius: 999px; height: 10px; overflow: hidden; margin: 8px 0 6px; }
+.ds-bar-innen { background: #C4122F; height: 100%; width: 0%; transition: width 0.3s; border-radius: 999px; }
+.ds-bar-label { font-size: 14px; color: rgba(23,19,22,0.6); margin-bottom: 14px; }
+.ds-bar-label b { color: #171316; font-size: 1.05em; }
+.game input#dsInput { padding: 14px; margin: 6px 0; font-size: 17px; }
+#dsFeedback { min-height: 1.5em; font-weight: 600; font-size: 15px; margin: 6px 0 10px; }
+#dsFeedback.treffer { color: #27ae60; }
+#dsFeedback.fehler { color: #C4122F; }
+#dsFeedback.doppelt { color: rgba(23,19,22,0.6); }
+.ds-chips { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-top: 8px; }
+.ds-chip { background: #eafaf1; border: 1px solid #27ae60; color: #1e8449; border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 600; animation: dsPop 0.25s ease; }
+@keyframes dsPop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.game button.ds-aktion { padding: 12px 24px; margin: 14px 4px 0; color: #FFFFFF; background: #C4122F; border: 1px solid #C4122F; border-radius: 999px; cursor: pointer; font-size: 15px; font-weight: 600; transition: background 0.15s; }
+.game button.ds-aktion:hover { background: #A60F27; border-color: #A60F27; }
+.game button.ds-aktion.grau, .game button.ds-aktion.rot { background: #FFFFFF; color: #171316; border-color: rgba(23,19,22,0.25); }
+.game button.ds-aktion.grau:hover, .game button.ds-aktion.rot:hover { background: rgba(23,19,22,0.06); border-color: rgba(23,19,22,0.25); }
+.ds-score { font-size: 3em; font-weight: 800; color: #171316; margin: 6px 0; letter-spacing: -0.02em; }
+.ds-score .ds-total { color: rgba(23,19,22,0.45); font-size: 0.5em; font-weight: 600; }
+.ds-prozent { font-size: 1.1em; color: rgba(23,19,22,0.6); margin-bottom: 4px; }
+.ds-highscore-badge { display: inline-block; background: rgba(196,18,47,0.08); border: 1px solid rgba(196,18,47,0.55); color: #A60F27; border-radius: 999px; padding: 4px 14px; font-size: 13px; font-weight: 700; margin: 4px 0 14px; }
+.ds-listen { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; text-align: left; }
+@media (max-width: 600px) { .ds-listen { grid-template-columns: 1fr; } }
+.ds-spalte h3 { font-size: 15px; margin: 0 0 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(23,19,22,0.12); }
+.ds-spalte.gefunden h3 { color: #1e8449; }
+.ds-spalte.verpasst h3 { color: #C4122F; }
+.ds-spalte ul { list-style: none; padding: 0; margin: 0; }
+.ds-spalte li { font-size: 14px; padding: 5px 0; border-bottom: 1px solid rgba(23,19,22,0.06); display: flex; justify-content: space-between; gap: 8px; }
+.ds-spalte li .ds-art { color: rgba(23,19,22,0.4); font-size: 0.85em; white-space: nowrap; }
+
+.game-contact { margin: 36px 0 0; font-size: 13px; color: rgba(23,19,22,0.55); }
+.game-contact a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(23,19,22,0.25); }
+.game-contact a:hover { color: #171316; }

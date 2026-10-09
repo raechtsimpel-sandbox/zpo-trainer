@@ -1,0 +1,25 @@
+# Einstellungen für Rächt Simpel. Normalerweise musst du hier nichts ändern.
+title: Rächt Simpel
+url: "https://xn--rchtsimpel-q5a.ch"   # rächtsimpel.ch in technischer Schreibweise
+baseurl: ""
+lang: de-CH
+markdown: kramdown
+
+# Jede Datei im Ordner _folgen wird zu einer Seite unter /folgen/dateiname/
+collections:
+  folgen:
+    output: true
+    permalink: /folgen/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: folgen
+    values:
+      layout: folge
+
+# Diese Dateien gehören nicht auf die Webseite
+exclude:
+  - vorlagen
+  - ANLEITUNG.md
+  - README.md

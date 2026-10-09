@@ -1,0 +1,14 @@
+{%- comment -%}
+  Karte für eine Folge. Hat die Folge einen Text, führt die Karte auf die eigene Seite,
+  sonst direkt zu Spotify.
+{%- endcomment -%}
+{%- assign f = include.folge -%}
+{%- assign kartentext = f.content | strip -%}
+{% if kartentext == "" %}<a href="{{ f.spotify }}" target="_blank" rel="noopener" class="episode-item">{% else %}<a href="{{ f.url | relative_url }}" class="episode-item">{% endif %}
+          <div>
+            <p class="ep-num">{{ f.format | upcase }}, EP. {{ f.nummer }}</p>
+            <p class="ep-title">{{ f.titel | escape }}</p>
+            <p class="ep-desc">{{ f.beschreibung | strip | escape }}</p>
+          </div>
+          <span class="ep-play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+        </a>

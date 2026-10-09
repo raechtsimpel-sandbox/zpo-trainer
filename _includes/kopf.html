@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ include.titel | escape }} – Rächt Simpel</title>
+<meta name="description" content="{{ include.beschreibung | strip | escape }}">
+{%- if include.noindex %}
+<meta name="robots" content="noindex">
+{%- endif %}
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+<meta property="og:type" content="{{ include.typ | default: 'website' }}">
+<meta property="og:site_name" content="Rächt Simpel">
+<meta property="og:title" content="{{ include.titel | escape }}">
+<meta property="og:description" content="{{ include.beschreibung | strip | escape }}">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta property="og:locale" content="de_CH">
+<meta property="og:image" content="{{ '/logo.jpg' | absolute_url }}">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<link rel="stylesheet" href="{{ '/assets/folgen.css' | relative_url }}">
+{%- if include.css %}
+<link rel="stylesheet" href="{{ include.css | relative_url }}">
+{%- endif %}
+</head>
+<body>
+
+  <div id="cursorDot"></div>
+
+  <nav>
+    <a href="{{ '/' | relative_url }}" class="left-group" aria-label="Rächt Simpel, zur Startseite">
+      <span class="rec-dot"></span>
+      <span class="logo">Rächt Simpel</span>
+    </a>
+    <div class="navlinks">
+      <a href="https://open.spotify.com/show/1jfXaZCIE4R0Vsi3ySimxk" target="_blank" rel="noopener" class="icon-link" aria-label="Spotify"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M7 10.2c3.2-.9 7-.6 9.6.9" stroke-linecap="round"/><path d="M7.5 13c2.6-.7 5.6-.5 7.7.7" stroke-linecap="round"/><path d="M8 15.7c2-.5 4.3-.4 5.9.6" stroke-linecap="round"/></svg></a>
+      <a href="https://www.linkedin.com/company/raecht-simpel/" target="_blank" rel="noopener" class="icon-link" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="7.5" y1="10" x2="7.5" y2="17"/><circle cx="7.5" cy="6.7" r="0.6" fill="currentColor" stroke="none"/><path d="M11.5 17v-4.2c0-1.6 1-2.5 2.3-2.5s2.2.9 2.2 2.5V17"/><line x1="11.5" y1="10" x2="11.5" y2="17"/></svg></a>
+      <a href="mailto:kontakt@xn--rchtsimpel-q5a.ch" class="icon-link" aria-label="E-Mail"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg></a>
+      <a href="{{ '/erlass-guesser.html' | relative_url }}" class="icon-link" aria-label="Lernspiele"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="5"/><path d="M6 10v4M4 12h4" stroke-linecap="round"/><circle cx="16" cy="10.3" r="0.6" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="0.6" fill="currentColor" stroke="none"/></svg></a>
+    </div>
+  </nav>
